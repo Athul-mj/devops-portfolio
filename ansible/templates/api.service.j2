@@ -1,0 +1,33 @@
+# {{ ansible_managed }}
+[Unit]
+Description={{ api_service_name }} - ASP.NET Core API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ api_user }}
+Group={{ api_user }}
+WorkingDirectory={{ api_app_dir }}/current
+ExecStart=/usr/bin/dotnet {{ api_app_dir }}/current/{{ api_dll }}
+EnvironmentFile=/etc/{{ api_service_name }}/{{ api_service_name }}.env
+Environment=ASPNETCORE_URLS=http://127.0.0.1:{{ api_port }}
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+Environment=DOTNET_NOLOGO=true
+
+Restart=always
+RestartSec=5
+KillSignal=SIGINT
+TimeoutStopSec=30
+SyslogIdentifier={{ api_service_name }}
+
+# Sandboxing
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target

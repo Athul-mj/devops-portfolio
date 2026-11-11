@@ -54,44 +54,78 @@ Business intelligence platform.
 
 ```
 .
-├── .github/workflows/deploy.yml   # Multi-environment CI/CD pipeline
-├── terraform/main.tf              # AWS infrastructure as code
-├── docker-compose.yml             # Multi-service local/production stack
-├── docs/architecture.md           # Infrastructure overview
-└── README.md
+├── .github/
+│   ├── workflows/deploy.yml        # Multi-environment CI/CD pipeline (.NET API)
+│   └── actions/ssh-deploy/         # Reusable deploy step: release switch + health check + rollback
+├── terraform/
+│   ├── main.tf                     # AWS EC2 + S3 + Security Groups + IAM
+│   └── env/dev.tfvars.example
+├── ansible/
+│   ├── site.yml                    # Server hardening, runtime setup, release deployment
+│   ├── group_vars/all.yml
+│   ├── templates/                  # systemd unit + Nginx site
+│   └── inventory.example.ini
+├── docker-compose.yml              # Nginx → .NET API → SQL Server
+├── nginx/conf.d/default.conf       # Reverse proxy config for Compose
+└── docs/architecture.md            # Infrastructure overview and diagrams
 ```
 
 ### What Each File Demonstrates
 
-**`.github/workflows/deploy.yml` — CI/CD pipeline for a .NET API**
-- Build, test and publish stages with artifact handoff between jobs
-- **DEV**: deploys automatically on every push to the development branch
+**`.github/workflows/deploy.yml`: CI/CD pipeline for a .NET API**
+- Build, test (with coverage) and publish once, then deploy that **same artifact** to every environment
+- **DEV**: deploys automatically on every push to `develop`
 - **UAT**: needs manual approval through a GitHub Environment protection rule
-- **Production**: matrix deployment to several servers or tenants in parallel
-- Secrets come from GitHub Environments, never from the repository
+- **Production**: **matrix deployment** to several tenant servers (`max-parallel`, `fail-fast: false`)
+- Per-environment secrets, a concurrency guard, and path filters so only app changes trigger a deploy
+- A reusable composite action does an **atomic symlink release switch**, a health check and an **automatic rollback**
 
-**`terraform/main.tf` — AWS infrastructure**
-- EC2 instance provisioned with user data
-- S3 bucket with versioning, encryption and public access blocked
-- Security groups with least-privilege ingress rules
-- IAM role and instance profile that give EC2 scoped access to S3
-- Input variables and outputs, so the module can be reused across environments
+**`terraform/main.tf`: AWS infrastructure**
+- EC2 (Ubuntu 24.04) with an Elastic IP, **IMDSv2 enforced** and an encrypted gp3 root volume
+- S3 bucket: private, versioned, encrypted, TLS-only policy, lifecycle expiry of old versions
+- Security group: public 80/443, SSH only from admin CIDRs (input validation rejects `0.0.0.0/0`)
+- IAM role scoped to its own bucket, plus SSM Session Manager access
+- Validated input variables, default tags, outputs (including an Ansible inventory line), and a remote state example
 
-**`docker-compose.yml` — Multi-service application**
-- Nginx reverse proxy in front of the application
-- Application service built from a Dockerfile
-- Database service with a persistent volume
-- Health checks, startup ordering and isolated networks
+**`ansible/site.yml`: Server setup and service deployment**
+- Baseline hardening: SSH keys only, UFW, fail2ban, unattended security upgrades
+- A `deploy` user whose sudo rights cover **only** restarting the API service
+- ASP.NET Core runtime, a sandboxed **systemd** unit, and an **Nginx** reverse proxy from templates
+- Secrets from Ansible Vault and handlers that validate config before reloading
+- `--tags deploy`: rolling release (`serial: 1`) with a health check and `block/rescue` rollback
 
-**`docs/architecture.md` — Infrastructure overview**
-- How code moves from commit to production
-- Environment layout (DEV / UAT / PROD) and network design
-- Security, secrets handling and rollback approach
+**`docker-compose.yml`: Multi-service application**
+- Nginx reverse proxy → .NET API → SQL Server 2022 with a persistent volume
+- Health checks and startup ordering: the API waits for a healthy DB
+- Network isolation: the DB sits on an `internal` network with no host or internet access
+- Resource limits, log rotation, and required secrets loaded from `.env`
+
+**`docs/architecture.md`: Infrastructure overview**
+- How Terraform, Ansible and GitHub Actions divide the work
+- Environment strategy, the CI/CD flow and server layout as diagrams
+- The release and rollback mechanism, security controls, and next steps
+
+---
+
+## Quick Start
+
+```bash
+# Run the container stack locally
+cp .env.example .env            # set a strong MSSQL_SA_PASSWORD
+docker compose up -d
+curl http://localhost/healthz
+
+# Check the infrastructure code
+cd terraform && terraform init -backend=false && terraform validate
+
+# Check the playbook
+cd ansible && ansible-playbook -i inventory.example.ini site.yml --syntax-check
+```
 
 ---
 
 ## Contact
 
+- **GitHub:** [github.com/Athul-mj](https://github.com/Athul-mj)
+- **LinkedIn:** [linkedin.com/in/athul-mj](https://www.linkedin.com/in/athul-mj)
 - **Email:** athulmj8696@gmail.com
-- **LinkedIn:** _add link_
-- **GitHub:** _add link_

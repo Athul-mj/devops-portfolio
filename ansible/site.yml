@@ -1,0 +1,303 @@
+# -----------------------------------------------------------------------------
+# Server setup and service deployment for the .NET API on Ubuntu
+#
+#   Full server setup (idempotent, safe to re-run):
+#     ansible-playbook site.yml -l dev
+#
+#   Deploy a release (the same tarball the CI pipeline builds):
+#     ansible-playbook site.yml -l dev --tags deploy \
+#       -e api_release_archive=./api-release.tar.gz -e api_release_id=$(git rev-parse --short HEAD)
+#
+# This uses the same layout as the GitHub Actions deploy:
+#   /opt/api/releases/<id>/   one directory per release
+#   /opt/api/current  ──►     symlink to the live release
+# -----------------------------------------------------------------------------
+
+# =============================================================================
+# Play 1: baseline OS hardening
+# =============================================================================
+- name: Baseline server setup
+  hosts: app_servers
+  become: true
+  tags: [setup, baseline]
+
+  tasks:
+    - name: Install base packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - ufw
+          - fail2ban
+          - chrony
+          - unattended-upgrades
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Enable automatic security updates
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+        mode: "0644"
+
+    - name: Create deploy user (used by CI to ship releases)
+      ansible.builtin.user:
+        name: "{{ deploy_user }}"
+        shell: /bin/bash
+        create_home: true
+
+    - name: Authorise CI public key for deploy user
+      ansible.posix.authorized_key:
+        user: "{{ deploy_user }}"
+        key: "{{ deploy_ssh_public_key }}"
+      when: deploy_ssh_public_key | length > 0
+
+    - name: Allow deploy user to restart the API service, and nothing else
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ deploy_user }}"
+        content: |
+          {{ deploy_user }} ALL=(root) NOPASSWD: /usr/bin/systemctl restart {{ api_service_name }}, /usr/bin/systemctl status {{ api_service_name }}
+        mode: "0440"
+        validate: visudo -cf %s
+
+    - name: Harden SSH (keys only, no root login)
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/10-hardening.conf
+        content: |
+          PermitRootLogin no
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+          X11Forwarding no
+          MaxAuthTries 3
+        mode: "0644"
+      notify: Restart ssh
+
+    - name: Firewall - allow SSH, HTTP, HTTPS
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ["22", "80", "443"]
+
+    - name: Firewall - deny all other inbound traffic and enable
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Ensure fail2ban is running
+      ansible.builtin.service:
+        name: fail2ban
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart ssh
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+# =============================================================================
+# Play 2: runtime, systemd service and Nginx reverse proxy
+# =============================================================================
+- name: Configure API runtime and Nginx
+  hosts: app_servers
+  become: true
+  tags: [setup, runtime]
+
+  pre_tasks:
+    - name: Check whether a release is already live
+      ansible.builtin.stat:
+        path: "{{ api_app_dir }}/current"
+      register: api_current_link
+
+  tasks:
+    - name: Install ASP.NET Core runtime and Nginx
+      ansible.builtin.apt:
+        name:
+          - "{{ dotnet_runtime_package }}"
+          - nginx
+        state: present
+
+    - name: Create service account (no login shell)
+      ansible.builtin.user:
+        name: "{{ api_user }}"
+        system: true
+        shell: /usr/sbin/nologin
+        create_home: false
+
+    - name: Create application directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ deploy_user }}"
+        group: "{{ api_user }}"
+        mode: "0750"
+      loop:
+        - "{{ api_app_dir }}"
+        - "{{ api_app_dir }}/releases"
+
+    - name: Create config directory
+      ansible.builtin.file:
+        path: /etc/{{ api_service_name }}
+        state: directory
+        owner: root
+        group: "{{ api_user }}"
+        mode: "0750"
+
+    - name: Write environment file (secrets come from Ansible Vault)
+      ansible.builtin.copy:
+        dest: /etc/{{ api_service_name }}/{{ api_service_name }}.env
+        content: |
+          ASPNETCORE_ENVIRONMENT={{ api_environment }}
+          ConnectionStrings__Default={{ api_connection_string }}
+        owner: root
+        group: "{{ api_user }}"
+        mode: "0640"
+      no_log: true
+      notify: Restart api
+
+    - name: Install systemd unit
+      ansible.builtin.template:
+        src: api.service.j2
+        dest: /etc/systemd/system/{{ api_service_name }}.service
+        mode: "0644"
+      notify: Restart api
+
+    - name: Enable API service
+      ansible.builtin.systemd_service:
+        name: "{{ api_service_name }}"
+        enabled: true
+        daemon_reload: true
+
+    - name: Install Nginx site
+      ansible.builtin.template:
+        src: nginx-api.conf.j2
+        dest: /etc/nginx/sites-available/{{ api_service_name }}.conf
+        mode: "0644"
+      notify: Reload nginx
+
+    - name: Enable Nginx site
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/{{ api_service_name }}.conf
+        dest: /etc/nginx/sites-enabled/{{ api_service_name }}.conf
+        state: link
+      notify: Reload nginx
+
+    - name: Disable default Nginx site
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: Reload nginx
+
+  handlers:
+    - name: Restart api
+      ansible.builtin.systemd_service:
+        name: "{{ api_service_name }}"
+        state: restarted
+        daemon_reload: true
+      # Nothing to start until the first release is deployed
+      when: api_current_link.stat.exists | default(false)
+
+    - name: Reload nginx
+      ansible.builtin.command: nginx -t
+      changed_when: false
+      notify: Reload nginx (validated)
+
+    - name: Reload nginx (validated)
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
+
+
+# =============================================================================
+# Play 3: deploy a release with health check and automatic rollback
+# =============================================================================
+- name: Deploy API release
+  hosts: app_servers
+  become: true
+  serial: 1 # one server at a time; a failed host stops the rollout
+  tags: [never, deploy]
+
+  vars:
+    release_dir: "{{ api_app_dir }}/releases/{{ api_release_id }}"
+
+  tasks:
+    - name: Validate inputs
+      ansible.builtin.assert:
+        that:
+          - api_release_archive is defined
+          - api_release_id is defined
+        fail_msg: "Pass -e api_release_archive=<tarball> -e api_release_id=<id>"
+
+    - name: Record the currently live release
+      ansible.builtin.stat:
+        path: "{{ api_app_dir }}/current"
+      register: previous_release
+
+    - name: Create release directory
+      ansible.builtin.file:
+        path: "{{ release_dir }}"
+        state: directory
+        owner: "{{ deploy_user }}"
+        group: "{{ api_user }}"
+        mode: "0750"
+
+    - name: Unpack release
+      ansible.builtin.unarchive:
+        src: "{{ api_release_archive }}"
+        dest: "{{ release_dir }}"
+        owner: "{{ deploy_user }}"
+        group: "{{ api_user }}"
+
+    - name: Activate, then verify health
+      block:
+        - name: Point 'current' at new release
+          ansible.builtin.file:
+            src: "{{ release_dir }}"
+            dest: "{{ api_app_dir }}/current"
+            state: link
+            force: true
+
+        - name: Restart service
+          ansible.builtin.systemd_service:
+            name: "{{ api_service_name }}"
+            state: restarted
+
+        - name: Wait for health endpoint
+          ansible.builtin.uri:
+            url: "http://127.0.0.1:{{ api_port }}{{ api_health_path }}"
+            status_code: 200
+          register: health
+          retries: 12
+          delay: 5
+          until: health.status == 200
+
+      rescue:
+        - name: Roll back to previous release
+          ansible.builtin.file:
+            src: "{{ previous_release.stat.lnk_source }}"
+            dest: "{{ api_app_dir }}/current"
+            state: link
+            force: true
+          when: previous_release.stat.islnk | default(false)
+
+        - name: Restart service on previous release
+          ansible.builtin.systemd_service:
+            name: "{{ api_service_name }}"
+            state: restarted
+          when: previous_release.stat.islnk | default(false)
+
+        - name: Fail the deployment
+          ansible.builtin.fail:
+            msg: "Release {{ api_release_id }} failed its health check and was rolled back."
+
+    - name: Prune old releases (keep {{ api_keep_releases }})
+      ansible.builtin.shell: |
+        set -o pipefail
+        ls -1dt {{ api_app_dir }}/releases/*/ | tail -n +{{ api_keep_releases + 1 }} | xargs -r rm -rf
+      args:
+        executable: /bin/bash
+      changed_when: false

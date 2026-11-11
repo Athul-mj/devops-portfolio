@@ -1,0 +1,9 @@
+# Copy to dev.tfvars and fill in. *.tfvars files are git-ignored.
+aws_region        = "ap-south-1"
+project           = "api"
+environment       = "dev"
+vpc_id            = "vpc-0123456789abcdef0"
+subnet_id         = "subnet-0123456789abcdef0"
+instance_type     = "t3.small"
+key_name          = null
+admin_cidr_blocks = ["203.0.113.10/32"]

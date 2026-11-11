@@ -1,0 +1,219 @@
+# -----------------------------------------------------------------------------
+# .NET API - Build, Test & Multi-Environment Deployment
+#
+#   develop  ──► Build & Test ──► DEV  (automatic)
+#   main     ──► Build & Test ──► UAT  (manual approval) ──► PRODUCTION (matrix)
+#   PRs      ──► Build & Test only
+#
+# Each environment (dev / uat / production) is a GitHub Environment that holds
+# its own secrets. Required reviewers are configured on `uat` and `production`
+# under Settings → Environments, which is what makes those jobs pause for
+# approval.
+# -----------------------------------------------------------------------------
+name: Build & Deploy API
+
+# Runs only when application code changes. Infra (terraform/, ansible/) and docs
+# changes don't trigger an API rebuild or redeploy.
+on:
+  push:
+    branches: [develop, main]
+    paths:
+      - "src/**"
+      - "tests/**"
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - "src/**"
+      - "tests/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two deployments of the same branch at once, and never cancel one
+# half-way through.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_VERSION: "8.0.x"
+  SOLUTION_PATH: src/Api.sln
+  PROJECT_PATH: src/Api/Api.csproj
+  ARTIFACT_NAME: api-release
+  RELEASE_ID: ${{ github.sha }}
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # CI: build, test and package once. Every environment deploys this exact build.
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', '**/Directory.Packages.props') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore
+        run: dotnet restore "$SOLUTION_PATH"
+
+      - name: Build
+        run: dotnet build "$SOLUTION_PATH" --configuration Release --no-restore
+
+      - name: Test
+        run: >
+          dotnet test "$SOLUTION_PATH"
+          --configuration Release
+          --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory TestResults
+          --collect:"XPlat Code Coverage"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/
+          retention-days: 7
+
+      - name: Publish
+        if: github.event_name != 'pull_request'
+        run: |
+          dotnet publish "$PROJECT_PATH" \
+            --configuration Release \
+            --no-build \
+            --output publish
+          echo "$RELEASE_ID" > publish/RELEASE
+          tar -czf api-release.tar.gz -C publish .
+
+      - name: Upload release artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: api-release.tar.gz
+          retention-days: 14
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # DEV: deploys automatically on every push to develop
+  # ---------------------------------------------------------------------------
+  deploy-dev:
+    name: Deploy → DEV
+    needs: build
+    if: github.ref == 'refs/heads/develop' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: dev
+      url: ${{ vars.APP_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+
+      - name: Deploy release
+        uses: ./.github/actions/ssh-deploy
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          user: ${{ secrets.DEPLOY_USER }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+          known-hosts: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          artifact: api-release.tar.gz
+          release-id: ${{ env.RELEASE_ID }}
+
+  # ---------------------------------------------------------------------------
+  # UAT: waits for a required reviewer to approve the `uat` environment
+  # ---------------------------------------------------------------------------
+  deploy-uat:
+    name: Deploy → UAT
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: uat
+      url: ${{ vars.APP_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+
+      - name: Deploy release
+        uses: ./.github/actions/ssh-deploy
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          user: ${{ secrets.DEPLOY_USER }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+          known-hosts: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          artifact: api-release.tar.gz
+          release-id: ${{ env.RELEASE_ID }}
+
+  # ---------------------------------------------------------------------------
+  # PRODUCTION: matrix deploy, one job per tenant server.
+  # It runs only after UAT succeeds and the `production` environment is
+  # approved. fail-fast is off, so one failing tenant (which rolls itself back)
+  # doesn't cancel the others half-way.
+  # ---------------------------------------------------------------------------
+  deploy-production:
+    name: Deploy → PROD (${{ matrix.tenant }})
+    needs: deploy-uat
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: ${{ vars.APP_URL }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - tenant: tenant-a
+            host_secret: PROD_HOST_TENANT_A
+          - tenant: tenant-b
+            host_secret: PROD_HOST_TENANT_B
+          - tenant: tenant-c
+            host_secret: PROD_HOST_TENANT_C
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+
+      - name: Deploy release to ${{ matrix.tenant }}
+        uses: ./.github/actions/ssh-deploy
+        with:
+          host: ${{ secrets[matrix.host_secret] }}
+          user: ${{ secrets.DEPLOY_USER }}
+          ssh-key: ${{ secrets.DEPLOY_SSH_KEY }}
+          known-hosts: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          artifact: api-release.tar.gz
+          release-id: ${{ env.RELEASE_ID }}
+
+      - name: Deployment summary
+        if: always()
+        run: |
+          {
+            echo "### ${{ matrix.tenant }}: ${{ job.status }}"
+            echo "- Release: \`${RELEASE_ID::7}\`"
+            echo "- Triggered by: @${{ github.actor }}"
+          } >> "$GITHUB_STEP_SUMMARY"

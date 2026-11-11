@@ -1,0 +1,120 @@
+name: SSH release deploy
+description: >
+  Copies a published .NET release to a Linux host, points the `current` symlink
+  at it, restarts the systemd service and rolls back automatically if the
+  health check fails.
+
+inputs:
+  host:
+    description: Target server hostname or IP
+    required: true
+  user:
+    description: SSH user (the restricted `deploy` user created by Ansible)
+    required: true
+  ssh-key:
+    description: Private SSH key for the deploy user
+    required: true
+  known-hosts:
+    description: known_hosts entry for the target (pins the host key; no TOFU)
+    required: true
+  artifact:
+    description: Path to the release tarball
+    required: true
+  release-id:
+    description: Unique release identifier (commit SHA)
+    required: true
+  app-dir:
+    description: Application root on the server
+    default: /opt/api
+  service:
+    description: systemd service name
+    default: api
+  health-url:
+    description: Health endpoint, checked from the server itself
+    default: http://127.0.0.1:5000/health
+  keep-releases:
+    description: Number of releases to keep for rollback
+    default: "5"
+
+runs:
+  using: composite
+  steps:
+    - name: Configure SSH
+      shell: bash
+      env:
+        SSH_KEY: ${{ inputs.ssh-key }}
+        KNOWN_HOSTS: ${{ inputs.known-hosts }}
+      run: |
+        install -m 700 -d ~/.ssh
+        printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        printf '%s\n' "$KNOWN_HOSTS" >> ~/.ssh/known_hosts
+
+    - name: Upload release
+      shell: bash
+      env:
+        HOST: ${{ inputs.host }}
+        DEPLOY_USER: ${{ inputs.user }}
+        APP_DIR: ${{ inputs.app-dir }}
+        RELEASE: ${{ inputs.release-id }}
+        ARTIFACT: ${{ inputs.artifact }}
+      run: |
+        SSH="ssh -i $HOME/.ssh/deploy_key -o BatchMode=yes"
+        scp -i ~/.ssh/deploy_key -o BatchMode=yes "$ARTIFACT" "$DEPLOY_USER@$HOST:/tmp/$RELEASE.tar.gz"
+        $SSH "$DEPLOY_USER@$HOST" "
+          set -e
+          mkdir -p '$APP_DIR/releases/$RELEASE'
+          tar -xzf '/tmp/$RELEASE.tar.gz' -C '$APP_DIR/releases/$RELEASE'
+          rm -f '/tmp/$RELEASE.tar.gz'
+        "
+
+    - name: Activate release & health check
+      shell: bash
+      env:
+        HOST: ${{ inputs.host }}
+        DEPLOY_USER: ${{ inputs.user }}
+        APP_DIR: ${{ inputs.app-dir }}
+        RELEASE: ${{ inputs.release-id }}
+        SERVICE: ${{ inputs.service }}
+        HEALTH_URL: ${{ inputs.health-url }}
+        KEEP: ${{ inputs.keep-releases }}
+      run: |
+        ssh -i ~/.ssh/deploy_key -o BatchMode=yes "$DEPLOY_USER@$HOST" \
+          bash -s -- "$APP_DIR" "$RELEASE" "$SERVICE" "$HEALTH_URL" "$KEEP" <<'REMOTE'
+        set -euo pipefail
+        APP_DIR=$1 RELEASE=$2 SERVICE=$3 HEALTH_URL=$4 KEEP=$5
+        NEW="$APP_DIR/releases/$RELEASE"
+        PREV="$(readlink -f "$APP_DIR/current" 2>/dev/null || true)"
+
+        # Atomic symlink swap: the service never sees a half-switched path.
+        activate() {
+          ln -sfn "$1" "$APP_DIR/current.next"
+          mv -Tf "$APP_DIR/current.next" "$APP_DIR/current"
+          sudo systemctl restart "$SERVICE"
+        }
+
+        echo "Activating $RELEASE (previous: ${PREV:-none})"
+        activate "$NEW"
+
+        for attempt in $(seq 1 12); do
+          if curl -fsS --max-time 5 "$HEALTH_URL" > /dev/null; then
+            echo "Healthy after $attempt check(s)"
+            # Prune old releases, keeping the newest $KEEP for rollback.
+            ls -1dt "$APP_DIR"/releases/*/ | tail -n +$((KEEP + 1)) | xargs -r rm -rf
+            exit 0
+          fi
+          sleep 5
+        done
+
+        echo "::error::Health check failed for release $RELEASE"
+        if [ -n "$PREV" ] && [ "$PREV" != "$NEW" ]; then
+          activate "$PREV"
+          echo "::warning::Rolled back to $(basename "$PREV")"
+        fi
+        exit 1
+        REMOTE
+
+    - name: Remove SSH key
+      if: always()
+      shell: bash
+      run: rm -f ~/.ssh/deploy_key
