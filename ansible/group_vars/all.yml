@@ -1,0 +1,21 @@
+# Defaults for every environment. Override per group in group_vars/<env>.yml.
+api_service_name: api
+api_user: api
+deploy_user: deploy
+api_app_dir: /opt/api
+api_dll: Api.dll
+api_port: 5000
+api_health_path: /health
+api_environment: Production
+api_server_name: "_"
+api_keep_releases: 5
+
+# Ubuntu 24.04 ships .NET 8 in its own archive; no Microsoft repo needed
+dotnet_runtime_package: aspnetcore-runtime-8.0
+
+# CI deploy key (public half). Set per environment.
+deploy_ssh_public_key: ""
+
+# Secrets live in an Ansible Vault file (group_vars/<env>/vault.yml):
+#   vault_api_connection_string: "Server=...;Database=...;User Id=...;Password=..."
+api_connection_string: "{{ vault_api_connection_string | default('') }}"
