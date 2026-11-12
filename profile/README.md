@@ -13,7 +13,7 @@
 
 - 🛠️ DevOps Engineer with **2.1 years** of experience. I'm the **sole DevOps engineer** across several client platforms.
 - ☁️ I focus on **AWS**, **CI/CD with GitHub Actions** and **Docker**.
-- ⚡ I've built pipelines that deploy in **~15 seconds** with automatic rollback.
+- ⚡ I've built pipelines that deploy in **15 seconds** with automatic rollback.
 - 🧯 I recovered **25+ services** from a disk-full outage with **zero data loss**.
 - 📍 Based in **Kerala, India**. Open to DevOps opportunities.
 
