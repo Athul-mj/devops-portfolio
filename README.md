@@ -43,10 +43,8 @@ Billing application.
 - Set up containerised builds and automated deployments
 - Managed SQL Server database environments
 
-### AlTasnimBI — BI Platform
-Business intelligence platform.
-- Handled infrastructure and deployment pipelines for the BI application stack
-- Configured the web servers and reverse proxies (Apache / Nginx)
+### AlTasnimBI
+Moved BI dashboard charts off legacy tables onto a normalized schema, rewriting the T-SQL behind each chart and drill-down, on a SQL Server I run and maintain.
 
 ---
 

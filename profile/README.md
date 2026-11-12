@@ -49,7 +49,7 @@
 | **WMR & TWise**: oil & gas monitoring | Azure + AWS RDS, **90K+ rows/day** sync, recovered **25+ services** with zero data loss |
 | **L&T Proximity**: driver safety | CI/CD deploying in **~15s**, Python schema drift tool, auto-rollback |
 | **Billix**: billing platform | AWS CI/CD, containerized Docker deployment |
-| **AlTasnimBI**: BI platform | SQL Server infrastructure and data pipelines |
+| **AlTasnimBI** | Moved BI dashboard charts off legacy tables onto a normalized schema, rewriting the T-SQL behind each chart and drill-down, on a SQL Server I run and maintain. |
 
 ### 📂 Featured repository
 
