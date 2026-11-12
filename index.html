@@ -248,20 +248,21 @@
     .about strong { color: var(--text); font-weight: 600; }
 
     /* ---------- Skills ---------- */
-    .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .skill-group {
       padding: 28px; border-radius: var(--radius);
       border: 1px solid var(--border); background: var(--surface);
       transition: border-color .3s, transform .4s var(--ease);
     }
-    .skill-group:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+    .skill-group { --c: var(--cyan); }
+    .skill-group:hover { border-color: color-mix(in srgb, var(--c) 40%, transparent); transform: translateY(-3px); }
     .skill-group h3 { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; font-size: 1.02rem; font-weight: 700; letter-spacing: -0.01em; }
     .skill-icon {
       width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: none;
-      background: linear-gradient(135deg, rgba(52,211,153,.16), rgba(129,140,248,.16));
-      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--c) 14%, transparent);
+      border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
     }
-    .skill-icon svg { width: 19px; height: 19px; color: var(--cyan); }
+    .skill-icon svg { width: 19px; height: 19px; color: var(--c); }
     .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
     .pills li {
       font-size: .82rem; font-weight: 500;
@@ -271,6 +272,13 @@
       transition: color .2s, border-color .2s, background .2s;
     }
     .pills li:hover { color: var(--text); border-color: rgba(34, 211, 238, .45); background: rgba(34, 211, 238, .08); }
+    .skill-group .pills li:hover { border-color: color-mix(in srgb, var(--c) 50%, transparent); background: color-mix(in srgb, var(--c) 10%, transparent); }
+    /* Core tools: slightly brighter */
+    .pills li.hot {
+      color: var(--text); font-weight: 600;
+      background: linear-gradient(120deg, rgba(52,211,153,.14), rgba(34,211,238,.14));
+      border-color: rgba(34, 211, 238, .4);
+    }
 
     /* ---------- Projects ---------- */
     .projects { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
@@ -413,6 +421,8 @@
     <symbol id="i-cloud" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17.5 19H7a5 5 0 1 1 1.1-9.88A6 6 0 0 1 19.5 11 4 4 0 0 1 17.5 19Z"/></symbol>
     <symbol id="i-pipeline" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM18 9a9 9 0 0 1-9 9"/></symbol>
     <symbol id="i-box" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16ZM3.3 7 12 12l8.7-5M12 22V12"/></symbol>
+    <symbol id="i-azure" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9.5 3h5L8 21H2l7.5-18Zm5 0L22 21h-9l-2.5-4.5L16 15"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
     <symbol id="i-code" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
     <symbol id="i-server" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 3h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm0 10h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1ZM7 7h.01M7 17h.01"/></symbol>
     <symbol id="i-db" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 8c4.97 0 9-1.34 9-3s-4.03-3-9-3-9 1.34-9 3 4.03 3 9 3Zm9-3v14c0 1.66-4 3-9 3s-9-1.34-9-3V5m18 7c0 1.66-4 3-9 3s-9-1.34-9-3"/></symbol>
@@ -496,29 +506,37 @@
         <p class="eyebrow reveal">Skills</p>
         <h2 class="reveal">The toolkit behind the pipelines.</h2>
         <div class="skills">
-          <div class="skill-group reveal">
+          <div class="skill-group reveal" style="--c:#fb923c;--d:0s">
             <h3><span class="skill-icon"><svg><use href="#i-cloud"/></svg></span>AWS</h3>
-            <ul class="pills"><li>EC2</li><li>S3</li><li>IAM</li><li>DLM</li><li>RDS</li><li>CloudWatch</li></ul>
+            <ul class="pills"><li class="hot">AWS</li><li>EC2</li><li>S3</li><li>IAM</li><li>DLM</li><li>RDS</li><li>CloudWatch</li></ul>
           </div>
-          <div class="skill-group reveal" style="--d:.06s">
+          <div class="skill-group reveal" style="--c:#22d3ee;--d:0.06s">
             <h3><span class="skill-icon"><svg><use href="#i-pipeline"/></svg></span>CI/CD</h3>
-            <ul class="pills"><li>GitHub Actions</li><li>Matrix deploys</li><li>Approval gates</li><li>Auto-rollback</li></ul>
+            <ul class="pills"><li class="hot">GitHub Actions</li><li>Matrix deploys</li><li>Approval gates</li><li>Auto-rollback</li></ul>
           </div>
-          <div class="skill-group reveal" style="--d:.12s">
+          <div class="skill-group reveal" style="--c:#a78bfa;--d:0.12s">
             <h3><span class="skill-icon"><svg><use href="#i-box"/></svg></span>Containers &amp; IaC</h3>
-            <ul class="pills"><li>Docker</li><li>Docker Compose</li><li>Terraform</li><li>Ansible</li></ul>
+            <ul class="pills"><li class="hot">Docker</li><li>Docker Compose</li><li>Kubernetes</li><li>Terraform</li><li>Ansible</li></ul>
           </div>
-          <div class="skill-group reveal">
+          <div class="skill-group reveal" style="--c:#7dd3fc;--d:0.18s">
+            <h3><span class="skill-icon"><svg><use href="#i-azure"/></svg></span>Azure</h3>
+            <ul class="pills"><li>Azure VMs</li><li>Azure DevOps</li><li>Azure DNS</li><li>Storage</li><li>Pipelines</li></ul>
+          </div>
+          <div class="skill-group reveal" style="--c:#34d399;--d:0s">
             <h3><span class="skill-icon"><svg><use href="#i-server"/></svg></span>Systems &amp; Web</h3>
             <ul class="pills"><li>Linux</li><li>Nginx</li><li>Apache</li><li>systemd</li></ul>
           </div>
-          <div class="skill-group reveal" style="--d:.06s">
+          <div class="skill-group reveal" style="--c:#60a5fa;--d:0.06s">
             <h3><span class="skill-icon"><svg><use href="#i-db"/></svg></span>Databases</h3>
             <ul class="pills"><li>SQL Server</li><li>AWS RDS</li><li>Data sync</li><li>Backups</li></ul>
           </div>
-          <div class="skill-group reveal" style="--d:.12s">
+          <div class="skill-group reveal" style="--c:#fb7185;--d:0.12s">
             <h3><span class="skill-icon"><svg><use href="#i-code"/></svg></span>Scripting</h3>
             <ul class="pills"><li>Python</li><li>Bash</li><li>Automation tooling</li></ul>
+          </div>
+          <div class="skill-group reveal" style="--c:#facc15;--d:0.18s">
+            <h3><span class="skill-icon"><svg><use href="#i-activity"/></svg></span>Monitoring</h3>
+            <ul class="pills"><li>CloudWatch</li><li>journalctl</li><li>systemd</li><li>Log analysis</li><li>Alerting</li></ul>
           </div>
         </div>
       </div>
@@ -536,7 +554,7 @@
               <div class="card-top"><span class="card-num">01</span><span class="card-domain">Education · ERP</span></div>
               <h3>NORA ERP: Multi-School Platform</h3>
               <p>GitHub Actions pipelines that deploy 5 APIs to 4 schools with a matrix strategy, so one workflow handles every tenant. I also built and run the AWS production infrastructure behind the platform.</p>
-              <ul class="pills"><li>GitHub Actions</li><li>AWS</li><li>.NET</li><li>Nginx</li><li>SQL Server</li></ul>
+              <ul class="pills"><li class="hot">GitHub Actions</li><li class="hot">AWS</li><li>.NET</li><li>Nginx</li><li>SQL Server</li></ul>
             </div>
             <div class="kpis">
               <div class="kpi"><b class="grad-text">4</b><span>Schools</span></div>
@@ -565,14 +583,14 @@
               <div class="kpi"><b class="grad-text">~15s</b><span>Deploy time</span></div>
               <div class="kpi"><b class="grad-text">Auto</b><span>Rollback</span></div>
             </div>
-            <ul class="pills"><li>GitHub Actions</li><li>Python</li><li>SQL</li></ul>
+            <ul class="pills"><li class="hot">GitHub Actions</li><li>Python</li><li>SQL</li></ul>
           </article>
 
           <article class="card wide reveal">
             <div class="card-top"><span class="card-num">04</span><span class="card-domain">Billing</span></div>
             <h3>Billix: Billing Platform</h3>
             <p>AWS CI/CD pipelines for automated releases, and the move to a containerized Docker deployment.</p>
-            <ul class="pills"><li>AWS</li><li>Docker</li><li>GitHub Actions</li></ul>
+            <ul class="pills"><li class="hot">AWS</li><li class="hot">Docker</li><li class="hot">GitHub Actions</li></ul>
           </article>
 
           <article class="card wide reveal" style="--d:.08s">
