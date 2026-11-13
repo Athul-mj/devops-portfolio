@@ -1389,17 +1389,61 @@
 
       const navItems = q('.nav-inner .logo, .nav-inner .nav-links');
 
-      // Page load: hero fades in smoothly
-      gsap.from([...navItems, ...q('.m-idx, .hero .name, .m-ticker, .m-tagline, .m-stats > div')],
-        { opacity: 0, y: 12, duration: .8, ease: 'power2.out', stagger: .06 });
+      // ---- Nothing-style clip reveals ----
+      // Wrap an element in an overflow-hidden mask so it can slide up from below.
+      // The mask is padded (and pulled back with negative margin) by 0.15em of the
+      // element's own font size, so tight line-heights don't clip ascenders/descenders.
+      const clipWrap = el => {
+        const w = document.createElement('div');
+        w.className = 'm-clip';
+        const fs = parseFloat(getComputedStyle(el).fontSize) || 16, pad = Math.round(fs * .15);
+        w.style.cssText = `overflow:hidden;padding:${pad}px 0;margin-top:${-pad}px;margin-bottom:${-pad}px;`;
+        el.parentNode.insertBefore(w, el);
+        w.appendChild(w.ownerDocument.adoptNode(el));
+        return el;
+      };
+      const clips = sel => q(sel).map(clipWrap);
+      const H = 'power3.out', C = 'power2.out';
 
-      // Sections: subtle fade-up as each block enters
+      // Hero load sequence (~1.2s)
+      const idx = clips('.m-idx'), name = clips('.hero .name'), tag = clips('.m-tagline');
+      const tl = gsap.timeline();
+      tl.from(navItems, { opacity: 0, duration: .6, ease: C }, 0)
+        .from(idx, { yPercent: 100, duration: .6, ease: H }, .2)
+        .from(name, { yPercent: 100, duration: .8, ease: H }, .4)
+        .fromTo('.m-ticker', { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: .6, ease: C, clearProps: 'clipPath' }, .8)
+        .from('.m-tick-track', { opacity: 0, duration: .6, ease: C }, 1)
+        .from(tag, { yPercent: 100, duration: .6, ease: H }, 1)
+        .from(q('.m-stats > div'), { opacity: 0, y: 20, duration: .6, ease: C, stagger: .1 }, 1.2);
+
+      // Section labels and content
       q('#about, #skills, #projects, #contact').forEach(sec => {
-        const items = sec.querySelectorAll('.m-label, .m-about, .m-pill, .m-skills, .project, .ct');
-        if (items.length) gsap.from(items, { opacity: 0, y: 20, duration: .6, ease: 'power2.out', stagger: .05,
-          scrollTrigger: { trigger: sec, start: 'top 85%' } });
+        const st = { trigger: sec, start: 'top 85%' };
+        const label = sec.querySelector('.m-label');
+        if (label) gsap.from(clipWrap(label), { yPercent: 100, duration: .6, ease: C, scrollTrigger: st });
+        const content = [...sec.querySelectorAll('.m-about, .m-pill, .m-skills')].map(clipWrap);
+        if (content.length) gsap.from(content, { y: 60, duration: .8, ease: H, stagger: .1, scrollTrigger: st });
       });
-      gsap.from('footer .wrap', { opacity: 0, y: 20, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: 'footer', start: 'top 95%' } });
+
+      // Projects: titles clip up one by one as each row reaches the screen
+      const rows = q('#projects .project');
+      rows.forEach(r => clipWrap(r.querySelector('h3')));
+      gsap.set(rows.map(r => r.querySelector('h3')), { yPercent: 100 });
+      gsap.set(rows.map(r => [r.querySelector('.p-top'), r.querySelector('.pills')]).flat(), { opacity: 0, y: 20 });
+      ScrollTrigger.batch(rows, {
+        start: 'top 85%', once: true,
+        onEnter: batch => {
+          gsap.to(batch.map(r => r.querySelector('h3')), { yPercent: 0, duration: .9, ease: H, stagger: .15 });
+          gsap.to(batch.map(r => [r.querySelector('.p-top'), r.querySelector('.pills')]).flat(), { opacity: 1, y: 0, duration: .7, ease: C, stagger: .075, delay: .1 });
+        }
+      });
+
+      // Contact rows: revealed from the bottom edge, 0.1s apart
+      gsap.fromTo(q('#contact .ct'), { clipPath: 'inset(100% 0% 0% 0%)', y: 20 },
+        { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: .7, ease: H, stagger: .1, clearProps: 'clipPath',
+          scrollTrigger: { trigger: '#contact .contact-grid', start: 'top 85%' } });
+
+      gsap.from('footer .wrap', { opacity: 0, duration: .6, ease: C, scrollTrigger: { trigger: 'footer', start: 'top 95%' } });
 
       // Nav: dim while scrolling down, restore when scrolling up
       ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => {
