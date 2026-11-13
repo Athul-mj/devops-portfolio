@@ -512,16 +512,19 @@
     .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about { display: none; }
 
     /* ==========================================================================
-       Phones (<=640px): editorial dark, Figtree, GSAP + Lenis motion.
-       Desktop and tablet untouched. Placed after the touch block so it wins.
+       Phones (<=640px): Nothing-style editorial, black on off-white.
+       GSAP + Lenis motion. Desktop and tablet untouched.
        ========================================================================== */
     @media (max-width: 640px) {
       :root {
-        --sans: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        --display: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
       }
-      html { scroll-behavior: auto; scroll-padding-top: 64px; }
-      body { background: #0f0f0f; color: #efefef; font: 400 15px/1.7 var(--sans); -webkit-tap-highlight-color: transparent; }
+      html { background: #f5f5f0; scroll-behavior: auto; scroll-padding-top: 64px; }
+      body { background: #f5f5f0; color: #0a0a0a; font: 400 15px/1.7 var(--sans); -webkit-tap-highlight-color: transparent; }
+      ::selection { background: #0a0a0a; color: #f5f5f0; }
+      :focus-visible { outline-color: #0a0a0a; }
       /* Lenis recommended CSS */
       html.lenis, html.lenis body { height: auto; }
       .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -539,71 +542,71 @@
       /* ---------- Nav ---------- */
       .nav { top: 0; padding: 0; }
       .nav-inner, .nav.scrolled .nav-inner {
-        height: 56px; max-width: none; padding: 0 28px; border: 0; border-radius: 0;
-        background: rgba(15, 15, 15, .95); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
+        height: 56px; max-width: none; padding: 0 24px; border: 0; border-bottom: 1px solid #e0e0e0; border-radius: 0;
+        background: #f5f5f0; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
       }
-      .logo { min-width: 44px; font-size: 0; }
+      .logo { min-width: 48px; height: 44px; font-size: 0; }
       .logo .u, .logo .h, .logo .s, .logo .caret { display: none; }
-      .m-logo { display: inline; font: 500 12px var(--sans); color: #555; white-space: nowrap; }
+      .m-logo { display: inline; font: 400 13px var(--mono); color: #0a0a0a; white-space: nowrap; }
       .nav-links li:not(.keep) { display: none; }
       .nav-links a.nav-cta, .nav-links a.nav-cta:hover {
         min-height: 44px; height: 44px; min-width: 44px; justify-content: flex-end; margin: 0; padding: 0; gap: 0;
-        border: 0; border-radius: 0; background: none; box-shadow: none; color: #22d3ee; font: 500 12px var(--sans);
+        border: 0; border-radius: 0; background: none; box-shadow: none; color: #0a0a0a; font: 400 12px var(--mono);
       }
       .nav-cta svg { display: none; }
-      .nav-cta::before { content: "( "; white-space: pre; }
-      .nav-cta::after { content: " )"; white-space: pre; }
+      .nav-cta::after { content: "\00a0↓"; }
 
       /* ---------- Shared ---------- */
-      .wrap { padding: 0 28px; }
-      section { padding: 0 0 80px; border: 0; }
+      .wrap { padding: 0 24px; }
+      section { padding: 0 0 72px; border: 0; }
       #github { display: none; }
       .kicker, .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index, .proj-aside, .bento { display: none; }
-      .m-label { display: block; margin: 0 0 24px; font: 400 11px/1.4 var(--mono); letter-spacing: .08em; color: #444; }
+      .m-label { display: block; margin: 0 0 20px; font: 400 11px/1.4 var(--mono); letter-spacing: .04em; color: #888; }
 
       /* ---------- Hero ---------- */
-      .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0 60px; }
+      .hero { min-height: 0; display: block; padding: 100px 0 80px; }
       .hero-grid { display: block; }
       .hero-grid > div:first-child { display: flex; flex-direction: column; }
       .term-wrap, .cta, .hero .stats, .badge, .name .dot, .tagline { display: none; }
-      .role { order: -1; display: block; margin: 0 0 18px; font: 400 11px/1.4 var(--mono); letter-spacing: .12em; color: #444; }
+      .role { order: -1; display: block; margin: 0 0 18px; font: 400 11px/1.4 var(--mono); letter-spacing: .1em; color: #888; }
       .role .sep { display: none; }
-      .role .grad { background: none; color: #444; }
-      .role::before { content: "( "; }
-      .role::after { content: " )"; }
-      .name { margin: 0; font: 900 clamp(56px, 15vw, 72px)/.9 var(--display); letter-spacing: -3px; color: #efefef; white-space: nowrap; }
-      .name .line { display: inline; }
-      .name .line + .line::before { content: " "; }
-      .name .accent { background: none; color: #efefef; }
-      .m-tagline { display: block; margin: 32px 0 0; font-size: 15px; line-height: 1.7; color: #555; }
-      .m-stats { display: block; margin: 20px 0 0; font: 400 11px/2 var(--mono); color: #444; }
-      .m-stats::before { content: "( "; }
-      .m-stats::after { content: " )"; }
+      .role .grad { background: none; color: #888; }
+      .role::after { content: " ( Kerala )"; }
+      .name { margin: 0; font: 900 64px/.9 var(--display); letter-spacing: -3px; color: #0a0a0a; white-space: nowrap; }
+      .name .line { display: block; }
+      .name .accent { background: none; color: #0a0a0a; }
+      .name .accent::before { content: "( "; }
+      .name .accent::after { content: " )"; }
+      .name::after { content: ""; display: block; height: 1px; margin: 24px 0; background: #0a0a0a; }
+      .m-tagline { display: block; margin: 0; font-size: 15px; line-height: 1.7; color: #555; }
+      .m-stats { display: block; margin: 16px 0 0; font: 400 11px/2 var(--mono); color: #888; }
       .m-stats span { white-space: nowrap; }
       .m-stats span:not(:last-child)::after { content: " ·"; }
 
       /* ---------- About ---------- */
-      #about { padding: 80px 0; }
-      .m-about { display: block; margin: 0; font-size: 19px; line-height: 1.8; color: #777; }
+      #about { padding: 72px 0; }
+      .m-about { display: block; margin: 0; font-size: 20px; font-weight: 500; line-height: 1.6; color: #0a0a0a; }
 
-      /* ---------- Technology ---------- */
+      /* ---------- Stack ---------- */
       .skills { display: none; }
       .m-skills { display: block; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 2.4; color: #555; }
-      .m-skills li { display: inline; }
-      .m-skills li + li::before { content: " / "; color: #333; }
+      .m-skills li { display: inline; white-space: nowrap; }
+      .m-skills li:not(:last-child)::after { content: "\00a0·"; color: #bbb; }
 
       /* ---------- Selected Work ---------- */
-      #projects .m-label { margin-bottom: 32px; }
       .proj-layout, .proj-stack { display: block; }
-      .project { display: flex; flex-direction: column; padding: 0; margin: 0 0 56px; border: 0; }
-      .project:last-child { margin-bottom: 0; }
-      .p-top { display: contents; }
-      .p-num { order: 0; font: 400 11px/1.4 var(--mono); color: #333; -webkit-text-stroke: 0; }
+      .project { display: block; padding: 24px 0; margin: 0; border: 0; border-top: 1px solid #e0e0e0; }
+      .p-top { display: flex; align-items: center; justify-content: space-between; margin: 0 0 10px; }
+      .p-num { font: 400 11px/1.4 var(--mono); color: #bbb; -webkit-text-stroke: 0; }
       .p-num::before { content: "( "; }
       .p-num::after { content: " )"; }
-      .project h3 { order: 1; margin: 10px 0 6px; font: 700 28px/1.15 var(--display); letter-spacing: -0.02em; color: #efefef; }
-      .p-domain { order: 2; align-self: flex-start; padding: 0; border: 0; border-radius: 0; background: none; font: 400 12px/1.5 var(--sans); letter-spacing: 0; text-transform: none; color: #444; }
-      .project > p, .kpis, .project .pills { display: none; }
+      .p-domain { padding: 0; border: 0; border-radius: 0; background: none; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; text-transform: none; color: #888; }
+      .project h3 { margin: 0 0 10px; font: 800 28px/1.15 var(--display); letter-spacing: -0.02em; color: #0a0a0a; }
+      .project > p, .kpis { display: none; }
+      .project .pills { display: block; margin: 0; font: 400 11px/1.7 var(--mono); color: #888; }
+      .project .pills li, .project .pills li.hot { display: inline; padding: 0; border: 0; border-radius: 0; background: none; font: inherit; color: inherit; }
+      .project .pills li { white-space: nowrap; }
+      .project .pills li:not(:last-child)::after { content: "\00a0·"; }
 
       /* ---------- Connect ---------- */
       .contact { text-align: left; overflow: visible; }
@@ -612,16 +615,14 @@
       .ct-top, .ct-lbl { display: none; }
       .ct-val { font-size: 15px; font-weight: 400; line-height: 3; color: #555; }
       .ct[href^="mailto:"] { margin-bottom: 6px; }
-      .ct[href^="mailto:"] .ct-val { font-size: 20px; font-weight: 600; line-height: 1.6; color: #efefef; }
+      .ct[href^="mailto:"] .ct-val { font-size: 22px; font-weight: 700; line-height: 1.5; color: #0a0a0a; }
       .ct[href*="linkedin"] .ct-val::before { content: "linkedin.com/"; }
       .ct[href*="github"] .ct-val::before { content: "github.com/"; }
 
       /* ---------- Footer ---------- */
-      footer { padding: 0 0 calc(60px + env(safe-area-inset-bottom)); border: 0; }
-      footer .wrap { justify-content: flex-start; text-align: left; font: 400 11px var(--mono); color: #444; }
+      footer { padding: 24px 0 calc(24px + env(safe-area-inset-bottom)); border: 0; border-top: 1px solid #e0e0e0; }
+      footer .wrap { justify-content: center; text-align: center; font: 400 11px var(--mono); color: #888; }
       footer .mono, footer .to-top, .f-extra { display: none; }
-      footer .wrap > span:not(.mono)::before { content: "( "; }
-      footer .wrap > span:not(.mono)::after { content: " )"; }
     }
     @media (hover: none) { .term { transform: none; } }
     @media (prefers-reduced-motion: reduce) {
@@ -632,10 +633,10 @@
     }
   </style>
   <script>document.documentElement.classList.add('js');</script>
-  <script>/* Phones only: Figtree font + hide content until GSAP sets start states (3s safety net) */
+  <script>/* Phones only: DM Mono font + hide content until GSAP sets start states (3s safety net) */
     if (matchMedia('(max-width: 640px)').matches) {
       const f = document.createElement('link');
-      f.rel = 'stylesheet'; f.href = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;900&display=swap';
+      f.rel = 'stylesheet'; f.href = 'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap';
       document.head.appendChild(f);
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.documentElement.classList.add('m-pre');
@@ -677,7 +678,7 @@
   <!-- ================================ NAV ================================ -->
   <nav class="nav" id="nav" aria-label="Main">
     <div class="nav-inner">
-      <a href="#top" class="logo" aria-label="Back to top"><span class="u">athul</span><span class="h">@devops</span>:~<span class="s">$</span><span class="caret" aria-hidden="true"></span><span class="m-logo">( A.MJ )</span></a>
+      <a href="#top" class="logo" aria-label="Back to top"><span class="u">athul</span><span class="h">@devops</span>:~<span class="s">$</span><span class="caret" aria-hidden="true"></span><span class="m-logo">A.MJ</span></a>
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
@@ -761,7 +762,7 @@
       <div class="wrap">
         <p class="kicker rv"><b>01</b> About</p>
         <p class="m-label">( About )</p>
-        <p class="m-about">I build and run production infrastructure as the sole DevOps engineer across 5 client platforms. AWS, CI/CD, Docker, Linux.</p>
+        <p class="m-about">Sole DevOps engineer across 5 client platforms. AWS, CI/CD, Docker, Linux.</p>
         <h2 class="h2 rv">The only DevOps engineer, across <span class="grad">every platform.</span></h2>
 
         <div class="bento">
@@ -801,8 +802,8 @@
         <p class="kicker rv"><b>02</b> Skills</p>
         <h2 class="h2 rv">The toolkit behind <span class="grad">the pipelines.</span></h2>
 
-        <p class="m-label m-tech">( Technology )</p>
-        <ul class="m-skills" aria-label="Skills"><li>AWS</li><li>Azure</li><li>GitHub Actions</li><li>Docker</li><li>Kubernetes</li><li>Terraform</li><li>Ansible</li><li>Linux</li><li>Nginx</li><li>SQL Server</li><li>Python</li><li>Bash</li><li>CloudWatch</li></ul>
+        <p class="m-label m-tech">( Stack )</p>
+        <ul class="m-skills" aria-label="Skills"><li>AWS</li> <li>Azure</li> <li>GitHub Actions</li> <li>Docker</li> <li>Kubernetes</li> <li>Terraform</li> <li>Ansible</li> <li>Linux</li> <li>Nginx</li> <li>SQL Server</li> <li>Python</li> <li>Bash</li> <li>CloudWatch</li></ul>
 
         <div class="skills">
           <div class="skill glass glow rv" style="--c:#fb923c">
@@ -877,7 +878,7 @@
                 <div class="kpi"><b class="grad">5</b><span>APIs</span></div>
                 <div class="kpi"><b class="grad">1</b><span>Matrix pipeline</span></div>
               </div>
-              <ul class="pills"><li class="c-ci hot">GitHub Actions</li><li class="c-cloud hot">AWS</li><li class="c-iac">.NET</li><li class="c-sys">Nginx</li><li class="c-db">SQL Server</li></ul>
+              <ul class="pills"><li class="c-ci hot">GitHub Actions</li> <li class="c-cloud hot">AWS</li> <li class="c-iac">.NET</li> <li class="c-sys">Nginx</li> <li class="c-db">SQL Server</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p2">
@@ -889,7 +890,7 @@
                 <div class="kpi"><b class="grad">25+</b><span>Services recovered</span></div>
                 <div class="kpi"><b class="grad">0</b><span>Data loss</span></div>
               </div>
-              <ul class="pills"><li class="c-cloud">Azure</li><li class="c-cloud">AWS RDS</li><li class="c-sys">Linux</li><li class="c-sys">Incident response</li></ul>
+              <ul class="pills"><li class="c-cloud">Azure</li> <li class="c-cloud">AWS RDS</li> <li class="c-sys">Linux</li> <li class="c-sys">Incident response</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p3">
@@ -900,21 +901,21 @@
                 <div class="kpi"><b class="grad">15s</b><span>Deploy time</span></div>
                 <div class="kpi"><b class="grad">Auto</b><span>Rollback</span></div>
               </div>
-              <ul class="pills"><li class="c-ci hot">GitHub Actions</li><li class="c-code">Python</li><li class="c-db">SQL</li></ul>
+              <ul class="pills"><li class="c-ci hot">GitHub Actions</li> <li class="c-code">Python</li> <li class="c-db">SQL</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p4">
               <div class="p-top"><span class="p-num">04</span><span class="p-domain">Billing</span></div>
               <h3>Billix: Billing Platform</h3>
               <p>AWS CI/CD pipelines for automated releases, and the move to a containerized Docker deployment.</p>
-              <ul class="pills"><li class="c-cloud hot">AWS</li><li class="c-iac hot">Docker</li><li class="c-ci hot">GitHub Actions</li></ul>
+              <ul class="pills"><li class="c-cloud hot">AWS</li> <li class="c-iac hot">Docker</li> <li class="c-ci hot">GitHub Actions</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p5">
               <div class="p-top"><span class="p-num">05</span><span class="p-domain">Analytics</span></div>
               <h3>AlTasnimBI</h3>
               <p>Moved BI dashboard charts off legacy tables onto a normalized schema, rewriting the T-SQL behind each chart and drill-down, on a SQL Server I run and maintain.</p>
-              <ul class="pills"><li class="c-db">SQL Server</li><li class="c-db">T-SQL</li><li class="c-db">Schema migration</li><li class="c-sys">Linux</li></ul>
+              <ul class="pills"><li class="c-db">SQL Server</li> <li class="c-db">T-SQL</li> <li class="c-db">Schema migration</li> <li class="c-sys">Linux</li></ul>
             </article>
           </div>
         </div>
@@ -1194,7 +1195,7 @@
       // Projects: number/domain rise, title revealed from the bottom
       q('.project').forEach(p => {
         const st = { trigger: p, start: 'top 88%' };
-        gsap.from(p.querySelectorAll('.p-num, .p-domain'), { y: 30, opacity: 0, duration: .8, ease: 'power2.out', stagger: .1, scrollTrigger: st });
+        gsap.from(p.querySelectorAll('.p-num, .p-domain, .pills'), { y: 30, opacity: 0, duration: .8, ease: 'power2.out', stagger: .1, scrollTrigger: st });
         gsap.fromTo(p.querySelector('h3'),
           { clipPath: 'inset(100% 0% 0% 0%)', y: 24 },
           { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: .9, ease: 'power3.out', scrollTrigger: st, clearProps: 'clipPath' });
