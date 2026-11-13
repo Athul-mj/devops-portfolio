@@ -643,14 +643,56 @@
       addEventListener('DOMContentLoaded', () => {
         const v = document.querySelector('.m-video');
         if (!v) return;
-        // NASA CRS-34 launch (public domain). The first ~8s is a title slate, so the loop runs from 9s.
-        const START = 9;
-        v.muted = true; v.playsInline = true; v.autoplay = true;
+        // NASA CRS-34 launch (public domain). Play only 9s-25s: the launch itself,
+        // skipping NASA's title slate at the start and the tail at the end.
+        const START = 9, END = 25, XF = 450; // crossfade length (ms)
         v.poster = 'assets/hero-launch-poster.jpg';
         if (!v.canPlayType('video/webm')) return; // older iOS: the launch photo poster stays instead
-        v.src = 'assets/hero-launch.webm#t=' + START;
-        v.addEventListener('loadedmetadata', () => { if (v.currentTime < START) v.currentTime = START; });
-        v.addEventListener('ended', () => { v.currentTime = START; v.play().catch(() => {}); });
+        const SRC = 'assets/hero-launch.webm#t=' + START + ',' + END;
+
+        // Two layers: one plays while the other waits, already parked at START.
+        // Seeking 4K video takes ~1s, so the seek always happens on the hidden layer.
+        const b = v.cloneNode(false);
+        v.after(b);
+        b.removeAttribute('poster');
+        const setup = el => {
+          el.muted = true; el.playsInline = true; el.loop = false; el.preload = 'auto';
+          el.src = SRC;
+          el.addEventListener('loadedmetadata', () => { if (el.currentTime < START) el.currentTime = START; }, { once: true });
+        };
+        setup(v); setup(b);
+        b.style.opacity = '0';
+
+        const fade = (el, from, to) => {
+          const a = el.animate([{ opacity: from }, { opacity: to }], { duration: XF, easing: 'ease-in-out' });
+          el.style.opacity = String(to);
+          return a;
+        };
+        let cur = v, next = b, swapping = false;
+        const swap = () => {
+          if (swapping) return;
+          swapping = true;
+          const out = cur, inn = next;
+          inn.play().catch(() => {});
+          fade(inn, 0, 1);
+          fade(out, 1, 0).onfinish = () => {
+            out.pause();
+            out.currentTime = START; // rewind while hidden
+            cur = inn; next = out; swapping = false;
+          };
+        };
+        const watch = el => {
+          const check = () => { if (el === cur && el.currentTime >= END - XF / 1000) swap(); };
+          if ('requestVideoFrameCallback' in el) {
+            const onFrame = () => { check(); el.requestVideoFrameCallback(onFrame); };
+            el.requestVideoFrameCallback(onFrame);
+          } else {
+            el.addEventListener('timeupdate', check);
+          }
+          el.addEventListener('pause', () => { if (el === cur && el.currentTime >= END - .5) swap(); });
+          el.addEventListener('ended', () => { if (el === cur) swap(); });
+        };
+        watch(v); watch(b);
         v.play().catch(() => {});
       });
     }</script>
