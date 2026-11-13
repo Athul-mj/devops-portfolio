@@ -512,134 +512,105 @@
     .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo { display: none; }
 
     /* ==========================================================================
-       Phones (<=640px): editorial, typographic dark. Desktop and tablet untouched.
-       Placed after the touch block so it wins without !important.
+       Phones (<=640px): typography on black. No cards, borders or effects.
+       Desktop and tablet untouched. Placed after the touch block so it wins.
        ========================================================================== */
     @media (max-width: 640px) {
       :root {
         --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
         --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       }
-      html { scroll-behavior: smooth; scroll-padding-top: 60px; }
-      body { background: #0a0a0a; color: #e8e8e8; font: 400 15px/1.6 var(--sans); -webkit-tap-highlight-color: transparent; }
+      html { scroll-behavior: auto; scroll-padding-top: 60px; }
+      body { background: #080808; color: #d8d8d8; font: 400 15px/1.7 var(--sans); -webkit-tap-highlight-color: transparent; }
 
-      /* Strip the desktop decoration */
+      /* Nothing moves, nothing glows */
+      *, *::before, *::after { animation: none !important; transition: none !important; }
       .ambient, .progress, .marquee, .glow::before, .glow::after { display: none; }
       .glass { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; background: none; border: 0; border-radius: 0; }
-      html.js .rv, html.js .rv.r { opacity: 1; transform: none; filter: none; transition: none; }
-      .name .accent { animation: none; }
-
-      /* Smooth feel: quick transitions, tap feedback, staggered fade-in */
-      a, button { transition: all .2s ease; }
-      a:active, button:active { transform: scale(.97); }
-      @keyframes m-fade { from { opacity: 0; } to { opacity: 1; } }
-      .hero, main > section, footer { animation: m-fade .4s ease both; }
-      #skills { animation-delay: .08s; }
-      #projects { animation-delay: .16s; }
-      #contact { animation-delay: .24s; }
-      footer { animation-delay: .3s; }
+      html.js .rv, html.js .rv.r { opacity: 1; transform: none; filter: none; }
+      a:active, .btn:active, .icon-btn:active, .ct:active { transform: none; }
 
       /* ---------- Nav ---------- */
       .nav { top: 0; padding: 0; }
       .nav-inner, .nav.scrolled .nav-inner {
-        height: 52px; max-width: none; padding: 0 20px; gap: 10px; border: 0; border-bottom: 1px solid #111; border-radius: 0;
-        background: rgba(10, 10, 10, .95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: none;
+        height: 52px; max-width: none; padding: 0 24px; border: 0; border-bottom: 1px solid #151515; border-radius: 0;
+        background: #080808; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
       }
-      .logo { min-width: 0; font-size: 0; }
+      .logo { font-size: 0; }
       .logo .u, .logo .h, .logo .s, .logo .caret { display: none; }
-      .m-logo { display: inline; font: 500 13px var(--mono); color: #aaa; white-space: nowrap; }
-      .nav-links { gap: 8px; }
+      .m-logo { display: inline; font: 400 12px var(--mono); color: #555; white-space: nowrap; }
       .nav-links li:not(.keep) { display: none; }
-      .nav-links li.m-nav { display: flex; gap: 8px; }
-      .nav-links a.m-ico {
-        width: 34px; min-height: 34px; height: 34px; padding: 0; justify-content: center;
-        border: 1px solid #1e1e1e; border-radius: 8px; background: #111; color: #777;
-      }
-      .nav-links a.m-ico svg { width: 15px; height: 15px; }
       .nav-links a.nav-cta, .nav-links a.nav-cta:hover {
-        min-height: 34px; height: 34px; margin: 0; padding: 0 12px; gap: 6px; border-radius: 8px;
-        background: #22d3ee; color: #000; font: 600 13px var(--sans); box-shadow: none;
+        min-height: 44px; height: 44px; min-width: 44px; justify-content: flex-end; margin: 0; padding: 0; gap: 0; border: 0; border-radius: 0;
+        background: none; box-shadow: none; color: #22d3ee; font: 400 12px var(--sans);
       }
-      .nav-cta svg { width: 13px; height: 13px; }
-      /* invisible 44px hit areas around the 34px buttons */
-      .nav-links a.m-ico::before, .nav-links a.nav-cta::before { content: ""; position: absolute; inset: -5px; }
+      .nav-cta svg { display: none; }
 
-      /* ---------- Sections ---------- */
+      /* ---------- Sections: just a thin line between ---------- */
       .wrap { padding: 0 24px; }
-      section { padding: 28px 0; border-top: 1px solid #111; }
+      section { padding: 48px 0; border-top: 1px solid #151515; }
       #about, #github { display: none; }
       .kicker, .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index, .proj-aside { display: none; }
-      .m-label { display: block; margin: 0 0 16px; font: 500 10px/1.2 var(--mono); letter-spacing: .12em; color: #444; }
+      .m-label { display: block; margin: 0 0 20px; font: 400 10px/1.2 var(--mono); letter-spacing: .12em; color: #333; }
 
       /* ---------- Hero ---------- */
-      .hero { min-height: 0; display: block; padding: 88px 0 36px; }
+      .hero { min-height: 0; display: block; padding: 100px 0 56px; }
       .hero-grid { display: block; }
       .hero-grid > div:first-child { display: flex; flex-direction: column; }
       .term-wrap, .cta, .hero .stats, .badge, .name .dot { display: none; }
-      .role { order: -1; display: block; margin: 0 0 12px; font: 400 11px/1.4 var(--mono); letter-spacing: .04em; color: #444; }
+      .role { order: -1; display: block; margin: 0 0 20px; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; color: #444; }
       .role .sep { display: none; }
       .role .grad { background: none; color: #444; }
       .role::before { content: "( "; }
-      .role::after { content: " )"; }
-      .name { margin: 0; font: 800 52px/1 var(--display); letter-spacing: -2px; color: #e8e8e8; white-space: nowrap; }
+      .role::after { content: " · Kerala )"; }
+      .name { margin: 0; font: 900 56px/.95 var(--display); letter-spacing: -3px; color: #fff; white-space: nowrap; }
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
-      .name .accent { background: none; color: #e8e8e8; }
-      .name::after { content: ""; display: block; height: 1px; margin: 16px 0; background: #1a1a1a; }
-      .tagline { max-width: none; margin: 0; font-size: 14px; line-height: 1.6; color: #555; }
-      .m-stats { display: flex; flex-wrap: wrap; margin: 16px 0 0; font: 400 11px/1.8 var(--mono); color: #444; }
+      .name .accent { background: none; color: #fff; }
+      .tagline { max-width: none; margin: 24px 0 0; font-size: 15px; line-height: 1.6; color: #555; }
+      .m-stats { display: block; margin: 32px 0 0; font: 400 12px/2 var(--mono); color: #444; }
       .m-stats span { white-space: nowrap; }
-      .m-stats span + span::before { content: "·"; margin: 0 8px; }
+      .m-stats span:not(:last-child)::after { content: " ·"; }
 
-      /* ---------- Pills ---------- */
-      .m-skills li, .project .pills li, .project .pills li.hot {
-        padding: 4px 12px; border: 1px solid #1e1e1e; border-radius: 4px; background: #111;
-        font-size: 11px; font-weight: 400; line-height: 1.5; color: #777; transition: color .2s ease;
-      }
-      .m-skills li:hover, .project .pills li:hover { color: #aaa; background: #111; border-color: #1e1e1e; transform: none; }
-
-      /* ---------- Stack ---------- */
+      /* ---------- Stack: plain text, slash separated ---------- */
       .skills { display: none; }
-      .m-skills { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+      .m-skills { display: block; margin: 0; padding: 0; list-style: none; font-size: 13px; line-height: 1.9; color: #555; }
+      .m-skills li { display: inline; }
+      .m-skills li + li::before { content: " / "; color: #333; }
 
       /* ---------- Work ---------- */
-      #projects { padding-bottom: 10px; }
-      #projects .m-label { margin-bottom: 0; }
       .proj-layout, .proj-stack { display: block; }
-      .project { padding: 18px 0; border-bottom: 1px solid #111; transition: background .2s ease; }
-      .project:last-child { border-bottom: 0; }
-      .project:active { background: #111; }
-      .p-top { display: flex; align-items: center; justify-content: space-between; margin: 0; }
-      .p-num { font: 400 10px/1 var(--mono); letter-spacing: .04em; color: #333; -webkit-text-stroke: 0; }
+      .project { padding: 0; margin: 0 0 36px; border: 0; }
+      .project:last-child { margin-bottom: 0; }
+      .p-top { display: flex; align-items: center; gap: 12px; margin: 0; }
+      .p-num { flex: none; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; color: #333; -webkit-text-stroke: 0; }
       .p-num::before { content: "( "; }
       .p-num::after { content: " )"; }
-      .p-domain { padding: 2px 8px; border: 1px solid #1a1a1a; border-radius: 4px; background: #0d0d0d; font: 400 9px/1.5 var(--mono); letter-spacing: .1em; color: #555; }
-      .project > p, .kpis { display: none; }
-      .project h3 { margin: 6px 0; font: 700 17px/1.3 var(--display); letter-spacing: -0.01em; color: #e8e8e8; }
-      .project .pills { gap: 6px; margin-top: 10px; }
-
-      /* ---------- Connect ---------- */
-      .contact { text-align: left; overflow: visible; }
-      .contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      .ct {
-        display: block; min-height: 0; padding: 16px; background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 10px;
-        transition: border-color .2s ease, transform .2s ease;
+      .p-domain {
+        flex: 1; display: flex; align-items: center; gap: 12px; padding: 0; border: 0; border-radius: 0; background: none;
+        font: 400 11px/1.4 var(--mono); letter-spacing: .02em; text-transform: none; color: #333; white-space: nowrap;
       }
-      .ct:active { transform: scale(.97); border-color: #2a2a2a; }
-      .ct-top { display: block; margin-bottom: 12px; }
-      .ct-ico { display: block; width: 20px; height: 20px; border: 0; border-radius: 0; background: none; }
-      .ct-ico svg { width: 20px; height: 20px; }
-      .ct[href^="mailto:"] .ct-ico, .ct[href*="linkedin"] .ct-ico { color: #22d3ee; }
-      .ct[href^="tel:"] .ct-ico { color: #4ade80; }
-      .ct[href*="github"] .ct-ico { color: #e8e8e8; }
-      .ct-arrow { display: none; }
-      .ct-lbl { margin: 0 0 4px; font: 400 9px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #444; }
-      .ct-lbl::before { content: "( "; }
-      .ct-lbl::after { content: " )"; }
-      .ct-val { font-size: 12px; font-weight: 700; line-height: 1.4; color: #e8e8e8; overflow-wrap: anywhere; }
+      .p-domain::before { content: ""; flex: 1; height: 1px; background: #1c1c1c; }
+      .project > p, .kpis { display: none; }
+      .project h3 { margin: 8px 0; font: 700 22px/1.25 var(--display); letter-spacing: -0.02em; color: #d8d8d8; }
+      .project .pills { display: block; margin: 0; font-size: 12px; line-height: 1.7; color: #444; }
+      .project .pills li, .project .pills li.hot {
+        display: inline; padding: 0; border: 0; border-radius: 0; background: none;
+        font: inherit; color: inherit;
+      }
+      .project .pills li + li::before { content: " · "; }
+
+      /* ---------- Connect: four lines of text ---------- */
+      .contact { text-align: left; overflow: visible; }
+      .contact-grid { display: block; }
+      .ct { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; min-height: 44px; padding: 0; background: none; border: 0; border-radius: 0; }
+      .ct-top, .ct-lbl { display: none; }
+      .ct-val { font-size: 14px; font-weight: 400; line-height: 1.6; color: #d8d8d8; }
+      .ct[href*="linkedin"] .ct-val::before { content: "linkedin.com/"; }
+      .ct[href*="github"] .ct-val::before { content: "github.com/"; }
 
       /* ---------- Footer ---------- */
-      footer { padding: 20px 0 calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid #111; }
+      footer { margin-top: 0; padding: 48px 0 calc(32px + env(safe-area-inset-bottom)); border: 0; }
       footer .wrap { justify-content: center; text-align: center; font: 400 11px var(--mono); color: #333; }
       footer .mono, footer .to-top, .f-extra { display: none; }
       footer .wrap > span:not(.mono)::before { content: "( "; }
@@ -716,7 +687,7 @@
             </h1>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
             <p class="tagline rv" style="--d:.32s">Building reliable infrastructure, one pipeline at a time.</p>
-            <p class="m-stats" aria-label="Highlights"><span>2.1 yrs</span><span>5 platforms</span><span>90K+</span><span>0 lost</span></p>
+            <p class="m-stats" aria-label="Highlights"><span>2.1 yrs experience</span> <span>5 platforms</span> <span>90K+ rows synced daily</span> <span>0 data lost</span></p>
             <div class="cta rv" style="--d:.4s">
               <a class="btn btn-primary" href="Athul_MJ_DevOps_Resume.pdf" download><svg class="dl"><use href="#i-download"/></svg>Download Resume</a>
               <a class="btn btn-work" href="#projects">View my work<svg class="arrow"><use href="#i-arrow"/></svg></a>
