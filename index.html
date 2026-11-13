@@ -695,52 +695,55 @@
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
             </h1>
-            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract artwork: concentric rings and a pipeline of connected nodes">
+            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract black and white artwork: rings, a grid and a light disc under film grain">
               <defs>
-                <radialGradient id="ma-glow" cx="68%" cy="42%" r="55%"><stop offset="0" stop-color="#22d3ee" stop-opacity=".22"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
-                <radialGradient id="ma-glow2" cx="18%" cy="82%" r="40%"><stop offset="0" stop-color="#4ade80" stop-opacity=".12"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
-                <linearGradient id="ma-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee" stop-opacity="0"/><stop offset=".5" stop-color="#22d3ee"/><stop offset="1" stop-color="#4ade80"/></linearGradient>
-                <linearGradient id="ma-arc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#4ade80" stop-opacity=".2"/></linearGradient>
-                <pattern id="ma-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#1a1a1a" stroke-width="1"/></pattern>
-                <clipPath id="ma-clip"><rect width="400" height="300" rx="6"/></clipPath>
+                <radialGradient id="mb-light" cx="64%" cy="38%" r="62%"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                <radialGradient id="mb-vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>
+                <linearGradient id="mb-disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f2f2"/><stop offset=".6" stop-color="#8a8a8a"/><stop offset="1" stop-color="#1a1a1a"/></linearGradient>
+                <pattern id="mb-grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#fff" stroke-opacity=".07"/></pattern>
+                <filter id="mb-grain" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" stitchTiles="stitch"/>
+                  <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.55"/>
+                </filter>
+                <clipPath id="mb-clip"><rect width="400" height="300" rx="6"/></clipPath>
+                <clipPath id="mb-half"><rect x="0" y="0" width="400" height="126"/></clipPath>
               </defs>
-              <g clip-path="url(#ma-clip)">
-                <rect width="400" height="300" fill="#0d0d0d"/>
-                <rect width="400" height="300" fill="url(#ma-grid)" opacity=".7"/>
-                <rect width="400" height="300" fill="url(#ma-glow)"/>
-                <rect width="400" height="300" fill="url(#ma-glow2)"/>
-                <!-- concentric rings -->
-                <g fill="none" transform="translate(272 126)">
-                  <circle r="118" stroke="#1c1c1c"/>
-                  <circle r="92" stroke="#222" stroke-dasharray="2 6"/>
-                  <circle r="66" stroke="#22d3ee" stroke-opacity=".35"/>
-                  <circle r="40" stroke="#22d3ee" stroke-opacity=".6"/>
-                  <path d="M-92 0A92 92 0 0 1 65 -65" stroke="url(#ma-arc)" stroke-width="2.5" stroke-linecap="round"/>
-                  <path d="M66 0A66 66 0 0 1 -20 63" stroke="#4ade80" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle r="14" fill="#111" stroke="#22d3ee"/>
-                  <circle r="4" fill="#22d3ee"/>
+              <g clip-path="url(#mb-clip)">
+                <rect width="400" height="300" fill="#000"/>
+                <rect width="400" height="300" fill="url(#mb-grid)"/>
+                <rect width="400" height="300" fill="url(#mb-light)"/>
+                <!-- rings -->
+                <g fill="none" stroke="#fff" transform="translate(256 126)">
+                  <circle r="124" stroke-opacity=".12"/>
+                  <circle r="100" stroke-opacity=".22" stroke-dasharray="1 5"/>
+                  <circle r="76" stroke-opacity=".45"/>
+                  <circle r="52" stroke-opacity=".8" stroke-width="1.5"/>
                 </g>
-                <!-- overlapping dark discs -->
-                <circle cx="96" cy="96" r="54" fill="#111" stroke="#1f1f1f"/>
-                <circle cx="132" cy="120" r="38" fill="#111" fill-opacity=".85" stroke="#22d3ee" stroke-opacity=".25"/>
-                <!-- diagonal hairlines -->
-                <g stroke="#22d3ee" stroke-opacity=".12">
-                  <path d="M0 300L180 0"/><path d="M40 300L220 0"/><path d="M80 300L260 0"/>
+                <!-- light half-disc (horizon) -->
+                <circle cx="256" cy="126" r="40" fill="url(#mb-disc)" clip-path="url(#mb-half)"/>
+                <path d="M120 126H392" stroke="#fff" stroke-opacity=".9"/>
+                <path d="M120 132H392" stroke="#fff" stroke-opacity=".25"/>
+                <!-- solid dark discs, overlapping -->
+                <circle cx="88" cy="196" r="58" fill="#0b0b0b" stroke="#fff" stroke-opacity=".18"/>
+                <circle cx="128" cy="214" r="34" fill="#050505" stroke="#fff" stroke-opacity=".6"/>
+                <circle cx="128" cy="214" r="3" fill="#fff"/>
+                <!-- verticals -->
+                <g stroke="#fff">
+                  <path d="M32 24V276" stroke-opacity=".5"/><path d="M38 24V276" stroke-opacity=".15"/>
+                  <path d="M368 170V276" stroke-opacity=".6"/>
                 </g>
-                <!-- pipeline: build -> dev -> uat -> prod -->
-                <path d="M24 236H120L150 206H250L280 236H376" fill="none" stroke="url(#ma-line)" stroke-width="2"/>
-                <g fill="#0d0d0d" stroke-width="2">
-                  <circle cx="120" cy="236" r="6" stroke="#22d3ee"/>
-                  <circle cx="200" cy="206" r="6" stroke="#22d3ee"/>
-                  <circle cx="280" cy="236" r="6" stroke="#4ade80"/>
+                <!-- diagonal rule -->
+                <path d="M200 300L330 150" stroke="#fff" stroke-opacity=".35"/>
+                <!-- marks -->
+                <g fill="#fff" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="1.5">
+                  <text x="48" y="36" fill-opacity=".7">A.MJ</text>
+                  <text x="48" y="48" fill-opacity=".35">N° 01 / 2026</text>
+                  <text x="300" y="282" fill-opacity=".55">— INFRA</text>
                 </g>
-                <circle cx="376" cy="236" r="7" fill="#4ade80"/>
-                <circle cx="376" cy="236" r="14" fill="none" stroke="#4ade80" stroke-opacity=".35"/>
-                <!-- small marks -->
-                <g fill="#22d3ee"><rect x="24" y="268" width="28" height="2"/><rect x="58" y="268" width="10" height="2" opacity=".5"/></g>
-                <g fill="#555" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="1">
-                  <text x="24" y="30">A.MJ / 2026</text><text x="300" y="282">BUILD &#8594; PROD</text>
-                </g>
+                <rect x="48" y="262" width="36" height="2" fill="#fff"/>
+                <!-- grain + vignette -->
+                <rect width="400" height="300" filter="url(#mb-grain)" opacity=".22"/>
+                <rect width="400" height="300" fill="url(#mb-vig)"/>
               </g>
             </svg>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
