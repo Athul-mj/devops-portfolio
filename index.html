@@ -549,11 +549,7 @@
 
       /* Sections become full-width dark cards separated by 1px dividers */
       .wrap { padding: 0; }
-      section {
-        padding: 0; background: rgba(255, 255, 255, .03); border: 1px solid rgba(255, 255, 255, .08);
-        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      }
-      #skills, #projects, #contact { border-top: 0; }
+      section { padding: 0; background: #0a0a0a; border: 0; border-top: 1px solid #111; }
       #about, #github { display: none; }
       .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index { display: none; }
       .kicker, .contact .kicker {
@@ -589,17 +585,14 @@
       .tagline { max-width: none; margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #666; }
       .cta { margin-top: 24px; }
       .cta .socials { margin: 0; gap: 10px; }
-      .cta .icon-btn { width: 52px; height: 52px; border-radius: 14px; }
+      .cta .icon-btn { width: 52px; height: 52px; border-radius: 12px; background: #0d0d0d; border: 1px solid #222; color: #666; box-shadow: none; transform: none; }
       .cta .icon-btn svg { width: 20px; height: 20px; }
-      .cta .icon-btn[aria-label="GitHub"] { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); color: #fff; box-shadow: 0 0 12px rgba(255, 255, 255, .15); }
-      .cta .icon-btn[aria-label="LinkedIn"] { background: rgba(34, 211, 238, .08); border: 1px solid rgba(34, 211, 238, .2); color: #22d3ee; box-shadow: 0 0 12px rgba(34, 211, 238, .15); }
-      .cta .icon-btn[aria-label="Email"] { background: rgba(74, 222, 128, .08); border: 1px solid rgba(74, 222, 128, .2); color: #4ade80; box-shadow: 0 0 12px rgba(74, 222, 128, .15); }
+      .cta .icon-btn:hover, .cta .icon-btn:active { background: #0d0d0d; border-color: #444; color: #999; transform: none; }
 
       /* Stats card */
       .hero .stats, .hero .stats.glass {
         display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0;
-        background: rgba(255, 255, 255, .03); border: 1px solid rgba(255, 255, 255, .08); border-radius: 0;
-        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        background: #0a0a0a; border: 0; border-top: 1px solid #111; border-radius: 0;
       }
       .stat { padding: 20px; text-align: center; border: 0 !important; }
       .stat:nth-child(odd) { border-right: 1px solid #111 !important; }
