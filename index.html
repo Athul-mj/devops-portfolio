@@ -512,17 +512,21 @@
     .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about, .m-art { display: none; }
 
     /* ==========================================================================
-       Phones (<=640px): large type on dark, GSAP-driven motion.
+       Phones (<=640px): editorial dark, Figtree, GSAP + Lenis motion.
        Desktop and tablet untouched. Placed after the touch block so it wins.
        ========================================================================== */
     @media (max-width: 640px) {
       :root {
-        --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        --display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --sans: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --display: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       }
-      html { scroll-behavior: auto; scroll-padding-top: 60px; }
-      body { background: #111; color: #f0f0f0; font: 400 15px/1.7 var(--sans); -webkit-tap-highlight-color: transparent; }
-      /* Hidden only until GSAP has set its start states (JS removes this; 3s fallback) */
+      html { scroll-behavior: auto; scroll-padding-top: 64px; }
+      body { background: #0f0f0f; color: #efefef; font: 400 15px/1.7 var(--sans); -webkit-tap-highlight-color: transparent; }
+      /* Lenis recommended CSS */
+      html.lenis, html.lenis body { height: auto; }
+      .lenis.lenis-smooth { scroll-behavior: auto !important; }
+      .lenis.lenis-stopped { overflow: hidden; }
+      /* Hidden only until GSAP has set its start states (JS removes this; 3s safety net) */
       html.m-pre main, html.m-pre .nav-inner > * { visibility: hidden; }
 
       /* CSS motion off: GSAP owns all animation on phones */
@@ -535,16 +539,16 @@
       /* ---------- Nav ---------- */
       .nav { top: 0; padding: 0; }
       .nav-inner, .nav.scrolled .nav-inner {
-        height: 52px; max-width: none; padding: 0 28px; border: 0; border-radius: 0;
-        background: #111; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
+        height: 56px; max-width: none; padding: 0 28px; border: 0; border-radius: 0;
+        background: rgba(15, 15, 15, .95); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
       }
-      .logo { font-size: 0; }
+      .logo { min-width: 44px; font-size: 0; }
       .logo .u, .logo .h, .logo .s, .logo .caret { display: none; }
-      .m-logo { display: inline; font: 400 12px var(--mono); color: #555; white-space: nowrap; }
+      .m-logo { display: inline; font: 500 12px var(--sans); color: #555; white-space: nowrap; }
       .nav-links li:not(.keep) { display: none; }
       .nav-links a.nav-cta, .nav-links a.nav-cta:hover {
         min-height: 44px; height: 44px; min-width: 44px; justify-content: flex-end; margin: 0; padding: 0; gap: 0;
-        border: 0; border-radius: 0; background: none; box-shadow: none; color: #22d3ee; font: 400 12px var(--mono);
+        border: 0; border-radius: 0; background: none; box-shadow: none; color: #22d3ee; font: 500 12px var(--sans);
       }
       .nav-cta svg { display: none; }
       .nav-cta::before { content: "( "; white-space: pre; }
@@ -552,71 +556,70 @@
 
       /* ---------- Shared ---------- */
       .wrap { padding: 0 28px; }
-      section { padding: 0 0 60px; border: 0; }
+      section { padding: 0 0 80px; border: 0; }
       #github { display: none; }
       .kicker, .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index, .proj-aside, .bento { display: none; }
-      .m-label { display: block; margin: 0 0 20px; font: 400 11px/1.4 var(--mono); letter-spacing: .04em; color: #444; }
+      .m-label { display: block; margin: 0 0 24px; font: 400 11px/1.4 var(--mono); letter-spacing: .08em; color: #444; }
 
       /* ---------- Hero ---------- */
-      .hero { min-height: 0; display: block; padding: 120px 0 80px; }
+      .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 80px 0 60px; }
       .hero-grid { display: block; }
       .hero-grid > div:first-child { display: flex; flex-direction: column; }
       .term-wrap, .cta, .hero .stats, .badge, .name .dot, .tagline { display: none; }
-      .role { order: -1; display: block; margin: 0 0 16px; font: 400 11px/1.4 var(--mono); letter-spacing: .1em; color: #555; }
+      .role { order: -1; display: block; margin: 0 0 18px; font: 400 11px/1.4 var(--mono); letter-spacing: .12em; color: #444; }
       .role .sep { display: none; }
-      .role .grad { background: none; color: #555; }
+      .role .grad { background: none; color: #444; }
       .role::before { content: "( "; }
       .role::after { content: " )"; }
-      .name { margin: 0; font: 900 68px/.9 var(--display); letter-spacing: -4px; color: #f0f0f0; white-space: nowrap; }
+      .name { margin: 0; font: 900 clamp(56px, 15vw, 72px)/.9 var(--display); letter-spacing: -3px; color: #efefef; white-space: nowrap; }
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
-      .name .accent { background: none; color: #f0f0f0; }
-      .m-art { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; margin: 28px 0 4px; }
-      .m-tagline { display: block; margin: 20px 0 0; font-size: 15px; line-height: 1.6; color: #555; }
-      .m-stats { display: block; margin: 24px 0 0; font: 400 11px/2 var(--mono); color: #444; }
+      .name .accent { background: none; color: #efefef; }
+      .m-art { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; margin: 32px 0; }
+      .m-tagline { display: block; margin: 0; font-size: 15px; line-height: 1.7; color: #555; }
+      .m-stats { display: block; margin: 20px 0 0; font: 400 11px/2 var(--mono); color: #444; }
       .m-stats::before { content: "( "; }
       .m-stats::after { content: " )"; }
       .m-stats span { white-space: nowrap; }
       .m-stats span:not(:last-child)::after { content: " ·"; }
 
       /* ---------- About ---------- */
-      #about { padding: 60px 0; }
-      .m-about { display: block; margin: 0; font-size: 18px; line-height: 1.7; color: #888; }
+      #about { padding: 80px 0; }
+      .m-about { display: block; margin: 0; font-size: 19px; line-height: 1.8; color: #777; }
 
       /* ---------- Technology ---------- */
       .skills { display: none; }
-      .m-label.m-tech { margin-bottom: 16px; }
-      .m-skills { display: block; margin: 0; padding: 0; list-style: none; font-size: 14px; line-height: 2.2; color: #555; }
+      .m-skills { display: block; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 2.4; color: #555; }
       .m-skills li { display: inline; }
       .m-skills li + li::before { content: " / "; color: #333; }
 
       /* ---------- Selected Work ---------- */
       #projects .m-label { margin-bottom: 32px; }
       .proj-layout, .proj-stack { display: block; }
-      .project { display: flex; flex-direction: column; padding: 0; margin: 0 0 48px; border: 0; }
+      .project { display: flex; flex-direction: column; padding: 0; margin: 0 0 56px; border: 0; }
       .project:last-child { margin-bottom: 0; }
       .p-top { display: contents; }
       .p-num { order: 0; font: 400 11px/1.4 var(--mono); color: #333; -webkit-text-stroke: 0; }
       .p-num::before { content: "( "; }
       .p-num::after { content: " )"; }
-      .project h3 { order: 1; margin: 8px 0; font: 700 26px/1.2 var(--display); letter-spacing: -0.02em; color: #f0f0f0; }
-      .p-domain { order: 2; align-self: flex-start; padding: 0; border: 0; border-radius: 0; background: none; font: 400 12px/1.5 var(--sans); letter-spacing: 0; text-transform: none; color: #555; }
+      .project h3 { order: 1; margin: 10px 0 6px; font: 700 28px/1.15 var(--display); letter-spacing: -0.02em; color: #efefef; }
+      .p-domain { order: 2; align-self: flex-start; padding: 0; border: 0; border-radius: 0; background: none; font: 400 12px/1.5 var(--sans); letter-spacing: 0; text-transform: none; color: #444; }
       .project > p, .kpis, .project .pills { display: none; }
 
       /* ---------- Connect ---------- */
       .contact { text-align: left; overflow: visible; }
       .contact-grid { display: block; }
-      .ct { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; min-height: 44px; padding: 0; background: none; border: 0; border-radius: 0; }
+      .ct { display: flex; flex-direction: row; align-items: center; justify-content: flex-start; min-height: 45px; padding: 0; background: none; border: 0; border-radius: 0; }
       .ct-top, .ct-lbl { display: none; }
-      .ct-val { font-size: 14px; font-weight: 400; line-height: 2.8; color: #666; }
-      .ct[href^="mailto:"] { margin-bottom: 4px; }
-      .ct[href^="mailto:"] .ct-val { font-size: 18px; line-height: 1.6; color: #f0f0f0; }
+      .ct-val { font-size: 15px; font-weight: 400; line-height: 3; color: #555; }
+      .ct[href^="mailto:"] { margin-bottom: 6px; }
+      .ct[href^="mailto:"] .ct-val { font-size: 20px; font-weight: 600; line-height: 1.6; color: #efefef; }
       .ct[href*="linkedin"] .ct-val::before { content: "linkedin.com/"; }
       .ct[href*="github"] .ct-val::before { content: "github.com/"; }
 
       /* ---------- Footer ---------- */
-      footer { padding: 40px 0 calc(40px + env(safe-area-inset-bottom)); border: 0; }
-      footer .wrap { justify-content: center; text-align: center; font: 400 11px var(--mono); color: #444; }
+      footer { padding: 0 0 calc(60px + env(safe-area-inset-bottom)); border: 0; }
+      footer .wrap { justify-content: flex-start; text-align: left; font: 400 11px var(--mono); color: #444; }
       footer .mono, footer .to-top, .f-extra { display: none; }
       footer .wrap > span:not(.mono)::before { content: "( "; }
       footer .wrap > span:not(.mono)::after { content: " )"; }
@@ -630,10 +633,15 @@
     }
   </style>
   <script>document.documentElement.classList.add('js');</script>
-  <script>/* Phones: hide content until GSAP sets start states (3s safety net) */
-    if (matchMedia('(max-width: 640px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.classList.add('m-pre');
-      setTimeout(() => document.documentElement.classList.remove('m-pre'), 3000);
+  <script>/* Phones only: Figtree font + hide content until GSAP sets start states (3s safety net) */
+    if (matchMedia('(max-width: 640px)').matches) {
+      const f = document.createElement('link');
+      f.rel = 'stylesheet'; f.href = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;900&display=swap';
+      document.head.appendChild(f);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('m-pre');
+        setTimeout(() => document.documentElement.classList.remove('m-pre'), 3000);
+      }
     }</script>
 </head>
 <body>
@@ -695,55 +703,45 @@
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
             </h1>
-            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract black and white artwork: rings, a grid and a light disc under film grain">
+            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract black and white portrait: a profile in contour lines">
               <defs>
-                <radialGradient id="mb-light" cx="64%" cy="38%" r="62%"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-                <radialGradient id="mb-vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>
-                <linearGradient id="mb-disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f2f2"/><stop offset=".6" stop-color="#8a8a8a"/><stop offset="1" stop-color="#1a1a1a"/></linearGradient>
-                <pattern id="mb-grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#fff" stroke-opacity=".07"/></pattern>
-                <filter id="mb-grain" x="0" y="0" width="100%" height="100%">
-                  <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" stitchTiles="stitch"/>
+                <clipPath id="mp-frame"><rect width="400" height="300" rx="4"/></clipPath>
+                <clipPath id="mp-head"><path id="mp-profile" d="M262 300V246c0-10 4-18 10-22 10-2 18-6 18-14 0-6-4-10-3-14 5-2 8-5 7-9-2-3-5-4-4-6 5-3 6-7 3-11-2-2 0-4 4-5 6-2 8-5 5-9-5-7-10-16-13-26-2-8-3-14-3-22-1-38-28-64-64-66-46-2-86 30-90 76-3 32 8 54 14 70 4 12 2 32-6 48-6 14-12 26-20 64z"/></clipPath>
+                <radialGradient id="mp-halo" cx="52%" cy="40%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                <radialGradient id="mp-vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient>
+                <filter id="mp-grain" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" stitchTiles="stitch"/>
                   <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.55"/>
                 </filter>
-                <clipPath id="mb-clip"><rect width="400" height="300" rx="6"/></clipPath>
-                <clipPath id="mb-half"><rect x="0" y="0" width="400" height="126"/></clipPath>
               </defs>
-              <g clip-path="url(#mb-clip)">
+              <g clip-path="url(#mp-frame)">
                 <rect width="400" height="300" fill="#000"/>
-                <rect width="400" height="300" fill="url(#mb-grid)"/>
-                <rect width="400" height="300" fill="url(#mb-light)"/>
-                <!-- rings -->
-                <g fill="none" stroke="#fff" transform="translate(256 126)">
-                  <circle r="124" stroke-opacity=".12"/>
-                  <circle r="100" stroke-opacity=".22" stroke-dasharray="1 5"/>
-                  <circle r="76" stroke-opacity=".45"/>
-                  <circle r="52" stroke-opacity=".8" stroke-width="1.5"/>
+                <rect width="400" height="300" fill="url(#mp-halo)"/>
+                <g fill="none" stroke="#fff">
+                  <circle cx="210" cy="132" r="118" stroke-opacity=".14"/>
+                  <circle cx="210" cy="132" r="96" stroke-opacity=".3" stroke-dasharray="1 5"/>
+                  <path d="M0 236H400" stroke-opacity=".18"/>
+                  <path d="M56 20V280" stroke-opacity=".35"/>
                 </g>
-                <!-- light half-disc (horizon) -->
-                <circle cx="256" cy="126" r="40" fill="url(#mb-disc)" clip-path="url(#mb-half)"/>
-                <path d="M120 126H392" stroke="#fff" stroke-opacity=".9"/>
-                <path d="M120 132H392" stroke="#fff" stroke-opacity=".25"/>
-                <!-- solid dark discs, overlapping -->
-                <circle cx="88" cy="196" r="58" fill="#0b0b0b" stroke="#fff" stroke-opacity=".18"/>
-                <circle cx="128" cy="214" r="34" fill="#050505" stroke="#fff" stroke-opacity=".6"/>
-                <circle cx="128" cy="214" r="3" fill="#fff"/>
-                <!-- verticals -->
-                <g stroke="#fff">
-                  <path d="M32 24V276" stroke-opacity=".5"/><path d="M38 24V276" stroke-opacity=".15"/>
-                  <path d="M368 170V276" stroke-opacity=".6"/>
+                <!-- head: solid dark fill, contour lines inside, crisp outline -->
+                <use href="#mp-profile" fill="#0a0a0a"/>
+                <g clip-path="url(#mp-head)" stroke="#fff" stroke-opacity=".32">
+                  <path d="M100 52H320M100 60H320M100 68H320M100 76H320M100 84H320M100 92H320M100 100H320M100 108H320M100 116H320M100 124H320M100 132H320M100 140H320M100 148H320M100 156H320M100 164H320M100 172H320M100 180H320M100 188H320M100 196H320M100 204H320M100 212H320M100 220H320M100 228H320M100 236H320M100 244H320M100 252H320M100 260H320M100 268H320M100 276H320M100 284H320M100 292H320"/>
                 </g>
-                <!-- diagonal rule -->
-                <path d="M200 300L330 150" stroke="#fff" stroke-opacity=".35"/>
-                <!-- marks -->
+                <use href="#mp-profile" fill="none" stroke="#fff" stroke-width="2"/>
+                <!-- eye, ear -->
+                <path d="M258 118c4-3 9-3 13 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                <path d="M184 120c10-4 16 4 14 14-1 8-8 12-14 10" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- light source -->
+                <circle cx="330" cy="70" r="6" fill="#fff"/>
+                <circle cx="330" cy="70" r="16" fill="none" stroke="#fff" stroke-opacity=".4"/>
                 <g fill="#fff" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="1.5">
-                  <text x="48" y="36" fill-opacity=".7">A.MJ</text>
-                  <text x="48" y="48" fill-opacity=".35">N° 01 / 2026</text>
-                  <text x="300" y="282" fill-opacity=".55">— INFRA</text>
+                  <text x="68" y="34" fill-opacity=".75">A.MJ</text>
+                  <text x="68" y="46" fill-opacity=".35">PORTRAIT N° 01</text>
+                  <text x="314" y="282" fill-opacity=".55">— 2026</text>
                 </g>
-                <rect x="48" y="262" width="36" height="2" fill="#fff"/>
-                <!-- grain + vignette -->
-                <rect width="400" height="300" filter="url(#mb-grain)" opacity=".22"/>
-                <rect width="400" height="300" fill="url(#mb-vig)"/>
+                <rect width="400" height="300" filter="url(#mp-grain)" opacity=".24"/>
+                <rect width="400" height="300" fill="url(#mp-vig)"/>
               </g>
             </svg>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
@@ -846,7 +844,7 @@
         <h2 class="h2 rv">The toolkit behind <span class="grad">the pipelines.</span></h2>
 
         <p class="m-label m-tech">( Technology )</p>
-        <ul class="m-skills" aria-label="Skills"><li class="c-cloud">AWS</li><li class="c-cloud">EC2</li><li class="c-cloud">S3</li><li class="c-cloud">IAM</li><li class="c-cloud">RDS</li><li class="c-cloud">DLM</li><li class="c-cloud">CloudWatch</li><li class="c-ci">GitHub Actions</li><li class="c-ci">Matrix deploys</li><li class="c-ci">Approval gates</li><li class="c-ci">Auto-rollback</li><li class="c-iac">Docker</li><li class="c-iac">Docker Compose</li><li class="c-iac">Kubernetes</li><li class="c-iac">Terraform</li><li class="c-iac">Ansible</li><li class="c-cloud">Azure VMs</li><li class="c-cloud">Azure DevOps</li><li class="c-cloud">Azure DNS</li><li class="c-cloud">Azure Storage</li><li class="c-cloud">Azure Pipelines</li><li class="c-sys">Linux</li><li class="c-sys">Nginx</li><li class="c-sys">Apache</li><li class="c-sys">systemd</li><li class="c-db">SQL Server</li><li class="c-db">Data sync</li><li class="c-db">Backups</li><li class="c-code">Python</li><li class="c-code">Bash</li><li class="c-code">Automation tooling</li><li class="c-sys">journalctl</li><li class="c-sys">Log analysis</li><li class="c-sys">Alerting</li></ul>
+        <ul class="m-skills" aria-label="Skills"><li>AWS</li><li>Azure</li><li>GitHub Actions</li><li>Docker</li><li>Kubernetes</li><li>Terraform</li><li>Ansible</li><li>Linux</li><li>Nginx</li><li>SQL Server</li><li>Python</li><li>Bash</li><li>CloudWatch</li></ul>
 
         <div class="skills">
           <div class="skill glass glow rv" style="--c:#fb923c">
@@ -1180,7 +1178,7 @@
   })();
   </script>
   <script>
-  /* ---- Phones only: GSAP motion (loaded on demand; desktop never downloads it) ---- */
+  /* ---- Phones only: GSAP + ScrollTrigger + Lenis (loaded on demand; desktop never downloads them) ---- */
   (() => {
     const root = document.documentElement;
     if (!matchMedia('(max-width: 640px)').matches) return;
@@ -1190,36 +1188,66 @@
       const s = document.createElement('script');
       s.src = src; s.onload = ok; s.onerror = fail; document.head.appendChild(s);
     });
-    const cdn = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
-    load(cdn + 'gsap.min.js').then(() => load(cdn + 'ScrollTrigger.min.js')).then(() => {
+    const gs = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
+    Promise.all([
+      load(gs + 'gsap.min.js').then(() => load(gs + 'ScrollTrigger.min.js')),
+      // cdnjs does not host Lenis; jsDelivr serves the same official 1.1.14 build
+      load('https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js').catch(() => null)
+    ]).then(() => {
       const { gsap, ScrollTrigger } = window;
       gsap.registerPlugin(ScrollTrigger);
-      const ease = 'power2.out', q = s => gsap.utils.toArray(s);
+      const q = s => gsap.utils.toArray(s);
+
+      // Lenis smooth scroll, driving ScrollTrigger
+      if (window.Lenis) {
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          touchMultiplier: 2,
+          infinite: false,
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+          const t = a.getAttribute('href') === '#top' ? 0 : document.querySelector(a.getAttribute('href'));
+          if (t !== null) { e.preventDefault(); lenis.scrollTo(t, { offset: -64 }); }
+        }));
+      }
+
       const navItems = q('.nav-inner .logo, .nav-inner .nav-links');
 
-      // Load: hero and nav fade + rise, staggered
+      // Page load: nav + hero stagger in
       gsap.from([...navItems, ...q('.hero .role, .hero .name, .m-art, .m-tagline, .m-stats')],
-        { y: 30, opacity: 0, duration: .8, ease, stagger: .15 });
+        { y: 40, opacity: 0, duration: 1, ease: 'power3.out', stagger: .12 });
 
-      // Scroll: each section's blocks rise in as the section enters
+      // Sections: labels slide from the left, content rises
       q('#about, #skills, #projects, #contact').forEach(sec => {
-        const items = sec.querySelectorAll(':scope .m-label, .m-about, .m-skills, .ct');
-        if (items.length) gsap.from(items, { y: 30, opacity: 0, duration: .8, ease, stagger: .15,
-          scrollTrigger: { trigger: sec, start: 'top 85%' } });
+        const st = { trigger: sec, start: 'top 85%' };
+        const label = sec.querySelector('.m-label');
+        if (label) gsap.from(label, { x: -20, opacity: 0, duration: .8, ease: 'power2.out', scrollTrigger: st });
+        const body = sec.querySelectorAll('.m-about, .m-skills, .ct');
+        if (body.length) gsap.from(body, { y: 30, opacity: 0, duration: .8, ease: 'power2.out', stagger: .1, scrollTrigger: st });
       });
 
-      // Project titles slide in from the left; number and domain fade up
+      // Projects: number/domain rise, title revealed from the bottom
       q('.project').forEach(p => {
         const st = { trigger: p, start: 'top 88%' };
-        gsap.from(p.querySelector('h3'), { x: -24, opacity: 0, duration: .8, ease, scrollTrigger: st });
-        gsap.from(p.querySelectorAll('.p-num, .p-domain'), { y: 30, opacity: 0, duration: .8, ease, stagger: .15, scrollTrigger: st });
+        gsap.from(p.querySelectorAll('.p-num, .p-domain'), { y: 30, opacity: 0, duration: .8, ease: 'power2.out', stagger: .1, scrollTrigger: st });
+        gsap.fromTo(p.querySelector('h3'),
+          { clipPath: 'inset(100% 0% 0% 0%)', y: 24 },
+          { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: .9, ease: 'power3.out', scrollTrigger: st, clearProps: 'clipPath' });
       });
-      gsap.from('footer .wrap', { opacity: 0, duration: .8, ease, scrollTrigger: { trigger: 'footer', start: 'top 95%' } });
+      gsap.from('footer .wrap', { opacity: 0, duration: .8, ease: 'power2.out', scrollTrigger: { trigger: 'footer', start: 'top 95%' } });
 
-      // Nav: dims slightly once the page is scrolled
-      ScrollTrigger.create({ start: 80, end: 'max',
-        onEnter: () => gsap.to(navItems, { opacity: .6, duration: .4, ease, overwrite: 'auto' }),
-        onLeaveBack: () => gsap.to(navItems, { opacity: 1, duration: .4, ease, overwrite: 'auto' }) });
+      // Nav: dim while scrolling down, restore when scrolling up
+      ScrollTrigger.create({ start: 0, end: 'max', onUpdate: self => {
+        const o = self.direction === 1 && self.scroll() > 80 ? .7 : 1;
+        gsap.to(navItems, { opacity: o, duration: .4, ease: 'power2.out', overwrite: 'auto' });
+      } });
 
       reveal();
     }).catch(reveal);
