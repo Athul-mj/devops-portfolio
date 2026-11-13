@@ -543,7 +543,7 @@
       /* ---------- Nav ---------- */
       .nav { top: 0; padding: 0; }
       .nav-inner, .nav.scrolled .nav-inner {
-        height: 60px; max-width: none; padding: 0 24px; border: 0; border-bottom: 1px solid #e8e8e8; border-radius: 0;
+        height: 60px; max-width: none; padding: 0 24px; border: 0; border-bottom: 1px solid #000; border-radius: 0;
         background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
       }
       .logo { min-width: 48px; height: 48px; font-size: 0; }
@@ -559,7 +559,7 @@
 
       /* ---------- Shared ---------- */
       .wrap { padding: 0 24px; }
-      section { padding: 72px 0; border: 0; }
+      section { padding: 92px 0; border: 0; }
       #github { display: none; }
       .kicker, .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index, .proj-aside, .bento { display: none; }
       .m-label { display: block; margin: 0 0 24px; font: 400 11px/1.4 var(--mono); letter-spacing: .06em; color: #bbb; }
@@ -569,7 +569,7 @@
       }
 
       /* ---------- Hero (white, full viewport) ---------- */
-      .hero { min-height: 0; display: flex; flex-direction: column; padding: 72px 0 40px; background: #fff; }
+      .hero { min-height: 0; display: flex; flex-direction: column; padding: 72px 0 40px; background-color: #fff; background-image: radial-gradient(circle, #ddd 1px, transparent 1px); background-size: 24px 24px; }
       .hero > .wrap { flex: 1; display: flex; flex-direction: column; }
       .hero-grid { flex: 1; display: flex; flex-direction: column; }
       .hero-grid > div:first-child { flex: 1; display: flex; flex-direction: column; }
@@ -579,6 +579,8 @@
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
       .name .accent { background: none; color: #000; }
+      .name::after { content: ""; display: block; width: 100%; height: 2px; margin-top: 18px; background: #000; animation: m-underline .8s ease .5s both; }
+      @keyframes m-underline { from { width: 0; } to { width: 100%; } }
 
       .hero > .wrap, .hero-grid, .hero-grid > div:first-child { min-width: 0; width: 100%; }
       .m-ticker { display: block; contain: inline-size; overflow: hidden; margin: 32px -24px 0; padding: 10px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; background: #fff; }
@@ -594,7 +596,7 @@
       .m-stats span { display: block; margin-top: 6px; font: 400 10px/1.3 var(--mono); letter-spacing: .04em; color: #999; }
 
       /* ---------- About (black) ---------- */
-      #about { padding: 72px 0; background: #000; color: #fff; }
+      #about { padding: 92px 0; background: #000; color: #fff; }
       #about .m-label { color: #666; }
       .m-about { display: block; margin: 0 0 36px; font-size: 22px; font-weight: 500; line-height: 1.6; color: #fff; }
       #about .m-pill { color: #fff; }
@@ -603,6 +605,7 @@
       #skills { background: #fff; }
       .skills { display: none; }
       .m-skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+      .m-skills li.m-tap { background: #000; color: #fff; border-color: #000; }
       .m-skills li { padding: 6px 14px; border: 1px solid #000; border-radius: 999px; font: 400 11px/1.4 var(--mono); color: #000; background: none; white-space: nowrap; }
 
       /* ---------- Work (black) ---------- */
@@ -618,6 +621,7 @@
       .project h3 { margin: 12px 0; font: 800 30px/1.12 var(--display); letter-spacing: -0.02em; color: #fff; }
       .project > p, .kpis { display: none; }
       .project .pills { gap: 6px; }
+      .project .pills li.m-tap.m-tap { border-color: #fff; color: #fff; }
       .project .pills li, .project .pills li.hot {
         padding: 5px 12px; border: 1px solid #333; border-radius: 999px; background: none;
         font: 400 11px/1.4 var(--mono); color: #666;
@@ -1239,6 +1243,17 @@
       reveal();
     }).catch(reveal);
   })();
+  </script>
+  <script>
+  /* ---- Phones only: brief flash when a skill pill or project tag is tapped ---- */
+  if (matchMedia('(max-width: 640px)').matches) {
+    document.addEventListener('pointerdown', e => {
+      const pill = e.target.closest('.m-skills li, .project .pills li');
+      if (!pill) return;
+      pill.classList.add('m-tap');
+      setTimeout(() => pill.classList.remove('m-tap'), 220);
+    }, { passive: true });
+  }
   </script>
 </body>
 </html>
