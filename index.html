@@ -509,7 +509,7 @@
       .tile:hover, .skill:hover, .project:hover, .ct:hover { transform: none; }
     }
     /* Mobile-only elements are hidden everywhere except phones */
-    .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about, .m-art { display: none; }
+    .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about { display: none; }
 
     /* ==========================================================================
        Phones (<=640px): editorial dark, Figtree, GSAP + Lenis motion.
@@ -575,8 +575,7 @@
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
       .name .accent { background: none; color: #efefef; }
-      .m-art { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; margin: 32px 0; }
-      .m-tagline { display: block; margin: 0; font-size: 15px; line-height: 1.7; color: #555; }
+      .m-tagline { display: block; margin: 32px 0 0; font-size: 15px; line-height: 1.7; color: #555; }
       .m-stats { display: block; margin: 20px 0 0; font: 400 11px/2 var(--mono); color: #444; }
       .m-stats::before { content: "( "; }
       .m-stats::after { content: " )"; }
@@ -703,47 +702,6 @@
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
             </h1>
-            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract black and white portrait: a profile in contour lines">
-              <defs>
-                <clipPath id="mp-frame"><rect width="400" height="300" rx="4"/></clipPath>
-                <clipPath id="mp-head"><path id="mp-profile" d="M262 300V246c0-10 4-18 10-22 10-2 18-6 18-14 0-6-4-10-3-14 5-2 8-5 7-9-2-3-5-4-4-6 5-3 6-7 3-11-2-2 0-4 4-5 6-2 8-5 5-9-5-7-10-16-13-26-2-8-3-14-3-22-1-38-28-64-64-66-46-2-86 30-90 76-3 32 8 54 14 70 4 12 2 32-6 48-6 14-12 26-20 64z"/></clipPath>
-                <radialGradient id="mp-halo" cx="52%" cy="40%" r="50%"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-                <radialGradient id="mp-vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient>
-                <filter id="mp-grain" x="0" y="0" width="100%" height="100%">
-                  <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" stitchTiles="stitch"/>
-                  <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.6 -0.55"/>
-                </filter>
-              </defs>
-              <g clip-path="url(#mp-frame)">
-                <rect width="400" height="300" fill="#000"/>
-                <rect width="400" height="300" fill="url(#mp-halo)"/>
-                <g fill="none" stroke="#fff">
-                  <circle cx="210" cy="132" r="118" stroke-opacity=".14"/>
-                  <circle cx="210" cy="132" r="96" stroke-opacity=".3" stroke-dasharray="1 5"/>
-                  <path d="M0 236H400" stroke-opacity=".18"/>
-                  <path d="M56 20V280" stroke-opacity=".35"/>
-                </g>
-                <!-- head: solid dark fill, contour lines inside, crisp outline -->
-                <use href="#mp-profile" fill="#0a0a0a"/>
-                <g clip-path="url(#mp-head)" stroke="#fff" stroke-opacity=".32">
-                  <path d="M100 52H320M100 60H320M100 68H320M100 76H320M100 84H320M100 92H320M100 100H320M100 108H320M100 116H320M100 124H320M100 132H320M100 140H320M100 148H320M100 156H320M100 164H320M100 172H320M100 180H320M100 188H320M100 196H320M100 204H320M100 212H320M100 220H320M100 228H320M100 236H320M100 244H320M100 252H320M100 260H320M100 268H320M100 276H320M100 284H320M100 292H320"/>
-                </g>
-                <use href="#mp-profile" fill="none" stroke="#fff" stroke-width="2"/>
-                <!-- eye, ear -->
-                <path d="M258 118c4-3 9-3 13 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-                <path d="M184 120c10-4 16 4 14 14-1 8-8 12-14 10" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-                <!-- light source -->
-                <circle cx="330" cy="70" r="6" fill="#fff"/>
-                <circle cx="330" cy="70" r="16" fill="none" stroke="#fff" stroke-opacity=".4"/>
-                <g fill="#fff" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="1.5">
-                  <text x="68" y="34" fill-opacity=".75">A.MJ</text>
-                  <text x="68" y="46" fill-opacity=".35">PORTRAIT N° 01</text>
-                  <text x="314" y="282" fill-opacity=".55">— 2026</text>
-                </g>
-                <rect width="400" height="300" filter="url(#mp-grain)" opacity=".24"/>
-                <rect width="400" height="300" fill="url(#mp-vig)"/>
-              </g>
-            </svg>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
             <p class="tagline rv" style="--d:.32s">Building reliable infrastructure, one pipeline at a time.</p>
             <p class="m-tagline">Building infrastructure, one pipeline at a time.</p>
@@ -1221,7 +1179,7 @@
       const navItems = q('.nav-inner .logo, .nav-inner .nav-links');
 
       // Page load: nav + hero stagger in
-      gsap.from([...navItems, ...q('.hero .role, .hero .name, .m-art, .m-tagline, .m-stats')],
+      gsap.from([...navItems, ...q('.hero .role, .hero .name, .m-tagline, .m-stats')],
         { y: 40, opacity: 0, duration: 1, ease: 'power3.out', stagger: .12 });
 
       // Sections: labels slide from the left, content rises
