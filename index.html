@@ -1395,19 +1395,9 @@
 
       // Sections: subtle fade-up as each block enters
       q('#about, #skills, #projects, #contact').forEach(sec => {
-        const items = sec.querySelectorAll('.m-label, .m-about, .m-pill, .m-skills, .ct');
+        const items = sec.querySelectorAll('.m-label, .m-about, .m-pill, .m-skills, .project, .ct');
         if (items.length) gsap.from(items, { opacity: 0, y: 20, duration: .6, ease: 'power2.out', stagger: .05,
           scrollTrigger: { trigger: sec, start: 'top 85%' } });
-      });
-
-      // Projects: each row has its own trigger, so rows further down animate when they
-      // actually reach the screen. Rows entering together are staggered 0.1s apart.
-      const projects = q('#projects .project');
-      gsap.set(projects, { opacity: 0, y: 20 });
-      ScrollTrigger.batch(projects, {
-        start: 'top 85%',
-        once: true,
-        onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: .6, ease: 'power2.out', stagger: .1, overwrite: true })
       });
       gsap.from('footer .wrap', { opacity: 0, y: 20, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: 'footer', start: 'top 95%' } });
 
