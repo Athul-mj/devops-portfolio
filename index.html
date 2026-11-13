@@ -569,7 +569,7 @@
       }
 
       /* ---------- Hero (white, full viewport) ---------- */
-      .hero { min-height: 100svh; display: flex; flex-direction: column; padding: 90px 0 60px; background: #fff; }
+      .hero { min-height: 0; display: flex; flex-direction: column; padding: 72px 0 40px; background: #fff; }
       .hero > .wrap { flex: 1; display: flex; flex-direction: column; }
       .hero-grid { flex: 1; display: flex; flex-direction: column; }
       .hero-grid > div:first-child { flex: 1; display: flex; flex-direction: column; }
@@ -582,13 +582,13 @@
 
       .hero > .wrap, .hero-grid, .hero-grid > div:first-child { min-width: 0; width: 100%; }
       .m-ticker { display: block; contain: inline-size; overflow: hidden; margin: 32px -24px 0; padding: 10px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; background: #fff; }
-      .m-tick-track { display: flex; width: max-content; animation: m-tick 22s linear infinite; }
-      .m-tick-track span { flex: none; padding-right: .6em; font: 400 12px/1.4 var(--mono); color: #000; white-space: nowrap; }
+      .m-tick-track { display: flex; width: max-content; will-change: transform; animation: m-tick 20s linear infinite; }
+      .m-tick-track span { flex: none; padding-right: .35em; font: 400 12px/1.4 var(--mono); color: #000; white-space: nowrap; }
       .m-ticker:hover .m-tick-track, .m-ticker:active .m-tick-track { animation-play-state: paused; }
       @keyframes m-tick { to { transform: translate3d(-50%, 0, 0); } }
 
       .m-tagline { display: block; max-width: 280px; margin: 32px 0 0; font-size: 16px; line-height: 1.6; color: #555; }
-      .m-stats { display: flex; margin: auto 0 0; padding-top: 48px; }
+      .m-stats { display: flex; margin: 32px 0 0; padding: 0; }
       .m-stats > div { flex: 1 1 0; min-width: 0; }
       .m-stats b { display: block; font: 400 28px/1.1 var(--mono); letter-spacing: -0.02em; color: #000; }
       .m-stats span { display: block; margin-top: 6px; font: 400 10px/1.3 var(--mono); letter-spacing: .04em; color: #999; }
@@ -729,7 +729,7 @@
             </h1>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
             <p class="tagline rv" style="--d:.32s">Building reliable infrastructure, one pipeline at a time.</p>
-            <div class="m-ticker" aria-hidden="true"><div class="m-tick-track"><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Kerala, India ·</span></div></div>
+            <div class="m-ticker" aria-hidden="true"><div class="m-tick-track"><span>DevOps Engineer · AWS · CI/CD · Docker · Terraform · Linux · Kerala, India ·</span><span>DevOps Engineer · AWS · CI/CD · Docker · Terraform · Linux · Kerala, India ·</span></div></div>
             <p class="m-tagline">Building infrastructure, one pipeline at a time.</p>
             <div class="m-stats" aria-label="Highlights"><div><b>2.1</b><span>yrs exp</span></div><div><b>5</b><span>platforms</span></div><div><b>0</b><span>data lost</span></div></div>
             <div class="cta rv" style="--d:.4s">
