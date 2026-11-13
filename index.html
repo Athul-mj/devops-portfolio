@@ -509,160 +509,164 @@
       .tile:hover, .skill:hover, .project:hover, .ct:hover { transform: none; }
     }
     /* Mobile-only elements are hidden everywhere except phones */
-    .badge-m, .m-stats, .hd-m { display: none; }
+    .badge-m, .m-stats, .hd-m, .m-skills, .m-hint { display: none; }
 
     /* ==========================================================================
-       Phones (<=640px): "clean dark minimal". Desktop and tablet untouched.
+       Phones (<=640px): fresh "premium app" layout. Desktop and tablet untouched.
        Placed after the touch block so it wins without !important.
        ========================================================================== */
     @media (max-width: 640px) {
-      html { scroll-padding-top: 80px; }
-      body { -webkit-tap-highlight-color: transparent; font-size: 15px; }
+      :root {
+        --m-bg: #050709; --m-card: #0d1117; --m-border: #1f2937;
+        --m-text: #f5f7fa; --m-muted: #6b7280; --m-accent: #22d3ee;
+        --gutter: 20px;
+      }
+      html { scroll-padding-top: 84px; }
+      body { background: var(--m-bg); color: var(--m-text); font-size: 16px; -webkit-tap-highlight-color: transparent; }
 
-      /* No blur, no drifting blobs, no grain: flat and fast */
-      .ambient .blob, .ambient .grain, .marquee { display: none; }
+      /* No blur, no blobs, no grain, no marquee */
+      .ambient, .marquee { display: none; }
       .glass { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
       .glow::before, .glow::after { display: none; }
-      .badge { backdrop-filter: none; -webkit-backdrop-filter: none; }
 
       /* Simple fade only */
-      html.js .rv, html.js .rv.r { transform: none; filter: none; transition: opacity .5s ease; transition-delay: var(--d, 0s); }
+      html.js .rv, html.js .rv.r { transform: none; filter: none; transition: opacity .45s ease; transition-delay: var(--d, 0s); }
 
-      /* Section heads: small mono kicker + large bold heading */
-      section { padding: 72px 0; }
-      .kicker { gap: 10px; margin-bottom: 14px; font-size: .68rem; letter-spacing: .18em; }
-      .kicker::after { flex-basis: 40px; }
-      .h2 { max-width: none; margin-bottom: 28px; font-size: clamp(2rem, 9vw, 2.5rem); line-height: 1.06; letter-spacing: -0.04em; }
+      /* Section shell */
+      .wrap { padding: 0 20px; }
+      section { padding: 48px 0 0; }
+      #contact { padding-bottom: 48px; }
+      .kicker, .hd-d, .intro, .contact .lede { display: none; }
+      .hd-m { display: inline; }
+      .h2, .contact-title {
+        max-width: none; margin: 0 0 20px; color: var(--m-text);
+        font: 700 28px/1.15 var(--display); letter-spacing: -0.03em;
+      }
 
-      /* Nav: logo left, Resume right (solid, no blur) */
-      .nav { top: 10px; padding: 0 12px; }
-      .nav-inner { height: 56px; padding: 0 6px 0 16px; border-radius: 16px; background: rgba(5, 7, 10, .94); backdrop-filter: none; -webkit-backdrop-filter: none; }
+      /* Nav: full-width pill */
+      .nav { top: 12px; padding: 0 12px; }
+      .nav-inner {
+        height: 56px; padding: 0 6px 0 18px; border-radius: 999px;
+        background: rgba(13, 17, 23, .96); border-color: var(--m-border);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
       .nav-links li:not(.keep) { display: none; }
-      .nav-links a.nav-cta { margin-left: 0; padding: 0 16px; border-radius: 11px; }
+      .nav-links a.nav-cta { height: 44px; margin-left: 0; padding: 0 18px; border-radius: 999px; }
       .logo { font-size: .82rem; }
 
-      /* Hero: full screen, left aligned, icons only */
-      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: auto; justify-content: flex-start; padding: 112px 0 12px; }
-      #about { padding-top: 44px; }
-      .hero::before {
-        content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
-        background:
-          radial-gradient(42% 32% at 22% 34%, rgba(34, 211, 238, .16), transparent 70%),
-          radial-gradient(38% 30% at 82% 62%, rgba(167, 139, 250, .13), transparent 70%),
-          radial-gradient(30% 24% at 40% 82%, rgba(52, 211, 153, .08), transparent 70%);
-        animation: m-drift 22s ease-in-out infinite alternate;
-        -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 80%); mask-image: linear-gradient(180deg, #000 45%, transparent 80%);
-      }
-      @keyframes m-drift { to { transform: translate3d(6%, -5%, 0) rotate(8deg); } }
+      /* Hero */
+      .hero { min-height: auto; display: block; padding: 100px 0 0; }
       .hero-grid { display: block; }
-      .term-wrap, .hero .stats, .cta .btn, .badge-d, .role .sep { display: none; }
+      .hero-grid::after { content: ""; display: block; height: 1px; margin-top: 32px; background: var(--m-border); }
+      .term-wrap, .hero .stats, .cta .btn, .badge-d, .role .sep, .name .dot { display: none; }
+      .badge {
+        gap: 8px; padding: 0; border: 0; border-radius: 0; background: none;
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+        font: 500 13px var(--sans); color: var(--m-text);
+      }
       .badge-m { display: inline; }
-      .badge { gap: 10px; padding: 8px 14px 8px 12px; border-radius: 999px; font: 600 .76rem var(--mono); letter-spacing: .04em; color: #d1fae5; border-color: rgba(52, 211, 153, .5); background: rgba(52, 211, 153, .1); box-shadow: 0 0 22px -6px rgba(52, 211, 153, .55); }
-      .name { position: relative; margin-top: 24px; font-size: clamp(3.5rem, 19vw, 5.2rem); font-weight: 800; line-height: .92; letter-spacing: -0.055em; color: var(--text); }
-      .name::before {
-        content: ""; position: absolute; z-index: -1; left: -18%; top: -28%; width: 100%; height: 156%; pointer-events: none;
-        background:
-          radial-gradient(closest-side at 40% 42%, rgba(34, 211, 238, .5), transparent),
-          radial-gradient(closest-side at 62% 64%, rgba(52, 211, 153, .4), transparent);
-      }
-      .name .accent { background: none; color: var(--text); animation: none; }
-      .name .dot { color: var(--text); }
-      .role { margin: 22px 0 10px; font-size: 1.3rem; }
-      .tagline { max-width: 28ch; margin: 0 0 32px; font-size: 1rem; line-height: 1.55; color: var(--muted); }
-      .cta .socials { margin: 0; gap: 10px; }
-      .cta .icon-btn { width: 48px; height: 48px; border-radius: 12px; border-color: var(--line-strong); color: var(--text-2); }
-      .cta .icon-btn svg { width: 20px; height: 20px; }
-      .cta .icon-btn { background: rgba(10, 13, 19, .9); }
-      .cta .icon-btn[aria-label="GitHub"] { color: #fff; border-color: rgba(255, 255, 255, .28); }
-      .cta .icon-btn[aria-label="LinkedIn"] { color: var(--cyan); border-color: rgba(34, 211, 238, .45); }
-      .cta .icon-btn[aria-label="Email"] { color: var(--green); border-color: rgba(52, 211, 153, .45); }
+      .ping { width: 7px; height: 7px; }
+      .name { margin: 18px 0 0; font: 800 52px/1.05 var(--display); letter-spacing: -0.04em; white-space: nowrap; color: var(--m-text); }
+      .name .line { display: inline; }
+      .name .line + .line::before { content: " "; }
+      .name .accent { background: none; color: var(--m-text); animation: none; }
+      .role { margin: 8px 0 10px; font: 600 18px/1.3 var(--sans); letter-spacing: 0; }
+      .role .grad { background: none; color: var(--m-accent); }
+      .tagline { max-width: 30ch; margin: 0 0 26px; font-size: 15px; line-height: 1.55; color: var(--m-muted); }
+      .cta .socials { margin: 0; gap: 12px; }
+      .cta .icon-btn { width: 52px; height: 52px; border-radius: 14px; border: 0; color: #fff; }
+      .cta .icon-btn svg { width: 22px; height: 22px; }
+      .cta .icon-btn[aria-label="GitHub"] { background: #1a1a1a; box-shadow: inset 0 0 0 1px #2a2a2a; }
+      .cta .icon-btn[aria-label="LinkedIn"] { background: #0A66C2; }
+      .cta .icon-btn[aria-label="Email"] { background: #059669; }
 
-      /* About: 2x2 stats with hairline borders */
-      .bento { display: none; }
-      .m-stats {
-        display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-        border: 1px solid var(--line-strong); border-radius: 16px; overflow: hidden; background: #06080c;
-      }
-      .m-stat { padding: 24px 18px 20px; }
-      .m-stat:nth-child(odd) { border-right: 1px solid var(--line-strong); }
-      .m-stat:nth-child(-n+2) { border-bottom: 1px solid var(--line-strong); }
-      .m-stat .v { display: block; margin-bottom: 8px; white-space: nowrap; font: 800 clamp(2.2rem, 11vw, 2.8rem)/1 var(--display); letter-spacing: -0.05em; }
-      .m-stat .v small { font-size: .45em; letter-spacing: -0.01em; }
-      .m-stat .l { display: block; font-size: .8rem; line-height: 1.4; color: var(--muted); }
+      /* Stats (About) */
+      #about { padding-top: 32px; }
+      #about .h2, .bento { display: none; }
+      .m-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--m-border); border-radius: 16px; overflow: hidden; background: var(--m-card); }
+      .m-stat { padding: 20px; text-align: center; }
+      .m-stat:nth-child(odd) { border-right: 1px solid var(--m-border); }
+      .m-stat:nth-child(-n+2) { border-bottom: 1px solid var(--m-border); }
+      .m-stat .v { display: block; margin-bottom: 4px; white-space: nowrap; font: 700 32px/1.1 var(--display); letter-spacing: -0.03em; }
+      .m-stat .v small { font-size: .5em; letter-spacing: 0; }
+      .m-stat .l { display: block; font-size: 12px; line-height: 1.35; color: var(--m-muted); }
 
-      /* Skills: category header with coloured underline, tinted pills below */
-      .skills { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
-      .skill { display: block; padding: 0; overflow: visible; border: 0; border-radius: 0; background: none; }
-      .skill .bar, .skill .ico { display: none; }
-      .skill h3 { position: relative; gap: 10px; margin: 0 0 16px; padding-bottom: 12px; font-size: 1.05rem; font-weight: 700; color: var(--text); }
-      .skill h3::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
-      .skill h3::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--c), color-mix(in srgb, var(--c) 25%, transparent) 55%, transparent); }
-      .skill .pills { gap: 8px; }
-      .skill .pills li {
-        padding: 7px 13px; border-radius: 999px; font-size: .84rem; font-weight: 500;
-        color: color-mix(in srgb, var(--c) 55%, #fff);
-        background: color-mix(in srgb, var(--c) 14%, transparent);
-        border-color: color-mix(in srgb, var(--c) 38%, transparent);
+      /* Skills: one horizontal row of category-coloured pills */
+      .skills { display: none; }
+      .m-skills {
+        display: flex; gap: 8px; margin: 0 -20px; padding: 2px 20px 4px; list-style: none;
+        overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+        mask-image: linear-gradient(90deg, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
       }
-      .skill .pills li.hot { color: #fff; font-weight: 600; background: color-mix(in srgb, var(--c) 30%, transparent); border-color: color-mix(in srgb, var(--c) 70%, transparent); }
+      .m-skills::-webkit-scrollbar { display: none; }
+      .m-skills li {
+        flex: none; padding: 8px 14px; border-radius: 999px; white-space: nowrap;
+        font-size: 13px; font-weight: 500; line-height: 1.3;
+        color: color-mix(in srgb, var(--c) 60%, #fff);
+        background: color-mix(in srgb, var(--c) 13%, transparent);
+        border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+      }
+      .m-hint { display: block; margin: 12px 0 0; font-size: 12px; color: var(--m-muted); }
 
-      /* Projects: clean stacked cards with a gradient left edge */
-      .proj-aside .h2 { margin-bottom: 28px; }
-      .intro { margin-bottom: 26px; font-size: .95rem; color: var(--muted); }
+      /* Projects: stacked cards */
+      .proj-layout { display: block; }
       .proj-stack { display: grid; gap: 12px; }
-      .project { padding: 20px 20px 20px 22px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
+      .project {
+        position: relative; overflow: hidden; padding: 20px 20px 20px 23px;
+        background: var(--m-card); border: 1px solid var(--m-border); border-radius: 16px;
+      }
       .project::after {
         display: block; content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; opacity: 1; border-radius: 0;
-        background: linear-gradient(180deg, var(--cyan), var(--green) 50%, var(--violet));
+        background: linear-gradient(180deg, var(--cyan), var(--green) 55%, var(--violet));
       }
-      .hd-d, .intro, .project > p { display: none; }
-      .hd-m { display: inline; }
-      .project .kpis { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-columns: none; gap: 8px; margin: 14px 0 0; }
-      .kpi { padding: 12px 12px 10px; border-radius: 10px; background: rgba(0, 0, 0, .3); }
-      .kpi b { font-size: 1.3rem; }
-      .kpi span { display: block; font-size: .7rem; line-height: 1.3; }
+      .project > p, .project .kpis { display: none; }
       .p-top { align-items: center; margin-bottom: 10px; }
-      .p-num { font: 500 .75rem/1 var(--mono); letter-spacing: .1em; color: var(--muted); -webkit-text-stroke: 0; }
-      .p-domain { padding: 0; border: 0; background: none; font-size: .64rem; }
-      .project h3 { margin-bottom: 0; font-size: 1.32rem; line-height: 1.2; letter-spacing: -0.03em; }
-      .project p { margin-bottom: 16px; font-size: .92rem; line-height: 1.55; }
-      .project .pills { gap: 6px; margin-top: 16px; }
-      .project .pills li { padding: 5px 10px; font-size: .76rem; border-radius: 7px; }
+      .p-num { font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--m-muted); -webkit-text-stroke: 0; }
+      .p-domain { padding: 4px 10px; font-size: 10px; letter-spacing: .1em; border-color: var(--m-border); background: rgba(255, 255, 255, .03); }
+      .project h3 { margin: 0 0 14px; font: 700 20px/1.25 var(--display); letter-spacing: -0.02em; color: var(--m-text); }
+      .project .pills { gap: 6px; }
+      .project .pills li, .project .pills li.hot {
+        padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 500;
+        color: color-mix(in srgb, var(--c, #94a3b8) 60%, #fff);
+        background: color-mix(in srgb, var(--c, #94a3b8) 12%, transparent);
+        border: 1px solid color-mix(in srgb, var(--c, #94a3b8) 32%, transparent);
+      }
 
       /* Code */
-      .repo { border-radius: 16px; border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
-      .repo-info { padding: 22px 20px; gap: 18px; }
+      .repo { display: block; border-radius: 16px; background: var(--m-card); border: 1px solid var(--m-border); }
+      .repo-info { padding: 20px; gap: 16px; }
+      .repo-info > p:not(.repo-name) { display: none; }
+      .repo-name { font-size: 15px; }
       .repo-feats { grid-template-columns: minmax(0, 1fr); }
+      .repo-code { display: none; }
       .clone { padding-left: 12px; }
-      .tree { padding: 18px 16px; font-size: .72rem; }
       .repo-actions .btn { flex: 1 1 100%; height: 52px; }
 
       /* Contact: four rows with dividers */
       .contact { text-align: left; }
-      .contact .kicker { justify-content: flex-start; }
-      .contact .kicker::before { display: none; }
-      .contact-title { max-width: none; margin: 0 0 12px; font-size: clamp(2.1rem, 10vw, 2.7rem); font-weight: 800; line-height: 1.04; letter-spacing: -0.04em; }
-      .contact .lede { margin: 0 0 24px; font-size: .95rem; color: var(--muted); }
-      .contact-grid { display: block; border-top: 1px solid var(--line); }
+      .contact-grid { display: block; border-top: 1px solid var(--m-border); }
       .ct {
-        flex-direction: row; align-items: center; gap: 14px; min-height: 72px; padding: 14px 2px;
-        border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none; transition: background .2s;
+        flex-direction: row; align-items: center; gap: 14px; min-height: 72px; padding: 14px 0;
+        border: 0; border-bottom: 1px solid var(--m-border); border-radius: 0; background: none;
       }
-      .ct:active { background: rgba(255, 255, 255, .035); }
+      .ct:active { background: rgba(255, 255, 255, .03); }
       .ct-top { display: contents; }
-      .ct-ico { order: 0; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(255, 255, 255, .04); }
+      .ct-ico { order: 0; width: 40px; height: 40px; flex: none; border-radius: 12px; background: var(--m-card); border-color: var(--m-border); color: var(--m-accent); }
       .ct-ico svg { width: 18px; height: 18px; }
       .ct > div:last-child { order: 1; min-width: 0; }
-      .ct-arrow { order: 2; margin-left: auto; width: 18px; height: 18px; }
-      .ct-lbl { margin-bottom: 1px; font-size: .64rem; }
-      .ct-val { font-size: .98rem; }
+      .ct-arrow { order: 2; margin-left: auto; width: 18px; height: 18px; color: var(--m-muted); }
+      .ct-lbl { margin: 0 0 2px; font: 500 12px var(--sans); letter-spacing: 0; text-transform: none; color: var(--m-muted); }
+      .ct-val { font-size: 16px; font-weight: 500; }
       .contact-foot { justify-content: flex-start; margin-top: 20px; }
-      .contact-foot .btn { flex: 1 1 100%; }
+      .contact-foot .btn { flex: 1 1 100%; height: 52px; border-radius: 14px; background: var(--m-card); border-color: var(--m-border); }
 
       .btn:active, .icon-btn:active, .nav-links a.nav-cta:active { transform: scale(.97); }
 
-      footer { padding-top: 28px; }
-      footer .wrap { flex-direction: column; justify-content: center; text-align: center; gap: 6px; }
+      /* Footer */
+      footer { padding: 28px 0 calc(32px + env(safe-area-inset-bottom)); border-top-color: var(--m-border); }
+      footer .wrap { flex-direction: column; justify-content: center; text-align: center; gap: 6px; font-size: 13px; }
+      footer .mono, footer .mono .t-ok { color: var(--m-accent); }
+      footer .to-top { display: none; }
     }
     @media (hover: none) { .term { transform: none; } }
     @media (prefers-reduced-motion: reduce) {
@@ -728,7 +732,7 @@
       <div class="wrap">
         <div class="hero-grid">
           <div>
-            <span class="badge rv"><span class="ping"></span><span class="badge-d">Open to DevOps roles · Kerala, India</span><span class="badge-m">Available · Kerala, India</span></span>
+            <span class="badge rv"><span class="ping"></span><span class="badge-d">Open to DevOps roles · Kerala, India</span><span class="badge-m">Available for hire</span></span>
             <h1 class="name" aria-label="Athul MJ">
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
@@ -833,7 +837,10 @@
     <section id="skills">
       <div class="wrap">
         <p class="kicker rv"><b>02</b> Skills</p>
-        <h2 class="h2 rv"><span class="hd-d">The toolkit behind <span class="grad">the pipelines.</span></span><span class="hd-m">The <span class="grad">toolkit.</span></span></h2>
+        <h2 class="h2 rv"><span class="hd-d">The toolkit behind <span class="grad">the pipelines.</span></span><span class="hd-m">Skills</span></h2>
+
+        <ul class="m-skills rv" aria-label="Skills"><li style="--c:#fb923c">AWS</li><li style="--c:#fb923c">EC2</li><li style="--c:#fb923c">S3</li><li style="--c:#fb923c">IAM</li><li style="--c:#fb923c">RDS</li><li style="--c:#fb923c">DLM</li><li style="--c:#fb923c">CloudWatch</li><li style="--c:#22d3ee">GitHub Actions</li><li style="--c:#22d3ee">Matrix deploys</li><li style="--c:#22d3ee">Approval gates</li><li style="--c:#22d3ee">Auto-rollback</li><li style="--c:#a78bfa">Docker</li><li style="--c:#a78bfa">Docker Compose</li><li style="--c:#a78bfa">Kubernetes</li><li style="--c:#a78bfa">Terraform</li><li style="--c:#a78bfa">Ansible</li><li style="--c:#3b82f6">Azure VMs</li><li style="--c:#3b82f6">Azure DevOps</li><li style="--c:#3b82f6">Azure DNS</li><li style="--c:#3b82f6">Azure Storage</li><li style="--c:#3b82f6">Azure Pipelines</li><li style="--c:#34d399">Linux</li><li style="--c:#34d399">Nginx</li><li style="--c:#34d399">Apache</li><li style="--c:#34d399">systemd</li><li style="--c:#60a5fa">SQL Server</li><li style="--c:#60a5fa">Data sync</li><li style="--c:#60a5fa">Backups</li><li style="--c:#f472b6">Python</li><li style="--c:#f472b6">Bash</li><li style="--c:#f472b6">Automation tooling</li><li style="--c:#facc15">journalctl</li><li style="--c:#facc15">Log analysis</li><li style="--c:#facc15">Alerting</li></ul>
+        <p class="m-hint">Scroll for more →</p>
 
         <div class="skills">
           <div class="skill glass glow rv" style="--c:#fb923c">
@@ -886,7 +893,7 @@
         <div class="proj-layout">
           <aside class="proj-aside">
             <p class="kicker rv"><b>03</b> Projects</p>
-            <h2 class="h2 rv"><span class="hd-d">Platforms I've built and <span class="grad">kept running.</span></span><span class="hd-m">What I've <span class="grad">built.</span></span></h2>
+            <h2 class="h2 rv"><span class="hd-d">Platforms I've built and <span class="grad">kept running.</span></span><span class="hd-m">Projects</span></h2>
             <p class="intro rv">Five client platforms in education, oil &amp; gas, safety, billing and analytics. Each one runs on pipelines and infrastructure I own.</p>
             <ol class="proj-index rv">
               <li><a href="#p1"><span>01</span>NORA ERP</a></li>
@@ -907,7 +914,7 @@
                 <div class="kpi"><b class="grad">5</b><span>APIs</span></div>
                 <div class="kpi"><b class="grad">1</b><span>Matrix pipeline</span></div>
               </div>
-              <ul class="pills"><li class="hot">GitHub Actions</li><li class="hot">AWS</li><li>.NET</li><li>Nginx</li><li>SQL Server</li></ul>
+              <ul class="pills"><li class="hot" style="--c:#22d3ee">GitHub Actions</li><li class="hot" style="--c:#fb923c">AWS</li><li style="--c:#a78bfa">.NET</li><li style="--c:#34d399">Nginx</li><li style="--c:#60a5fa">SQL Server</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p2">
@@ -919,7 +926,7 @@
                 <div class="kpi"><b class="grad">25+</b><span>Services recovered</span></div>
                 <div class="kpi"><b class="grad">0</b><span>Data loss</span></div>
               </div>
-              <ul class="pills"><li>Azure</li><li>AWS RDS</li><li>Linux</li><li>Incident response</li></ul>
+              <ul class="pills"><li style="--c:#3b82f6">Azure</li><li style="--c:#fb923c">AWS RDS</li><li style="--c:#34d399">Linux</li><li style="--c:#facc15">Incident response</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p3">
@@ -930,21 +937,21 @@
                 <div class="kpi"><b class="grad">15s</b><span>Deploy time</span></div>
                 <div class="kpi"><b class="grad">Auto</b><span>Rollback</span></div>
               </div>
-              <ul class="pills"><li class="hot">GitHub Actions</li><li>Python</li><li>SQL</li></ul>
+              <ul class="pills"><li class="hot" style="--c:#22d3ee">GitHub Actions</li><li style="--c:#f472b6">Python</li><li style="--c:#60a5fa">SQL</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p4">
               <div class="p-top"><span class="p-num">04</span><span class="p-domain">Billing</span></div>
               <h3>Billix: Billing Platform</h3>
               <p>AWS CI/CD pipelines for automated releases, and the move to a containerized Docker deployment.</p>
-              <ul class="pills"><li class="hot">AWS</li><li class="hot">Docker</li><li class="hot">GitHub Actions</li></ul>
+              <ul class="pills"><li class="hot" style="--c:#fb923c">AWS</li><li class="hot" style="--c:#a78bfa">Docker</li><li class="hot" style="--c:#22d3ee">GitHub Actions</li></ul>
             </article>
 
             <article class="project glass glow rv r" id="p5">
               <div class="p-top"><span class="p-num">05</span><span class="p-domain">Analytics</span></div>
               <h3>AlTasnimBI</h3>
               <p>Moved BI dashboard charts off legacy tables onto a normalized schema, rewriting the T-SQL behind each chart and drill-down, on a SQL Server I run and maintain.</p>
-              <ul class="pills"><li>SQL Server</li><li>T-SQL</li><li>Schema migration</li><li>Linux</li></ul>
+              <ul class="pills"><li style="--c:#60a5fa">SQL Server</li><li style="--c:#60a5fa">T-SQL</li><li style="--c:#60a5fa">Schema migration</li><li style="--c:#34d399">Linux</li></ul>
             </article>
           </div>
         </div>
@@ -955,7 +962,7 @@
     <section id="github">
       <div class="wrap">
         <p class="kicker rv"><b>04</b> Code</p>
-        <h2 class="h2 rv">See how <span class="grad">I work.</span></h2>
+        <h2 class="h2 rv"><span class="hd-d">See how <span class="grad">I work.</span></span><span class="hd-m">Code</span></h2>
 
         <div class="repo glass glow rv">
           <div class="repo-info">
@@ -995,7 +1002,7 @@
     <section id="contact" class="contact">
       <div class="wrap">
         <p class="kicker rv"><b>05</b> Contact</p>
-        <h2 class="contact-title rv"><span class="hd-d">Let's build something <span class="grad">reliable.</span></span><span class="hd-m">Let's <span class="grad">talk.</span></span></h2>
+        <h2 class="contact-title rv"><span class="hd-d">Let's build something <span class="grad">reliable.</span></span><span class="hd-m">Contact</span></h2>
         <p class="lede rv">I'm looking for DevOps roles where I can build and improve cloud infrastructure and delivery pipelines. My inbox is open.</p>
 
         <div class="contact-grid">
