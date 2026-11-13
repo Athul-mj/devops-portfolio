@@ -585,9 +585,9 @@
       .tagline { max-width: none; margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #666; }
       .cta { margin-top: 24px; }
       .cta .socials { margin: 0; gap: 10px; }
-      .cta .icon-btn { width: 52px; height: 52px; border-radius: 12px; background: #0d0d0d; border: 1px solid #222; color: #666; box-shadow: none; transform: none; }
+      .cta .icon-btn { width: 52px; height: 52px; border-radius: 12px; background: #0d0d0d; border: 1px solid #222; color: #aaa; box-shadow: none; transform: none; }
       .cta .icon-btn svg { width: 20px; height: 20px; }
-      .cta .icon-btn:hover, .cta .icon-btn:active { background: #0d0d0d; border-color: #444; color: #999; transform: none; }
+      .cta .icon-btn:hover, .cta .icon-btn:active { background: #0d0d0d; border-color: #222; color: #aaa; transform: none; }
 
       /* Stats card */
       .hero .stats, .hero .stats.glass {
@@ -623,14 +623,23 @@
 
       /* Contact card */
       .contact { text-align: left; overflow: visible; }
-      .contact-grid { display: block; }
-      .ct { flex-direction: row; align-items: center; gap: 12px; min-height: 0; padding: 14px 20px; border-top: 1px solid #111; }
+      .contact-grid { display: block; padding: 0 20px 20px; }
+      .ct {
+        display: flex; flex-direction: row; align-items: center; gap: 14px; min-height: 0;
+        margin: 0 0 10px; padding: 16px; background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 12px;
+      }
+      .ct:last-child { margin-bottom: 0; }
       .ct-top { display: contents; }
-      .ct-ico { width: 16px; height: 16px; border: 0; border-radius: 0; background: none; color: #555; }
-      .ct-ico svg { width: 16px; height: 16px; }
-      .ct-arrow, .ct-lbl { display: none; }
-      .ct > div:last-child { min-width: 0; }
-      .ct-val { font-size: 14px; font-weight: 400; line-height: 1.5; color: #fff; }
+      .ct-ico { order: 0; width: 40px; height: 40px; flex: none; border: 0; border-radius: 10px; }
+      .ct-ico svg { width: 18px; height: 18px; }
+      .ct[href^="mailto:"] .ct-ico { background: rgba(34, 211, 238, .1); color: #22d3ee; }
+      .ct[href^="tel:"] .ct-ico { background: rgba(74, 222, 128, .1); color: #4ade80; }
+      .ct[href*="linkedin"] .ct-ico { background: rgba(34, 211, 238, .1); color: #22d3ee; }
+      .ct[href*="github"] .ct-ico { background: rgba(255, 255, 255, .06); color: #fff; }
+      .ct > div:last-child { order: 1; min-width: 0; }
+      .ct-lbl { display: block; margin: 0 0 2px; font: 500 10px/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: #555; }
+      .ct-val { font-size: 14px; font-weight: 700; line-height: 1.4; color: #fff; }
+      .ct-arrow { order: 2; display: block; margin-left: auto; width: 16px; height: 16px; flex: none; color: #333; }
 
       /* Footer */
       footer { padding: 20px 0 calc(20px + env(safe-area-inset-bottom)); background: #000; border-top: 1px solid #111; }
