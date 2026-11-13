@@ -509,7 +509,7 @@
       .tile:hover, .skill:hover, .project:hover, .ct:hover { transform: none; }
     }
     /* Mobile-only elements are hidden everywhere except phones */
-    .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about { display: none; }
+    .m-skills, .badge-m, .m-nav, .m-stats, .m-label, .m-logo, .m-tagline, .m-about, .m-art { display: none; }
 
     /* ==========================================================================
        Phones (<=640px): large type on dark, GSAP-driven motion.
@@ -571,6 +571,7 @@
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
       .name .accent { background: none; color: #f0f0f0; }
+      .m-art { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; margin: 28px 0 4px; }
       .m-tagline { display: block; margin: 20px 0 0; font-size: 15px; line-height: 1.6; color: #555; }
       .m-stats { display: block; margin: 24px 0 0; font: 400 11px/2 var(--mono); color: #444; }
       .m-stats::before { content: "( "; }
@@ -694,6 +695,54 @@
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
             </h1>
+            <svg class="m-art" viewBox="0 0 400 300" role="img" aria-label="Abstract artwork: concentric rings and a pipeline of connected nodes">
+              <defs>
+                <radialGradient id="ma-glow" cx="68%" cy="42%" r="55%"><stop offset="0" stop-color="#22d3ee" stop-opacity=".22"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+                <radialGradient id="ma-glow2" cx="18%" cy="82%" r="40%"><stop offset="0" stop-color="#4ade80" stop-opacity=".12"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+                <linearGradient id="ma-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee" stop-opacity="0"/><stop offset=".5" stop-color="#22d3ee"/><stop offset="1" stop-color="#4ade80"/></linearGradient>
+                <linearGradient id="ma-arc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#4ade80" stop-opacity=".2"/></linearGradient>
+                <pattern id="ma-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#1a1a1a" stroke-width="1"/></pattern>
+                <clipPath id="ma-clip"><rect width="400" height="300" rx="6"/></clipPath>
+              </defs>
+              <g clip-path="url(#ma-clip)">
+                <rect width="400" height="300" fill="#0d0d0d"/>
+                <rect width="400" height="300" fill="url(#ma-grid)" opacity=".7"/>
+                <rect width="400" height="300" fill="url(#ma-glow)"/>
+                <rect width="400" height="300" fill="url(#ma-glow2)"/>
+                <!-- concentric rings -->
+                <g fill="none" transform="translate(272 126)">
+                  <circle r="118" stroke="#1c1c1c"/>
+                  <circle r="92" stroke="#222" stroke-dasharray="2 6"/>
+                  <circle r="66" stroke="#22d3ee" stroke-opacity=".35"/>
+                  <circle r="40" stroke="#22d3ee" stroke-opacity=".6"/>
+                  <path d="M-92 0A92 92 0 0 1 65 -65" stroke="url(#ma-arc)" stroke-width="2.5" stroke-linecap="round"/>
+                  <path d="M66 0A66 66 0 0 1 -20 63" stroke="#4ade80" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle r="14" fill="#111" stroke="#22d3ee"/>
+                  <circle r="4" fill="#22d3ee"/>
+                </g>
+                <!-- overlapping dark discs -->
+                <circle cx="96" cy="96" r="54" fill="#111" stroke="#1f1f1f"/>
+                <circle cx="132" cy="120" r="38" fill="#111" fill-opacity=".85" stroke="#22d3ee" stroke-opacity=".25"/>
+                <!-- diagonal hairlines -->
+                <g stroke="#22d3ee" stroke-opacity=".12">
+                  <path d="M0 300L180 0"/><path d="M40 300L220 0"/><path d="M80 300L260 0"/>
+                </g>
+                <!-- pipeline: build -> dev -> uat -> prod -->
+                <path d="M24 236H120L150 206H250L280 236H376" fill="none" stroke="url(#ma-line)" stroke-width="2"/>
+                <g fill="#0d0d0d" stroke-width="2">
+                  <circle cx="120" cy="236" r="6" stroke="#22d3ee"/>
+                  <circle cx="200" cy="206" r="6" stroke="#22d3ee"/>
+                  <circle cx="280" cy="236" r="6" stroke="#4ade80"/>
+                </g>
+                <circle cx="376" cy="236" r="7" fill="#4ade80"/>
+                <circle cx="376" cy="236" r="14" fill="none" stroke="#4ade80" stroke-opacity=".35"/>
+                <!-- small marks -->
+                <g fill="#22d3ee"><rect x="24" y="268" width="28" height="2"/><rect x="58" y="268" width="10" height="2" opacity=".5"/></g>
+                <g fill="#555" font-family="ui-monospace, Menlo, monospace" font-size="9" letter-spacing="1">
+                  <text x="24" y="30">A.MJ / 2026</text><text x="300" y="282">BUILD &#8594; PROD</text>
+                </g>
+              </g>
+            </svg>
             <p class="role rv" style="--d:.26s"><span class="sep"></span><span class="grad">DevOps Engineer</span></p>
             <p class="tagline rv" style="--d:.32s">Building reliable infrastructure, one pipeline at a time.</p>
             <p class="m-tagline">Building infrastructure, one pipeline at a time.</p>
@@ -1146,7 +1195,7 @@
       const navItems = q('.nav-inner .logo, .nav-inner .nav-links');
 
       // Load: hero and nav fade + rise, staggered
-      gsap.from([...navItems, ...q('.hero .role, .hero .name, .m-tagline, .m-stats')],
+      gsap.from([...navItems, ...q('.hero .role, .hero .name, .m-art, .m-tagline, .m-stats')],
         { y: 30, opacity: 0, duration: .8, ease, stagger: .15 });
 
       // Scroll: each section's blocks rise in as the section enters
