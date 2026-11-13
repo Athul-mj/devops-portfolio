@@ -542,7 +542,7 @@
       .logo { font-size: .82rem; }
 
       /* Hero: full screen, left aligned, icons only */
-      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; justify-content: center; padding: 96px 0 56px; }
+      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 0; justify-content: flex-start; padding: 112px 0 64px; }
       .hero::before {
         content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
         background:
@@ -555,8 +555,14 @@
       .hero-grid { display: block; }
       .term-wrap, .hero .stats, .cta .btn, .badge-d, .role .sep { display: none; }
       .badge-m { display: inline; }
-      .badge { gap: 9px; padding: 6px 12px 6px 10px; border-radius: 8px; font: 500 .72rem var(--mono); letter-spacing: .04em; background: rgba(255,255,255,.03); }
-      .name { margin-top: 26px; font-size: clamp(3.5rem, 19vw, 5.2rem); font-weight: 800; line-height: .92; letter-spacing: -0.055em; color: var(--text); }
+      .badge { gap: 10px; padding: 8px 14px 8px 12px; border-radius: 999px; font: 600 .76rem var(--mono); letter-spacing: .04em; color: #d1fae5; border-color: rgba(52, 211, 153, .5); background: rgba(52, 211, 153, .1); box-shadow: 0 0 22px -6px rgba(52, 211, 153, .55); }
+      .name { position: relative; margin-top: 24px; font-size: clamp(3.5rem, 19vw, 5.2rem); font-weight: 800; line-height: .92; letter-spacing: -0.055em; color: var(--text); }
+      .name::before {
+        content: ""; position: absolute; z-index: -1; left: -18%; top: -28%; width: 100%; height: 156%; pointer-events: none;
+        background:
+          radial-gradient(closest-side at 42% 40%, rgba(34, 211, 238, .36), transparent),
+          radial-gradient(closest-side at 62% 66%, rgba(167, 139, 250, .3), transparent);
+      }
       .name .accent { background: none; color: var(--text); animation: none; }
       .name .dot { color: var(--text); }
       .role { margin: 22px 0 10px; font-size: 1.3rem; }
@@ -564,6 +570,9 @@
       .cta .socials { margin: 0; gap: 10px; }
       .cta .icon-btn { width: 48px; height: 48px; border-radius: 12px; border-color: var(--line-strong); color: var(--text-2); }
       .cta .icon-btn svg { width: 20px; height: 20px; }
+      .cta .icon-btn[aria-label="GitHub"] { background: #fff; border-color: #fff; color: #05070a; }
+      .cta .icon-btn[aria-label="LinkedIn"] { background: #0A66C2; border-color: #0A66C2; color: #fff; }
+      .cta .icon-btn[aria-label="Email"] { background: var(--green); border-color: var(--green); color: #04130d; }
 
       /* About: 2x2 stats with hairline borders */
       .bento { display: none; }
@@ -578,17 +587,21 @@
       .m-stat .v small { font-size: .45em; letter-spacing: -0.01em; }
       .m-stat .l { display: block; font-size: .8rem; line-height: 1.4; color: var(--muted); }
 
-      /* Skills: grouped rows, category left, pills flowing right */
-      .skills { display: block; border-top: 1px solid var(--line); }
-      .skill {
-        display: grid; grid-template-columns: 6.6rem minmax(0, 1fr); gap: 14px; align-items: start;
-        padding: 16px 0; overflow: visible; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none;
-      }
+      /* Skills: category header with coloured underline, tinted pills below */
+      .skills { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+      .skill { display: block; padding: 0; overflow: visible; border: 0; border-radius: 0; background: none; }
       .skill .bar, .skill .ico { display: none; }
-      .skill h3 { gap: 9px; align-items: baseline; margin: 0; padding-top: 5px; font-size: .86rem; font-weight: 600; line-height: 1.3; color: var(--text); }
-      .skill h3::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c); transform: translateY(-1px); }
-      .skill .pills { gap: 6px; }
-      .skill .pills li { padding: 5px 10px; font-size: .78rem; border-radius: 7px; }
+      .skill h3 { position: relative; gap: 10px; margin: 0 0 16px; padding-bottom: 12px; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+      .skill h3::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+      .skill h3::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--c), color-mix(in srgb, var(--c) 25%, transparent) 55%, transparent); }
+      .skill .pills { gap: 8px; }
+      .skill .pills li {
+        padding: 7px 13px; border-radius: 999px; font-size: .84rem; font-weight: 500;
+        color: color-mix(in srgb, var(--c) 55%, #fff);
+        background: color-mix(in srgb, var(--c) 14%, transparent);
+        border-color: color-mix(in srgb, var(--c) 38%, transparent);
+      }
+      .skill .pills li.hot { color: #fff; font-weight: 600; background: color-mix(in srgb, var(--c) 30%, transparent); border-color: color-mix(in srgb, var(--c) 70%, transparent); }
 
       /* Projects: clean stacked cards with a gradient left edge */
       .proj-aside .h2 { margin-bottom: 14px; }
