@@ -516,7 +516,7 @@
        Placed after the touch block so it wins without !important.
        ========================================================================== */
     @media (max-width: 640px) {
-      html { scroll-padding-top: 76px; }
+      html { scroll-padding-top: 80px; }
       body { -webkit-tap-highlight-color: transparent; font-size: 15px; }
 
       /* No blur, no drifting blobs, no grain: flat and fast */
@@ -542,7 +542,8 @@
       .logo { font-size: .82rem; }
 
       /* Hero: full screen, left aligned, icons only */
-      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 0; justify-content: flex-start; padding: 112px 0 64px; }
+      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: auto; justify-content: flex-start; padding: 112px 0 12px; }
+      #about { padding-top: 44px; }
       .hero::before {
         content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
         background:
@@ -550,6 +551,7 @@
           radial-gradient(38% 30% at 82% 62%, rgba(167, 139, 250, .13), transparent 70%),
           radial-gradient(30% 24% at 40% 82%, rgba(52, 211, 153, .08), transparent 70%);
         animation: m-drift 22s ease-in-out infinite alternate;
+        -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 80%); mask-image: linear-gradient(180deg, #000 45%, transparent 80%);
       }
       @keyframes m-drift { to { transform: translate3d(6%, -5%, 0) rotate(8deg); } }
       .hero-grid { display: block; }
@@ -560,8 +562,8 @@
       .name::before {
         content: ""; position: absolute; z-index: -1; left: -18%; top: -28%; width: 100%; height: 156%; pointer-events: none;
         background:
-          radial-gradient(closest-side at 42% 40%, rgba(34, 211, 238, .36), transparent),
-          radial-gradient(closest-side at 62% 66%, rgba(167, 139, 250, .3), transparent);
+          radial-gradient(closest-side at 40% 42%, rgba(34, 211, 238, .5), transparent),
+          radial-gradient(closest-side at 62% 64%, rgba(52, 211, 153, .4), transparent);
       }
       .name .accent { background: none; color: var(--text); animation: none; }
       .name .dot { color: var(--text); }
@@ -570,9 +572,10 @@
       .cta .socials { margin: 0; gap: 10px; }
       .cta .icon-btn { width: 48px; height: 48px; border-radius: 12px; border-color: var(--line-strong); color: var(--text-2); }
       .cta .icon-btn svg { width: 20px; height: 20px; }
-      .cta .icon-btn[aria-label="GitHub"] { background: #fff; border-color: #fff; color: #05070a; }
-      .cta .icon-btn[aria-label="LinkedIn"] { background: #0A66C2; border-color: #0A66C2; color: #fff; }
-      .cta .icon-btn[aria-label="Email"] { background: var(--green); border-color: var(--green); color: #04130d; }
+      .cta .icon-btn { background: rgba(10, 13, 19, .9); }
+      .cta .icon-btn[aria-label="GitHub"] { color: #fff; border-color: rgba(255, 255, 255, .28); }
+      .cta .icon-btn[aria-label="LinkedIn"] { color: var(--cyan); border-color: rgba(34, 211, 238, .45); }
+      .cta .icon-btn[aria-label="Email"] { color: var(--green); border-color: rgba(52, 211, 153, .45); }
 
       /* About: 2x2 stats with hairline borders */
       .bento { display: none; }
