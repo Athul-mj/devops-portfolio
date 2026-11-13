@@ -549,7 +549,11 @@
 
       /* Sections become full-width dark cards separated by 1px dividers */
       .wrap { padding: 0; }
-      section { padding: 0; background: #0a0a0a; border-top: 1px solid #111; }
+      section {
+        padding: 0; background: rgba(255, 255, 255, .03); border: 1px solid rgba(255, 255, 255, .08);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      }
+      #skills, #projects, #contact { border-top: 0; }
       #about, #github { display: none; }
       .h2, .intro, .contact-title, .contact .lede, .contact-foot, .proj-index { display: none; }
       .kicker, .contact .kicker {
@@ -559,7 +563,11 @@
       .kicker b, .kicker::after, .contact .kicker::before { display: none; }
 
       /* Hero */
-      .hero { min-height: 0; display: block; padding: 80px 0 0; background: #000; }
+      .hero { position: relative; isolation: isolate; min-height: 0; display: block; padding: 80px 0 0; background: #000; }
+      .hero::before {
+        content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .15;
+        background: radial-gradient(circle at 0% 0%, #22d3ee 0%, transparent 60%);
+      }
       .hero-grid { display: block; padding: 0 20px 40px; }
       .term-wrap, .cta .btn, .name .dot, .badge-d { display: none; }
       .badge {
@@ -574,28 +582,29 @@
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
       .name .accent { background: none; color: #fff; }
-      .name::after { content: ""; display: block; width: 44px; height: 2px; margin-top: 8px; background: #22d3ee; }
+      .name::after { content: ""; display: block; width: 44px; height: 2px; margin-top: 8px; background: linear-gradient(90deg, #22d3ee, transparent); }
       .role { display: block; margin: 12px 0 0; font: 600 16px/1.4 var(--sans); letter-spacing: 0; }
       .role .sep { display: none; }
       .role .grad { background: none; color: #22d3ee; }
       .tagline { max-width: none; margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: #666; }
       .cta { margin-top: 24px; }
       .cta .socials { margin: 0; gap: 10px; }
-      .cta .icon-btn { width: 48px; height: 48px; border-radius: 12px; }
+      .cta .icon-btn { width: 52px; height: 52px; border-radius: 14px; }
       .cta .icon-btn svg { width: 20px; height: 20px; }
-      .cta .icon-btn[aria-label="GitHub"] { background: #111; border: 1px solid #2a2a2a; color: #fff; }
-      .cta .icon-btn[aria-label="LinkedIn"] { background: #0a1929; border: 1px solid #0a3d6b; color: #22d3ee; }
-      .cta .icon-btn[aria-label="Email"] { background: #030f07; border: 1px solid #0a3d1a; color: #4ade80; }
+      .cta .icon-btn[aria-label="GitHub"] { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .12); color: #fff; box-shadow: 0 0 12px rgba(255, 255, 255, .15); }
+      .cta .icon-btn[aria-label="LinkedIn"] { background: rgba(34, 211, 238, .08); border: 1px solid rgba(34, 211, 238, .2); color: #22d3ee; box-shadow: 0 0 12px rgba(34, 211, 238, .15); }
+      .cta .icon-btn[aria-label="Email"] { background: rgba(74, 222, 128, .08); border: 1px solid rgba(74, 222, 128, .2); color: #4ade80; box-shadow: 0 0 12px rgba(74, 222, 128, .15); }
 
       /* Stats card */
       .hero .stats, .hero .stats.glass {
         display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 0; padding: 0;
-        background: #0a0a0a; border-top: 1px solid #111;
+        background: rgba(255, 255, 255, .03); border: 1px solid rgba(255, 255, 255, .08); border-radius: 0;
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
       }
       .stat { padding: 20px; text-align: center; border: 0 !important; }
       .stat:nth-child(odd) { border-right: 1px solid #111 !important; }
       .stat:nth-child(-n+2) { border-bottom: 1px solid #111 !important; }
-      .stat .v { display: block; background: none; color: #22d3ee; font: 800 32px/1.1 var(--display); letter-spacing: -0.02em; }
+      .stat .v { display: block; background: linear-gradient(135deg, #22d3ee, #4ade80); -webkit-background-clip: text; background-clip: text; color: transparent; font: 800 32px/1.1 var(--display); letter-spacing: -0.02em; }
       .stat .l { display: block; margin-top: 6px; font-size: 10px; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; color: #555; }
 
       /* Pills (skills and project tags) */
@@ -613,7 +622,7 @@
       .project { position: relative; overflow: visible; padding: 16px 20px 16px 36px; border-top: 1px solid #111; }
       .project.glow::before {
         content: ""; display: block; position: absolute; left: 20px; top: 16px; bottom: 16px; right: auto; width: 2px;
-        padding: 0; border-radius: 0; opacity: 1; background: #22d3ee; -webkit-mask: none; mask: none;
+        padding: 0; border-radius: 0; opacity: 1; background: linear-gradient(180deg, #22d3ee, #4ade80); -webkit-mask: none; mask: none;
       }
       .p-top, .project > p, .kpis { display: none; }
       .project h3 { margin: 0 0 8px; font: 700 16px/1.3 var(--display); letter-spacing: 0; color: #fff; }
