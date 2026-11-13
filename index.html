@@ -493,131 +493,6 @@
       .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
       .repo-code { border-left: 0; border-top: 1px solid var(--line); }
     }
-    /* Mobile-only elements are hidden everywhere except phones */
-    .badge-m, .m-scroll, .m-stats, .m-skills, .m-hint, .m-dots { display: none; }
-
-    /* ==========================================================================
-       Phones (<=640px): "dark card app" design. Desktop and tablet untouched.
-       ========================================================================== */
-    @media (max-width: 640px) {
-      html { scroll-padding-top: 80px; }
-      body { -webkit-tap-highlight-color: transparent; }
-      section { padding: 80px 0; }
-      .kicker { margin-bottom: 14px; font-size: .7rem; }
-      .kicker::after { flex-basis: 48px; }
-      .h2 { font-size: clamp(2rem, 9.5vw, 2.6rem); line-height: 1.04; margin-bottom: 28px; max-width: none; }
-      .m-hint { display: block; margin: 12px 0 0; font: 500 .72rem var(--mono); letter-spacing: .08em; color: var(--muted); }
-
-      /* Nav: logo left, Resume right */
-      .nav { top: 10px; padding: 0 12px; }
-      .nav-inner { height: 58px; padding: 0 7px 0 16px; border-radius: 18px; }
-      .nav-links li:not(.keep) { display: none; }
-      .nav-links a.nav-cta { margin-left: 0; padding: 0 16px; border-radius: 12px; }
-      .logo { font-size: .82rem; }
-
-      /* Hero: full screen, centred, no terminal, icons only */
-      .hero { position: relative; min-height: 100svh; padding: 88px 0 72px; text-align: center; }
-      .hero-grid { display: block; }
-      .term-wrap, .hero .stats, .cta .btn, .badge-d, .role .sep { display: none; }
-      .badge-m { display: inline; }
-      .badge { padding: 8px 16px 8px 12px; font-size: .8rem; }
-      .name { margin-top: 30px; font-size: clamp(3.8rem, 24vw, 6.4rem); line-height: .86; letter-spacing: -0.06em; }
-      .role { justify-content: center; margin: 24px 0 12px; font-size: 1.35rem; }
-      .tagline { max-width: 24ch; margin: 0 auto 36px; font-size: 1.05rem; color: var(--muted); }
-      .cta { justify-content: center; }
-      .cta .socials { margin: 0; gap: 14px; }
-      .cta .icon-btn { width: 58px; height: 58px; border-radius: 18px; background: rgba(255,255,255,.05); border-color: var(--line-strong); color: var(--text-2); }
-      .cta .icon-btn svg { width: 22px; height: 22px; }
-      .m-scroll {
-        display: grid; place-items: center; position: absolute; left: 50%; bottom: 18px;
-        width: 44px; height: 44px; margin-left: -22px; color: var(--muted);
-      }
-      .m-scroll svg { width: 22px; height: 22px; animation: m-bob 2.2s ease-in-out infinite; }
-      @keyframes m-bob { 50% { transform: translateY(6px); } }
-      .marquee { display: none; }
-
-      /* About: bento replaced by four big numbers */
-      .bento { display: none; }
-      .m-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-      .m-stat {
-        padding: 26px 18px 22px; border-radius: 22px; border: 1px solid var(--line);
-        background: linear-gradient(180deg, rgba(22, 27, 37, .85), rgba(10, 13, 19, .85));
-      }
-      .m-stat .v { display: block; margin-bottom: 10px; white-space: nowrap; font: 900 clamp(2.6rem, 13vw, 3.4rem)/1 var(--display); letter-spacing: -0.06em; }
-      .m-stat .v small { font-size: .42em; letter-spacing: -0.02em; }
-      .m-stat .l { display: block; font-size: .82rem; line-height: 1.35; color: var(--muted); }
-
-      /* Skills: one swipeable row of pills */
-      .skills { display: none; }
-      .m-skills {
-        display: flex; gap: 8px; margin: 0 calc(-1 * var(--gutter)); padding: 4px var(--gutter) 6px;
-        list-style: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
-        mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
-        -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
-      }
-      .m-skills::-webkit-scrollbar { display: none; }
-      .m-skills li {
-        flex: none; display: inline-flex; align-items: center; gap: 9px; height: 42px; padding: 0 16px;
-        border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.04);
-        font-size: .9rem; font-weight: 600; color: var(--text-2); white-space: nowrap;
-      }
-      .m-skills li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--cyan)); box-shadow: 0 0 8px var(--c, var(--cyan)); }
-      .m-skills li.hot { color: var(--text); border-color: rgba(34, 211, 238, .45); background: linear-gradient(120deg, rgba(34,211,238,.16), rgba(52,211,153,.14)); }
-
-      /* Projects: swipe one card at a time */
-      .proj-aside .h2 { margin-bottom: 14px; }
-      .intro { margin-bottom: 24px; font-size: .98rem; }
-      .proj-stack {
-        display: flex; gap: 12px; margin: 0 calc(-1 * var(--gutter)); padding: 2px var(--gutter) 4px;
-        overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
-        overscroll-behavior-x: contain; scrollbar-width: none;
-      }
-      .proj-stack::-webkit-scrollbar { display: none; }
-      .js .proj-stack .rv { opacity: 1; transform: none; }
-      .project { flex: 0 0 100%; display: flex; flex-direction: column; padding: 26px 22px 24px; border-radius: 24px; scroll-snap-align: start; scroll-snap-stop: always; }
-      .project .kpis { display: none; }
-      .p-top { align-items: center; margin-bottom: 18px; }
-      .p-num { font-size: 3rem; -webkit-text-stroke: 1px rgba(255, 255, 255, .22); }
-      .project h3 { font-size: 1.6rem; }
-      .project p { margin-bottom: 22px; font-size: .98rem; }
-      .project .pills { margin-top: auto; gap: 7px; }
-      .m-dots { display: flex; justify-content: center; margin-top: 8px; }
-      .m-dots button { width: 44px; height: 44px; display: grid; place-items: center; }
-      .m-dots button::after { content: ""; width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.2); transition: width .35s var(--ease), background .3s; }
-      .m-dots button.on::after { width: 26px; background: var(--grad); }
-
-      /* Code */
-      .repo { border-radius: 24px; }
-      .repo-info { padding: 26px 22px; gap: 20px; }
-      .repo-feats { grid-template-columns: minmax(0, 1fr); }
-      .clone { padding-left: 12px; }
-      .tree { padding: 18px 16px; font-size: .72rem; }
-      .repo-actions .btn { flex: 1 1 100%; height: 54px; }
-
-      /* Contact: simple full-width list */
-      .contact { text-align: left; }
-      .contact .kicker { justify-content: flex-start; }
-      .contact .kicker::before { display: none; }
-      .contact-title { max-width: none; margin: 0 0 14px; font-size: clamp(2.3rem, 11vw, 3rem); }
-      .contact .lede { margin: 0 0 28px; font-size: 1rem; }
-      .contact-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-      .ct { flex-direction: row; align-items: center; gap: 16px; min-height: 78px; padding: 16px 18px; border-radius: 20px; }
-      .ct-top { display: contents; }
-      .ct-ico { order: 0; width: 46px; height: 46px; flex: none; }
-      .ct > div:last-child { order: 1; min-width: 0; }
-      .ct-arrow { order: 2; margin-left: auto; }
-      .ct-lbl { margin-bottom: 2px; font-size: .66rem; }
-      .ct-val { font-size: 1rem; }
-      .contact-foot { margin-top: 14px; }
-      .contact-foot .btn { flex: 1 1 100%; }
-
-      /* Press feedback */
-      .btn:active, .icon-btn:active, .ct:active, .nav-links a.nav-cta:active { transform: scale(.97); }
-
-      footer { padding-top: 32px; }
-      footer .wrap { flex-direction: column; justify-content: center; text-align: center; gap: 6px; }
-    }
-
     /* ---------- Touch devices / small screens: lighter effects for smooth scrolling ---------- */
     @media (max-width: 900px), (pointer: coarse) {
       .copy { min-height: 44px; }
@@ -632,6 +507,141 @@
       .js .rv.r { transform: translateY(20px); }
       .js .rv.in { transform: none; }
       .tile:hover, .skill:hover, .project:hover, .ct:hover { transform: none; }
+    }
+    /* Mobile-only elements are hidden everywhere except phones */
+    .badge-m, .m-stats { display: none; }
+
+    /* ==========================================================================
+       Phones (<=640px): "clean dark minimal". Desktop and tablet untouched.
+       Placed after the touch block so it wins without !important.
+       ========================================================================== */
+    @media (max-width: 640px) {
+      html { scroll-padding-top: 76px; }
+      body { -webkit-tap-highlight-color: transparent; font-size: 15px; }
+
+      /* No blur, no drifting blobs, no grain: flat and fast */
+      .ambient .blob, .ambient .grain, .marquee { display: none; }
+      .glass { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+      .glow::before, .glow::after { display: none; }
+      .badge { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+      /* Simple fade only */
+      html.js .rv, html.js .rv.r { transform: none; filter: none; transition: opacity .5s ease; transition-delay: var(--d, 0s); }
+
+      /* Section heads: small mono kicker + large bold heading */
+      section { padding: 72px 0; }
+      .kicker { gap: 10px; margin-bottom: 14px; font-size: .68rem; letter-spacing: .18em; }
+      .kicker::after { flex-basis: 40px; }
+      .h2 { max-width: none; margin-bottom: 28px; font-size: clamp(2rem, 9vw, 2.5rem); line-height: 1.06; letter-spacing: -0.04em; }
+
+      /* Nav: logo left, Resume right (solid, no blur) */
+      .nav { top: 10px; padding: 0 12px; }
+      .nav-inner { height: 56px; padding: 0 6px 0 16px; border-radius: 16px; background: rgba(5, 7, 10, .94); backdrop-filter: none; -webkit-backdrop-filter: none; }
+      .nav-links li:not(.keep) { display: none; }
+      .nav-links a.nav-cta { margin-left: 0; padding: 0 16px; border-radius: 11px; }
+      .logo { font-size: .82rem; }
+
+      /* Hero: full screen, left aligned, icons only */
+      .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; justify-content: center; padding: 96px 0 56px; }
+      .hero::before {
+        content: ""; position: absolute; inset: -25%; z-index: -1; pointer-events: none;
+        background:
+          radial-gradient(42% 32% at 22% 34%, rgba(34, 211, 238, .16), transparent 70%),
+          radial-gradient(38% 30% at 82% 62%, rgba(167, 139, 250, .13), transparent 70%),
+          radial-gradient(30% 24% at 40% 82%, rgba(52, 211, 153, .08), transparent 70%);
+        animation: m-drift 22s ease-in-out infinite alternate;
+      }
+      @keyframes m-drift { to { transform: translate3d(6%, -5%, 0) rotate(8deg); } }
+      .hero-grid { display: block; }
+      .term-wrap, .hero .stats, .cta .btn, .badge-d, .role .sep { display: none; }
+      .badge-m { display: inline; }
+      .badge { gap: 9px; padding: 6px 12px 6px 10px; border-radius: 8px; font: 500 .72rem var(--mono); letter-spacing: .04em; background: rgba(255,255,255,.03); }
+      .name { margin-top: 26px; font-size: clamp(3.5rem, 19vw, 5.2rem); font-weight: 800; line-height: .92; letter-spacing: -0.055em; color: var(--text); }
+      .name .accent { background: none; color: var(--text); animation: none; }
+      .name .dot { color: var(--text); }
+      .role { margin: 22px 0 10px; font-size: 1.3rem; }
+      .tagline { max-width: 28ch; margin: 0 0 32px; font-size: 1rem; line-height: 1.55; color: var(--muted); }
+      .cta .socials { margin: 0; gap: 10px; }
+      .cta .icon-btn { width: 48px; height: 48px; border-radius: 12px; border-color: var(--line-strong); color: var(--text-2); }
+      .cta .icon-btn svg { width: 20px; height: 20px; }
+
+      /* About: 2x2 stats with hairline borders */
+      .bento { display: none; }
+      .m-stats {
+        display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+        border: 1px solid var(--line-strong); border-radius: 16px; overflow: hidden; background: #06080c;
+      }
+      .m-stat { padding: 24px 18px 20px; }
+      .m-stat:nth-child(odd) { border-right: 1px solid var(--line-strong); }
+      .m-stat:nth-child(-n+2) { border-bottom: 1px solid var(--line-strong); }
+      .m-stat .v { display: block; margin-bottom: 8px; white-space: nowrap; font: 800 clamp(2.2rem, 11vw, 2.8rem)/1 var(--display); letter-spacing: -0.05em; }
+      .m-stat .v small { font-size: .45em; letter-spacing: -0.01em; }
+      .m-stat .l { display: block; font-size: .8rem; line-height: 1.4; color: var(--muted); }
+
+      /* Skills: grouped rows, category left, pills flowing right */
+      .skills { display: block; border-top: 1px solid var(--line); }
+      .skill {
+        display: grid; grid-template-columns: 6.6rem minmax(0, 1fr); gap: 14px; align-items: start;
+        padding: 16px 0; overflow: visible; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none;
+      }
+      .skill .bar, .skill .ico { display: none; }
+      .skill h3 { gap: 9px; align-items: baseline; margin: 0; padding-top: 5px; font-size: .86rem; font-weight: 600; line-height: 1.3; color: var(--text); }
+      .skill h3::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c); transform: translateY(-1px); }
+      .skill .pills { gap: 6px; }
+      .skill .pills li { padding: 5px 10px; font-size: .78rem; border-radius: 7px; }
+
+      /* Projects: clean stacked cards with a gradient left edge */
+      .proj-aside .h2 { margin-bottom: 14px; }
+      .intro { margin-bottom: 26px; font-size: .95rem; color: var(--muted); }
+      .proj-stack { display: grid; gap: 12px; }
+      .project { padding: 20px 20px 20px 22px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
+      .project::after {
+        display: block; content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; opacity: 1; border-radius: 0;
+        background: linear-gradient(180deg, var(--cyan), var(--green) 50%, var(--violet));
+      }
+      .project .kpis { display: none; }
+      .p-top { align-items: center; margin-bottom: 10px; }
+      .p-num { font: 500 .75rem/1 var(--mono); letter-spacing: .1em; color: var(--muted); -webkit-text-stroke: 0; }
+      .p-domain { padding: 0; border: 0; background: none; font-size: .64rem; }
+      .project h3 { margin-bottom: 8px; font-size: 1.32rem; line-height: 1.2; letter-spacing: -0.03em; }
+      .project p { margin-bottom: 16px; font-size: .92rem; line-height: 1.55; }
+      .project .pills { gap: 6px; }
+      .project .pills li { padding: 5px 10px; font-size: .76rem; border-radius: 7px; }
+
+      /* Code */
+      .repo { border-radius: 16px; border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
+      .repo-info { padding: 22px 20px; gap: 18px; }
+      .repo-feats { grid-template-columns: minmax(0, 1fr); }
+      .clone { padding-left: 12px; }
+      .tree { padding: 18px 16px; font-size: .72rem; }
+      .repo-actions .btn { flex: 1 1 100%; height: 52px; }
+
+      /* Contact: four rows with dividers */
+      .contact { text-align: left; }
+      .contact .kicker { justify-content: flex-start; }
+      .contact .kicker::before { display: none; }
+      .contact-title { max-width: none; margin: 0 0 12px; font-size: clamp(2.1rem, 10vw, 2.7rem); font-weight: 800; line-height: 1.04; letter-spacing: -0.04em; }
+      .contact .lede { margin: 0 0 24px; font-size: .95rem; color: var(--muted); }
+      .contact-grid { display: block; border-top: 1px solid var(--line); }
+      .ct {
+        flex-direction: row; align-items: center; gap: 14px; min-height: 72px; padding: 14px 2px;
+        border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: none; transition: background .2s;
+      }
+      .ct:active { background: rgba(255, 255, 255, .035); }
+      .ct-top { display: contents; }
+      .ct-ico { order: 0; width: 40px; height: 40px; flex: none; border-radius: 10px; background: rgba(255, 255, 255, .04); }
+      .ct-ico svg { width: 18px; height: 18px; }
+      .ct > div:last-child { order: 1; min-width: 0; }
+      .ct-arrow { order: 2; margin-left: auto; width: 18px; height: 18px; }
+      .ct-lbl { margin-bottom: 1px; font-size: .64rem; }
+      .ct-val { font-size: .98rem; }
+      .contact-foot { justify-content: flex-start; margin-top: 20px; }
+      .contact-foot .btn { flex: 1 1 100%; }
+
+      .btn:active, .icon-btn:active, .nav-links a.nav-cta:active { transform: scale(.97); }
+
+      footer { padding-top: 28px; }
+      footer .wrap { flex-direction: column; justify-content: center; text-align: center; gap: 6px; }
     }
     @media (hover: none) { .term { transform: none; } }
     @media (prefers-reduced-motion: reduce) {
@@ -697,7 +707,7 @@
       <div class="wrap">
         <div class="hero-grid">
           <div>
-            <span class="badge rv"><span class="ping"></span><span class="badge-d">Open to DevOps roles · Kerala, India</span><span class="badge-m">Available for hire</span></span>
+            <span class="badge rv"><span class="ping"></span><span class="badge-d">Open to DevOps roles · Kerala, India</span><span class="badge-m">Available · Kerala, India</span></span>
             <h1 class="name" aria-label="Athul MJ">
               <span class="line rv" style="--d:.08s">Athul</span>
               <span class="line rv" style="--d:.16s"><span class="accent">MJ</span><span class="dot">.</span></span>
@@ -736,8 +746,6 @@
             </div>
           </div>
         </div>
-
-        <a class="m-scroll" href="#about" aria-label="Scroll to About"><svg><use href="#i-down"/></svg></a>
 
         <div class="stats glass rv" style="--d:.2s">
           <div class="stat"><span class="v grad" data-count="2.1" data-dec="1" data-suffix=" yrs">2.1 yrs</span><span class="l">DevOps experience</span></div>
@@ -805,9 +813,6 @@
       <div class="wrap">
         <p class="kicker rv"><b>02</b> Skills</p>
         <h2 class="h2 rv">The toolkit behind <span class="grad">the pipelines.</span></h2>
-
-        <ul class="m-skills rv" aria-label="Skills"><li class="hot" style="--c:#22d3ee">GitHub Actions</li><li class="hot" style="--c:#fb923c">AWS</li><li class="hot" style="--c:#a78bfa">Docker</li><li style="--c:#fb923c">EC2</li><li style="--c:#fb923c">S3</li><li style="--c:#fb923c">IAM</li><li style="--c:#fb923c">RDS</li><li style="--c:#fb923c">DLM</li><li style="--c:#fb923c">CloudWatch</li><li style="--c:#22d3ee">Matrix deploys</li><li style="--c:#22d3ee">Approval gates</li><li style="--c:#22d3ee">Auto-rollback</li><li style="--c:#a78bfa">Kubernetes</li><li style="--c:#a78bfa">Terraform</li><li style="--c:#a78bfa">Ansible</li><li style="--c:#a78bfa">Docker Compose</li><li style="--c:#7dd3fc">Azure VMs</li><li style="--c:#7dd3fc">Azure DevOps</li><li style="--c:#7dd3fc">Azure DNS</li><li style="--c:#7dd3fc">Azure Storage</li><li style="--c:#7dd3fc">Azure Pipelines</li><li style="--c:#34d399">Linux</li><li style="--c:#34d399">Nginx</li><li style="--c:#34d399">Apache</li><li style="--c:#34d399">systemd</li><li style="--c:#60a5fa">SQL Server</li><li style="--c:#60a5fa">Data sync</li><li style="--c:#60a5fa">Backups</li><li style="--c:#fb7185">Python</li><li style="--c:#fb7185">Bash</li><li style="--c:#fb7185">Automation tooling</li><li style="--c:#facc15">journalctl</li><li style="--c:#facc15">Log analysis</li><li style="--c:#facc15">Alerting</li></ul>
-        <p class="m-hint">Swipe to see all →</p>
 
         <div class="skills">
           <div class="skill glass glow rv" style="--c:#fb923c">
@@ -921,7 +926,6 @@
               <ul class="pills"><li>SQL Server</li><li>T-SQL</li><li>Schema migration</li><li>Linux</li></ul>
             </article>
           </div>
-          <div class="m-dots" aria-label="Choose project"><button type="button" aria-label="Project 1"></button><button type="button" aria-label="Project 2"></button><button type="button" aria-label="Project 3"></button><button type="button" aria-label="Project 4"></button><button type="button" aria-label="Project 5"></button></div>
         </div>
       </div>
     </section>
@@ -1124,20 +1128,6 @@
     const fmt = new Intl.DateTimeFormat('en-IN', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata' });
     const tickClock = () => { clock.textContent = `${fmt.format(new Date())} IST`; };
     tickClock(); setInterval(tickClock, 15000);
-
-    /* ---- Mobile project carousel dots ---- */
-    const stack = $('.proj-stack'), dots = $$('.m-dots button');
-    if (stack && dots.length) {
-      const step = () => (stack.firstElementChild ? stack.firstElementChild.offsetWidth + 12 : stack.clientWidth);
-      const sync = () => {
-        const i = Math.min(dots.length - 1, Math.round(stack.scrollLeft / step()));
-        dots.forEach((d, n) => d.classList.toggle('on', n === i));
-      };
-      let q = false;
-      stack.addEventListener('scroll', () => { if (!q) { q = true; requestAnimationFrame(() => { q = false; sync(); }); } }, { passive: true });
-      dots.forEach((d, n) => d.addEventListener('click', () => stack.scrollTo({ left: n * step(), behavior: reduce ? 'auto' : 'smooth' })));
-      sync();
-    }
 
     /* ---- Copy buttons ---- */
     $$('[data-copy]').forEach(btn => btn.addEventListener('click', async () => {
