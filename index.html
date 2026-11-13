@@ -542,7 +542,7 @@
         border: 1px solid #222; border-radius: 8px; background: #111; color: #aaa;
       }
       .nav-links a.m-ico svg { width: 16px; height: 16px; }
-      .nav-links a.nav-cta { min-height: 36px; height: 36px; margin: 0; padding: 0 12px; gap: 6px; border-radius: 8px; font-size: 13px; box-shadow: none; }
+      .nav-links a.nav-cta, .nav-links a.nav-cta:hover { min-height: 36px; height: 36px; margin: 0; padding: 0 12px; gap: 6px; border-radius: 8px; font-size: 13px; box-shadow: none; background: #22d3ee; color: #021014; transform: none; }
       .nav-cta svg { width: 13px; height: 13px; }
       /* invisible 44px hit areas around the 36px buttons */
       .nav-links a.m-ico::before, .nav-links a.nav-cta::before { content: ""; position: absolute; inset: -4px; }
@@ -557,16 +557,20 @@
       /* ---------- Hero: profile card ---------- */
       .hero { min-height: 0; display: block; padding: 80px 0 24px; }
       .hero-grid { display: block; }
+      .hero-grid > div:first-child { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; }
+      .hero-grid > div:first-child > * { grid-column: 1 / -1; }
+      .hero-grid > div:first-child > .badge { grid-column: 2; grid-row: 1; }
+      .hero-grid > div:first-child > .name { grid-column: 1; grid-row: 1; }
       .term-wrap, .cta, .hero .stats, .name .dot, .badge-d { display: none; }
       .badge {
-        display: flex; width: fit-content; margin: 0 0 0 auto; gap: 7px; padding: 4px 10px;
+        display: flex; width: fit-content; margin: 0; gap: 7px; padding: 4px 10px;
         border: 1px solid rgba(74, 222, 128, .3); border-radius: 999px; background: rgba(74, 222, 128, .08);
         backdrop-filter: none; -webkit-backdrop-filter: none; font: 500 11px/1.4 var(--sans); color: #4ade80;
       }
       .badge-m { display: inline; }
       .ping { width: 6px; height: 6px; background: #4ade80; }
       .ping::after { display: none; }
-      .name { margin: 10px 0 0; font: 800 40px/1.05 var(--display); letter-spacing: -0.04em; color: #fff; white-space: nowrap; }
+      .name { margin: 0; font: 800 40px/1.05 var(--display); letter-spacing: -0.04em; color: #fff; white-space: nowrap; }
       .name .line { display: inline; }
       .name .line + .line::before { content: " "; }
       .name .accent { background: none; color: #fff; }
@@ -576,24 +580,17 @@
       .tagline { max-width: none; margin: 6px 0 0; font-size: min(13px, 3.4vw); line-height: 1.5; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
       /* Inline stats row with vertical dividers */
-      .m-stats { display: flex; margin: 20px 0 0; padding: 14px 0; border-top: 1px solid #111; border-bottom: 1px solid #111; }
-      .m-stats > div { flex: 1 1 0; min-width: 0; padding: 0 8px; border-left: 1px solid #1a1a1a; }
-      .m-stats > div:first-child { padding-left: 0; border-left: 0; }
-      .m-stats b { display: block; font: 700 17px/1.2 var(--display); letter-spacing: -0.02em; color: #fff; white-space: nowrap; }
+      .m-stats { display: flex; margin: 20px 0 0; padding: 14px 0; background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 12px; }
+      .m-stats > div { flex: 1 1 0; min-width: 0; padding: 0 10px; border-left: 1px solid #1a1a1a; text-align: center; }
+      .m-stats > div:first-child { border-left: 0; }
+      .m-stats b { display: block; font: 700 17px/1.2 var(--display); letter-spacing: -0.02em; color: #22d3ee; white-space: nowrap; }
       .m-stats span { display: block; margin-top: 2px; font-size: 10px; line-height: 1.3; color: #555; white-space: nowrap; }
 
-      /* ---------- Colour-coded pills ---------- */
+      /* ---------- Pills: one neutral style ---------- */
       .m-skills li, .project .pills li, .project .pills li.hot {
-        --t: 148, 163, 184;
         padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; line-height: 1.5;
-        color: rgb(var(--t)); background: rgba(var(--t), .1); border: 1px solid rgba(var(--t), .3);
+        color: #888; background: #111; border: 1px solid #222;
       }
-      .c-cloud { --t: 251, 146, 60 !important; }
-      .c-ci { --t: 34, 211, 238 !important; }
-      .c-iac { --t: 167, 139, 250 !important; }
-      .c-sys { --t: 74, 222, 128 !important; }
-      .c-db { --t: 96, 165, 250 !important; }
-      .c-code { --t: 251, 113, 133 !important; }
 
       /* ---------- Stack ---------- */
       .skills { display: none; }
