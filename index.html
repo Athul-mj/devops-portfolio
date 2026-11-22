@@ -49,6 +49,10 @@
        ========================================================================== */
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+    /* Lenis recommended CSS (phones and desktop) */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-stopped { overflow: hidden; }
     body {
       margin: 0;
       background: var(--bg);
@@ -525,10 +529,6 @@
       body { background: #fff; color: #000; font: 400 15px/1.6 var(--sans); -webkit-tap-highlight-color: transparent; }
       ::selection { background: #000; color: #fff; }
       :focus-visible { outline-color: currentColor; }
-      /* Lenis recommended CSS */
-      html.lenis, html.lenis body { height: auto; }
-      .lenis.lenis-smooth { scroll-behavior: auto !important; }
-      .lenis.lenis-stopped { overflow: hidden; }
       /* Hidden only until GSAP has set its start states (JS removes this; 3s safety net) */
       html.m-pre main, html.m-pre .nav-inner > * { visibility: hidden; }
 
@@ -1089,19 +1089,19 @@
 
         <p class="m-label">( Experience )</p>
         <div class="xp-list">
-          <article class="xp-item rv">
+          <article class="xp-item rv" style="--d:.06s">
             <p class="xp-date"><time datetime="2025-06">June 2025</time> — Present</p>
             <h3>Cydez Technologies</h3>
             <p class="xp-role">DevOps Engineer (incl. contract work for TechForz)</p>
             <p class="xp-desc">Sole DevOps engineer across education ERP, billing and oil &amp; gas platforms. Built GitHub Actions CI/CD, managed AWS and Azure infrastructure, SQL Server operations and production incidents.</p>
           </article>
-          <article class="xp-item rv">
+          <article class="xp-item rv" style="--d:.12s">
             <p class="xp-date"><time datetime="2025-05">May 2025</time> — <time datetime="2025-06">June 2025</time></p>
             <h3>Network Academy, Kochi</h3>
             <p class="xp-role">DevOps Trainer</p>
             <p class="xp-desc">Trained students on Linux, Git, Docker, Jenkins and AWS. Hands-on labs on CI/CD and containerization.</p>
           </article>
-          <article class="xp-item rv">
+          <article class="xp-item rv" style="--d:.18s">
             <p class="xp-date"><time datetime="2024-06">June 2024</time> — <time datetime="2024-12">Dec 2024</time></p>
             <h3>Intellipaat</h3>
             <p class="xp-role">DevOps Intern</p>
@@ -1399,6 +1399,32 @@
   })();
   </script>
   <script>
+  /* ---- Desktop (mouse/trackpad): Lenis smooth scroll, same settings as phones ---- */
+  (() => {
+    if (matchMedia('(max-width: 640px)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches
+        || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js';
+    s.onload = () => {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        infinite: false,
+      });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+        const t = a.getAttribute('href') === '#top' ? 0 : document.querySelector(a.getAttribute('href'));
+        if (t !== null) { e.preventDefault(); lenis.scrollTo(t, { offset: -96 }); }
+      }));
+    };
+    document.head.appendChild(s);
+  })();
+  </script>
+  <script>
   /* ---- Phones only: GSAP + ScrollTrigger + Lenis (loaded on demand; desktop never downloads them) ---- */
   (() => {
     const root = document.documentElement;
@@ -1477,11 +1503,19 @@
         if (content.length) gsap.from(content, { y: 60, duration: .8, ease: H, stagger: .1, scrollTrigger: st });
       });
 
-      // Experience: entries fade up as each reaches the screen
+      // Experience: same as project rows. Titles clip up one by one, date/role/description fade up
       const xp = q('.xp-item');
-      gsap.set(xp, { opacity: 0, y: 20 });
-      ScrollTrigger.batch(xp, { start: 'top 85%', once: true,
-        onEnter: batch => gsap.to(batch, { opacity: 1, y: 0, duration: .7, ease: C, stagger: .1 }) });
+      const xpMeta = r => [...r.querySelectorAll('.xp-date, .xp-role, .xp-desc')];
+      xp.forEach(r => clipWrap(r.querySelector('h3')));
+      gsap.set(xp.map(r => r.querySelector('h3')), { yPercent: 100 });
+      gsap.set(xp.map(xpMeta).flat(), { opacity: 0, y: 20 });
+      ScrollTrigger.batch(xp, {
+        start: 'top 85%', once: true,
+        onEnter: batch => {
+          gsap.to(batch.map(r => r.querySelector('h3')), { yPercent: 0, duration: .9, ease: H, stagger: .15 });
+          gsap.to(batch.map(xpMeta).flat(), { opacity: 1, y: 0, duration: .7, ease: C, stagger: .075, delay: .1 });
+        }
+      });
 
       // Projects: titles clip up one by one as each row reaches the screen
       const rows = q('#projects .project');
