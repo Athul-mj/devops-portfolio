@@ -540,11 +540,11 @@
       }
       .d-logo { display: none !important; }
       .m-pill:active { background: #fff; color: #000; }
-      .ct:active { background: #000; }
-      .ct:active .ct-lbl, .ct:active .ct-val { color: #fff; }
+      .ct:active { background: #fff; }
+      .ct:active .ct-lbl, .ct:active .ct-val { color: #000; }
       .nav-links a.nav-cta:active { background: #333; }
       .m-skills li:active { background: #000; color: #fff; }
-      .project .pills li:active { border-color: #fff; color: #fff; }
+      .project .pills li:active { border-color: #000; color: #000; }
       .ping::after, .name .accent, .caret, .cursor { animation: none !important; }
       .ambient, .progress, .marquee, .glow::before, .glow::after { display: none; }
       .glass { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; background: none; border: 0; border-radius: 0; }
@@ -616,47 +616,57 @@
       .m-skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
       .m-skills li { padding: 6px 14px; border: 1px solid #000; border-radius: 999px; font: 400 11px/1.4 var(--mono); color: #000; background: none; white-space: nowrap; }
 
-      /* ---------- Work (black) ---------- */
-      #projects { background: #000; color: #fff; }
-      #projects .m-label { color: #666; margin-bottom: 8px; }
+      /* ---------- Experience (black) ---------- */
+      #experience { background: #000; color: #fff; }
+      #experience .m-label { color: #666; margin-bottom: 8px; }
+      .xp-item { padding: 28px 0; border-top: 1px solid #333; }
+      .xp-date { margin: 0; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; color: #666; }
+      .xp-item h3 { margin: 12px 0 6px; font: 800 30px/1.12 var(--display); letter-spacing: -0.02em; color: #fff; }
+      .xp-role { margin: 0; font: 400 11px/1.5 var(--mono); color: #888; }
+      .xp-desc { margin: 12px 0 0; font-size: 14px; line-height: 1.6; color: #999; }
+
+      /* ---------- Work (white) ---------- */
+      #projects { background: #fff; color: #000; }
+      #projects .m-label { color: #bbb; margin-bottom: 8px; }
       .proj-layout, .proj-stack { display: block; }
-      .project { display: block; padding: 28px 0; margin: 0; border: 0; border-top: 1px solid #333; }
+      .project { display: block; padding: 28px 0; margin: 0; border: 0; border-top: 1px solid #e8e8e8; }
       .p-top { display: flex; align-items: center; justify-content: space-between; margin: 0; }
-      .p-num { font: 400 11px/1.4 var(--mono); color: #444; -webkit-text-stroke: 0; }
+      .p-num { font: 400 11px/1.4 var(--mono); color: #bbb; -webkit-text-stroke: 0; }
       .p-num::before { content: "( "; }
       .p-num::after { content: " )"; }
-      .p-domain { padding: 0; border: 0; border-radius: 0; background: none; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; text-transform: none; color: #444; }
-      .project h3 { margin: 12px 0; font: 800 30px/1.12 var(--display); letter-spacing: -0.02em; color: #fff; }
+      .p-domain { padding: 0; border: 0; border-radius: 0; background: none; font: 400 11px/1.4 var(--mono); letter-spacing: .02em; text-transform: none; color: #999; }
+      .project h3 { margin: 12px 0; font: 800 30px/1.12 var(--display); letter-spacing: -0.02em; color: #000; }
       .project > p, .kpis { display: none; }
       .project .pills { gap: 6px; }
       .project .pills li, .project .pills li.hot {
-        padding: 5px 12px; border: 1px solid #333; border-radius: 999px; background: none;
-        font: 400 11px/1.4 var(--mono); color: #666;
+        padding: 5px 12px; border: 1px solid #ccc; border-radius: 999px; background: none;
+        font: 400 11px/1.4 var(--mono); color: #888;
       }
 
-      /* ---------- Connect (white) ---------- */
-      #contact { background: #fff; }
+      /* ---------- Connect (black) ---------- */
+      #contact { background: #000; color: #fff; }
+      #contact .m-label { color: #666; }
       .contact { text-align: left; overflow: visible; }
       .contact-grid { display: flex; flex-wrap: wrap; gap: 8px; }
       .ct {
         display: inline-flex; flex-direction: row; align-items: center; min-height: 44px; padding: 0 20px;
-        background: none; border: 1px solid #000; border-radius: 999px; color: #000;
+        background: none; border: 1px solid #fff; border-radius: 999px; color: #fff;
       }
       .ct-top, .ct-val { display: none; }
       .ct > div:last-child { min-width: 0; }
-      .ct-lbl { margin: 0; font: 400 12px/1 var(--mono); letter-spacing: 0; text-transform: none; color: #000; }
+      .ct-lbl { margin: 0; font: 400 12px/1 var(--mono); letter-spacing: 0; text-transform: none; color: #fff; }
       .ct[href*="github"] { order: 1; }
       .ct[href*="linkedin"] { order: 2; }
       .ct[href^="tel:"] { order: 3; }
       .ct[href^="mailto:"] { order: 0; flex: 1 1 100%; display: flex; min-height: 44px; margin: 0 0 24px; padding: 0; border: 0; border-radius: 0; }
       .ct[href^="mailto:"] .ct-lbl { display: none; }
-      .ct[href^="mailto:"] .ct-val { display: block; font: 800 24px/1.3 var(--display); letter-spacing: -0.02em; color: #000; overflow-wrap: anywhere; }
+      .ct[href^="mailto:"] .ct-val { display: block; font: 800 24px/1.3 var(--display); letter-spacing: -0.02em; color: #fff; overflow-wrap: anywhere; }
 
-      /* ---------- Footer (black) ---------- */
-      footer { padding: 32px 0 calc(32px + env(safe-area-inset-bottom)); border: 0; background: #000; }
+      /* ---------- Footer (white) ---------- */
+      footer { padding: 32px 0 calc(32px + env(safe-area-inset-bottom)); border: 0; background: #fff; }
       footer .wrap { justify-content: center; text-align: center; }
       footer .wrap > * { display: none; }
-      footer .wrap > .m-foot { display: block; font: 400 11px/1.6 var(--mono); color: #444; }
+      footer .wrap > .m-foot { display: block; font: 400 11px/1.6 var(--mono); color: #999; }
     }
     /* ==========================================================================
        Desktop + tablet (>=641px): Nothing-style restyle of the existing layout.
@@ -747,11 +757,12 @@
 
       /* ---------- Sections: alternate black / white ---------- */
       section { padding: clamp(96px, 11vw, 150px) 0; }
-      #about, #projects, #contact { background: #000; color: #fff; --text: #fff; --line: #262626; --line-strong: #555; --muted: #777; --text-2: #aaa; --cyan: #fff; --green: #fff; --violet: #fff; --amber: #fff; --grad: #fff; }
-      #skills, #github { background: #fff; color: #000; }
-      #about .kicker, #projects .kicker, #contact .kicker { color: #666; }
-      #about .btn, #projects .btn, #contact .btn { color: #fff; }
-      #about .btn:hover, #projects .btn:hover, #contact .btn:hover { background: #fff; color: #000; border-color: #fff; }
+      #about, #experience, #github { background: #000; color: #fff; --text: #fff; --line: #262626; --line-strong: #555; --muted: #777; --text-2: #aaa; --cyan: #fff; --green: #fff; --violet: #fff; --amber: #fff; --grad: #fff; }
+      #skills, #projects, #contact { background: #fff; color: #000; }
+      #about .kicker, #experience .kicker, #github .kicker { color: #666; }
+      #about .btn, #experience .btn, #github .btn { color: #fff; }
+      #about .btn:hover, #experience .btn:hover, #github .btn:hover,
+      #github .btn-primary, #github .btn-primary:hover { background: #fff; color: #000; border-color: #fff; }
 
       /* About: bento as thin-ruled tiles */
       .bento { gap: 0; border-top: 1px solid #333; border-left: 1px solid #333; }
@@ -778,85 +789,72 @@
       .pills li.hot { background: #000; color: #fff; border-color: #000; font-weight: 400; }
       .pills li:hover, .skill .pills li:hover { background: #000; color: #fff; border-color: #000; transform: none; }
 
-      /* Projects (black): clean rows with thin borders */
-      .proj-aside .h2 { color: #fff; }
-      .intro { color: #888; }
-      .proj-index a { font: 400 .8rem var(--mono); color: #666; border-color: #262626; }
-      .proj-index a span { color: #444; }
-      .proj-index a:hover, .proj-index a.active { color: #fff; }
-      .proj-stack { gap: 0; border-top: 1px solid #333; }
-      .project { padding: 40px 0; border: 0; border-bottom: 1px solid #333; }
-      .p-num { font: 400 .8rem var(--mono); letter-spacing: .06em; color: #555; -webkit-text-stroke: 0; }
+      /* Experience (black): rows like the project list */
+      .xp-list { border-top: 1px solid #333; }
+      .xp-item { padding: 40px 0; border-bottom: 1px solid #333; }
+      .xp-date { margin: 0; font: 400 .8rem var(--mono); letter-spacing: .06em; color: #666; }
+      .xp-item h3 { margin: 14px 0 8px; font: 800 clamp(1.7rem, 3vw, 2.4rem)/1.12 var(--display); letter-spacing: -0.03em; color: #fff; }
+      .xp-role { margin: 0; font: 400 .8rem var(--mono); letter-spacing: .02em; color: #aaa; }
+      .xp-desc { max-width: 62ch; margin: 16px 0 0; color: #999; }
+
+      /* Projects (white): clean rows with thin borders */
+      .proj-aside .h2 { color: #000; }
+      .intro { color: #555; }
+      .proj-index a { font: 400 .8rem var(--mono); color: #999; border-color: #e6e6e6; }
+      .proj-index a span { color: #bbb; }
+      .proj-index a:hover, .proj-index a.active { color: #000; }
+      .proj-stack { gap: 0; border-top: 1px solid #000; }
+      .project { padding: 40px 0; border: 0; border-bottom: 1px solid #e6e6e6; }
+      .p-num { font: 400 .8rem var(--mono); letter-spacing: .06em; color: #999; -webkit-text-stroke: 0; }
       .p-num::before { content: "( "; }
       .p-num::after { content: " )"; }
-      .p-domain { padding: 0; border: 0; background: none; font: 400 .72rem var(--mono); letter-spacing: .1em; color: #666; }
-      .project h3 { font: 800 clamp(1.7rem, 3vw, 2.4rem)/1.12 var(--display); letter-spacing: -0.03em; color: #fff; }
-      .project p { color: #999; }
-      .kpis { gap: 0; border-top: 1px solid #262626; border-bottom: 1px solid #262626; }
+      .p-domain { padding: 0; border: 0; background: none; font: 400 .72rem var(--mono); letter-spacing: .1em; color: #999; }
+      .project h3 { font: 800 clamp(1.7rem, 3vw, 2.4rem)/1.12 var(--display); letter-spacing: -0.03em; color: #000; }
+      .project p { color: #555; }
+      .kpis { gap: 0; border-top: 1px solid #e6e6e6; border-bottom: 1px solid #e6e6e6; }
       .kpi { padding: 18px 18px 16px 0; border: 0; border-radius: 0; background: none; }
-      .kpi + .kpi { padding-left: 18px; border-left: 1px solid #262626; }
-      .kpi b { font: 400 1.7rem/1.1 var(--mono); color: #fff; }
-      .kpi span { font: 400 .72rem var(--mono); color: #777; }
-      .project .pills li, .project .pills li.hot { border-color: #444; color: #aaa; background: none; }
-      .project .pills li:hover { background: #fff; color: #000; border-color: #fff; }
+      .kpi + .kpi { padding-left: 18px; border-left: 1px solid #e6e6e6; }
+      .kpi b { font: 400 1.7rem/1.1 var(--mono); color: #000; }
+      .kpi span { font: 400 .72rem var(--mono); color: #999; }
+      .project .pills li, .project .pills li.hot { border-color: #000; color: #000; background: none; }
+      .project .pills li:hover { background: #000; color: #fff; border-color: #000; }
 
-      /* Code (white) */
-      .repo { border: 1px solid #000; border-radius: 0; }
-      .repo-name { font-family: var(--mono); font-weight: 500; }
-      .repo-info > p { color: #555; }
-      .repo-feats svg { color: #000; }
-      .clone { border-radius: 999px; border-color: #000; background: none; color: #000; font-family: var(--mono); }
-      .copy { border-radius: 999px; border-color: #000; background: #000; color: #fff; font-family: var(--mono); }
-      .repo-code { border-left: 1px solid #000; background: #f5f5f5; }
-      .term-bar { border-bottom: 1px solid #000; background: #fff; }
-      .term-bar i { background: #000 !important; }
-      .tree { font-family: var(--mono); color: #333; }
-      .tree .dir { color: #000; font-weight: 500; }
-      .tree .t-d { color: #999; }
+      /* Code (black) */
+      .repo { border: 1px solid #333; border-radius: 0; }
+      .repo-name { font-family: var(--mono); font-weight: 500; color: #fff; }
+      .repo-info > p { color: #aaa; }
+      .repo-feats svg { color: #fff; }
+      .clone { border-radius: 999px; border-color: #444; background: none; color: #aaa; font-family: var(--mono); }
+      .copy, .copy:hover { border-radius: 999px; border-color: #fff; background: #fff; color: #000; font-family: var(--mono); }
+      .repo-code { border-left: 1px solid #333; background: #0a0a0a; }
+      .term-bar { border-bottom: 1px solid #333; background: #000; }
+      .term-bar i { background: #fff !important; }
+      .tree { font-family: var(--mono); color: #aaa; }
+      .tree .dir { color: #fff; font-weight: 500; }
+      .tree .t-d { color: #666; }
 
-      /* Contact (black): clean rows */
+      /* Contact (white): clean rows */
       .contact { text-align: left; }
       .contact .kicker { justify-content: flex-start; }
       .contact .kicker::before { display: none; }
-      .contact-title { margin: 0 0 20px; max-width: none; font: 900 clamp(3rem, 8vw, 6.5rem)/.95 var(--display); letter-spacing: -0.05em; color: #fff; }
-      .contact .lede { margin: 0 0 48px; color: #888; }
-      .contact-grid { display: block; border-top: 1px solid #333; }
-      .ct { display: grid; grid-template-columns: 56px minmax(120px, 1fr) minmax(0, 3fr) 28px; align-items: center; gap: 16px; padding: 26px 0; border: 0; border-bottom: 1px solid #333; border-radius: 0; }
+      .contact-title { margin: 0 0 20px; max-width: none; font: 900 clamp(3rem, 8vw, 6.5rem)/.95 var(--display); letter-spacing: -0.05em; color: #000; }
+      .contact .lede { margin: 0 0 48px; color: #555; }
+      .contact-grid { display: block; border-top: 1px solid #000; }
+      .ct { display: grid; grid-template-columns: 56px minmax(120px, 1fr) minmax(0, 3fr) 28px; align-items: center; gap: 16px; padding: 26px 0; border: 0; border-bottom: 1px solid #e6e6e6; border-radius: 0; }
       .ct-top { display: contents; }
-      .ct-ico { order: 0; width: 44px; height: 44px; border-radius: 999px; border: 1px solid #444; background: none; color: #fff; }
+      .ct-ico { order: 0; width: 44px; height: 44px; border-radius: 999px; border: 1px solid #ccc; background: none; color: #000; }
       .ct > div:last-child { order: 1; display: contents; }
-      .ct-lbl { order: 1; margin: 0; font: 400 .75rem var(--mono); letter-spacing: .1em; color: #777; }
-      .ct-val { order: 2; font: 700 clamp(1.1rem, 2vw, 1.6rem)/1.3 var(--display); letter-spacing: -0.02em; color: #fff; }
-      .ct-arrow { order: 3; color: #666; }
-      .ct:hover .ct-arrow { color: #fff; transform: translate(3px, -3px); }
-      .ct:hover .ct-ico { transform: none; border-color: #fff; }
+      .ct-lbl { order: 1; margin: 0; font: 400 .75rem var(--mono); letter-spacing: .1em; color: #999; }
+      .ct-val { order: 2; font: 700 clamp(1.1rem, 2vw, 1.6rem)/1.3 var(--display); letter-spacing: -0.02em; color: #000; }
+      .ct-arrow { order: 3; color: #999; }
+      .ct:hover .ct-arrow { color: #000; transform: translate(3px, -3px); }
+      .ct:hover .ct-ico { transform: none; border-color: #000; }
       .contact-foot { justify-content: flex-start; }
 
-      /* Footer (white) */
-      footer { border-top: 1px solid #000; background: #fff; color: #777; font: 400 .75rem var(--mono); }
-      footer .mono, footer .t-ok { color: #000; }
-      .to-top { color: #000; }
-    }
-    /* ---------- Experience (white, both layouts) ---------- */
-    .xp { background: #fff; color: #000; border-top: 1px solid #e6e6e6; }
-    .xp-label { margin: 0 0 40px; font: 400 .75rem/1.4 var(--mono); letter-spacing: .08em; color: #999; }
-    .xp-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid #e6e6e6; }
-    .xp-item { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0 48px; padding: 36px 0; border-bottom: 1px solid #e6e6e6; }
-    .xp-date { margin: 0; padding-top: .55em; font: 400 .75rem/1.5 var(--mono); letter-spacing: .04em; color: #999; white-space: nowrap; }
-    .xp-co { margin: 0; font: 800 clamp(1.5rem, 2.4vw, 2rem)/1.15 var(--display); letter-spacing: -0.02em; color: #000; transition: color .2s ease; }
-    .xp-role { margin: 8px 0 0; font: 400 .8rem/1.5 var(--mono); color: #444; }
-    .xp-note { color: #999; }
-    .xp-desc { margin: 16px 0 0; max-width: 62ch; font-size: .95rem; line-height: 1.65; color: #777; }
-    @media (hover: hover) { .xp-item:hover .xp-co { color: #d71921; } }
-    @media (max-width: 640px) {
-      .xp { padding: 72px 0; }
-      .xp-label { margin: 0 0 24px; font: 400 11px/1.4 var(--mono); letter-spacing: .06em; color: #bbb; }
-      .xp-item { grid-template-columns: minmax(0, 1fr); padding: 28px 0; }
-      .xp-date { margin: 0 0 10px; padding: 0; font-size: 11px; }
-      .xp-co { font-size: 26px; }
-      .xp-role { font-size: 12px; }
-      .xp-desc { margin-top: 12px; font-size: 14px; line-height: 1.6; }
-      .xp-item:active .xp-co { color: #d71921; }
+      /* Footer (black) */
+      footer { border-top: 1px solid #262626; background: #000; color: #777; font: 400 .75rem var(--mono); }
+      footer .mono, footer .t-ok { color: #fff; }
+      .to-top { color: #fff; }
     }
     @media (hover: none) { .term { transform: none; } }
     @media (prefers-reduced-motion: reduce) {
@@ -1084,35 +1082,32 @@
     </section>
 
     <!-- ================================ EXPERIENCE ================================ -->
-    <section id="experience" class="xp">
+    <section id="experience">
       <div class="wrap">
-        <p class="xp-label rv">( Experience )</p>
-        <ol class="xp-list">
-          <li class="xp-item rv">
+        <p class="kicker rv"><b>03</b> Experience</p>
+        <h2 class="h2 rv">Where I've <span class="grad">done the work.</span></h2>
+
+        <p class="m-label">( Experience )</p>
+        <div class="xp-list">
+          <article class="xp-item rv">
             <p class="xp-date"><time datetime="2025-06">June 2025</time> — Present</p>
-            <div>
-              <h3 class="xp-co">Cydez Technologies</h3>
-              <p class="xp-role">DevOps Engineer <span class="xp-note">(incl. contract work for TechForz)</span></p>
-              <p class="xp-desc">Sole DevOps engineer across education ERP, billing and oil &amp; gas platforms. Built GitHub Actions CI/CD, managed AWS and Azure infrastructure, SQL Server operations and production incidents.</p>
-            </div>
-          </li>
-          <li class="xp-item rv">
+            <h3>Cydez Technologies</h3>
+            <p class="xp-role">DevOps Engineer (incl. contract work for TechForz)</p>
+            <p class="xp-desc">Sole DevOps engineer across education ERP, billing and oil &amp; gas platforms. Built GitHub Actions CI/CD, managed AWS and Azure infrastructure, SQL Server operations and production incidents.</p>
+          </article>
+          <article class="xp-item rv">
             <p class="xp-date"><time datetime="2025-05">May 2025</time> — <time datetime="2025-06">June 2025</time></p>
-            <div>
-              <h3 class="xp-co">Network Academy, Kochi</h3>
-              <p class="xp-role">DevOps Trainer</p>
-              <p class="xp-desc">Trained students on Linux, Git, Docker, Jenkins and AWS. Hands-on labs on CI/CD and containerization.</p>
-            </div>
-          </li>
-          <li class="xp-item rv">
+            <h3>Network Academy, Kochi</h3>
+            <p class="xp-role">DevOps Trainer</p>
+            <p class="xp-desc">Trained students on Linux, Git, Docker, Jenkins and AWS. Hands-on labs on CI/CD and containerization.</p>
+          </article>
+          <article class="xp-item rv">
             <p class="xp-date"><time datetime="2024-06">June 2024</time> — <time datetime="2024-12">Dec 2024</time></p>
-            <div>
-              <h3 class="xp-co">Intellipaat</h3>
-              <p class="xp-role">DevOps Intern</p>
-              <p class="xp-desc">Built CI/CD pipelines with Jenkins. Hands-on with Kubernetes, Docker, Terraform and AWS/Azure.</p>
-            </div>
-          </li>
-        </ol>
+            <h3>Intellipaat</h3>
+            <p class="xp-role">DevOps Intern</p>
+            <p class="xp-desc">Built CI/CD pipelines with Jenkins. Hands-on with Kubernetes, Docker, Terraform and AWS/Azure.</p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -1121,7 +1116,7 @@
       <div class="wrap">
         <div class="proj-layout">
           <aside class="proj-aside">
-            <p class="kicker rv"><b>03</b> Projects</p>
+            <p class="kicker rv"><b>04</b> Projects</p>
             <h2 class="h2 rv">Platforms I've built and <span class="grad">kept running.</span></h2>
             <p class="intro rv">Five client platforms in education, oil &amp; gas, safety, billing and analytics. Each one runs on pipelines and infrastructure I own.</p>
             <ol class="proj-index rv">
@@ -1191,7 +1186,7 @@
     <!-- ================================ GITHUB ================================ -->
     <section id="github">
       <div class="wrap">
-        <p class="kicker rv"><b>04</b> Code</p>
+        <p class="kicker rv"><b>05</b> Code</p>
         <h2 class="h2 rv">See how <span class="grad">I work.</span></h2>
 
         <div class="repo glass glow rv">
@@ -1231,7 +1226,7 @@
     <!-- ================================ CONTACT ================================ -->
     <section id="contact" class="contact">
       <div class="wrap">
-        <p class="kicker rv"><b>05</b> Contact</p>
+        <p class="kicker rv"><b>06</b> Contact</p>
         <h2 class="contact-title rv">Let's build something <span class="grad">reliable.</span></h2>
         <p class="lede rv">I'm looking for DevOps roles where I can build and improve cloud infrastructure and delivery pipelines. My inbox is open.</p>
 
@@ -1474,7 +1469,7 @@
         .from(q('.m-stats > div'), { opacity: 0, y: 20, duration: .6, ease: C, stagger: .1 }, 1.2);
 
       // Section labels and content
-      q('#about, #skills, #projects, #contact').forEach(sec => {
+      q('#about, #skills, #experience, #projects, #contact').forEach(sec => {
         const st = { trigger: sec, start: 'top 85%' };
         const label = sec.querySelector('.m-label');
         if (label) gsap.from(clipWrap(label), { yPercent: 100, duration: .6, ease: C, scrollTrigger: st });
@@ -1482,8 +1477,7 @@
         if (content.length) gsap.from(content, { y: 60, duration: .8, ease: H, stagger: .1, scrollTrigger: st });
       });
 
-      // Experience: label clips up, entries fade up as each reaches the screen
-      gsap.from(clipWrap(document.querySelector('.xp-label')), { yPercent: 100, duration: .6, ease: C, scrollTrigger: { trigger: '#experience', start: 'top 85%' } });
+      // Experience: entries fade up as each reaches the screen
       const xp = q('.xp-item');
       gsap.set(xp, { opacity: 0, y: 20 });
       ScrollTrigger.batch(xp, { start: 'top 85%', once: true,
